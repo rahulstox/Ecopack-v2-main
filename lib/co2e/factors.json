@@ -1,0 +1,59 @@
+{
+  "TRANSPORT": {
+    "PETROL_CAR_KM": 0.17,
+    "DIESEL_CAR_KM": 0.19,
+    "EV_CAR_KM": 0.05,
+    "MOTORBIKE_KM": 0.09,
+    "BUS_KM": 0.08,
+    "TRAIN_KM": 0.04,
+    "FLIGHT_SHORT_KM": 0.25,
+    "FLIGHT_LONG_KM": 0.15,
+    "WALKING_KM": 0.0,
+    "CYCLING_KM": 0.0
+  },
+  "FOOD": {
+    "BEEF_KG": 27.0,
+    "LAMB_KG": 24.0,
+    "PORK_KG": 7.0,
+    "CHICKEN_KG": 6.0,
+    "FISH_FARMED_KG": 5.0,
+    "FISH_WILD_KG": 3.0,
+    "EGGS_DOZEN": 2.7,
+    "MILK_LITER": 1.9,
+    "CHEESE_KG": 13.5,
+    "RICE_KG": 2.5,
+    "WHEAT_KG": 0.8,
+    "VEGETABLES_KG": 0.5,
+    "FRUITS_KG": 0.7
+  },
+  "ENERGY": {
+    "GRID_COAL_KWH": 0.95,
+    "GRID_MIX_KWH": 0.45,
+    "GRID_RENEWABLES_KWH": 0.05,
+    "NATURAL_GAS_KWH": 0.2,
+    "SOLAR_KWH": 0.02
+  },
+  "PACKAGING": {
+    "PLASTIC_PACKAGING_KG": 3.5,
+    "CARDBOARD_KG": 0.8,
+    "PAPER_KG": 0.4,
+    "GLASS_BOTTLE_KG": 1.2,
+    "ALUMINUM_CAN_KG": 2.4,
+    "METAL_PACKAGING_KG": 2.5,
+    "BIODEGRADABLE_KG": 0.3,
+    "RECYCLED_PLASTIC_KG": 1.5,
+    "RECYCLED_CARDBOARD_KG": 0.4,
+    "ECO_FRIENDLY_KG": 0.5,
+    "SINGLE_USE_PLASTIC_KG": 4.0,
+    "REUSABLE_KG": 0.1
+  },
+  "WASTE": {
+    "PLASTIC_KG": 3.0,
+    "PAPER_KG": 0.2,
+    "GLASS_KG": 0.6,
+    "METAL_KG": 2.5,
+    "ORGANIC_KG": 0.5,
+    "ELECTRONIC_KG": 10.0
+  },
+  "DEFAULT_FACTOR": 0.1
+}
