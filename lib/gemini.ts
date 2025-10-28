@@ -254,109 +254,76 @@ export async function generateRecommendation(data: RecommendationRequest) {
 }
 
 async function generateAIRecommendation(data: RecommendationRequest) {
-  const prompt = `You are an expert in sustainable packaging solutions. Based on the following product details, recommend the best sustainable packaging material and provide cost and environmental comparisons.
+  const prompt = `As a sustainable packaging expert, provide a concise JSON response for:
+Product: ${data.product_weight} ${data.product_category} (${data.dimensions.length}x${data.dimensions.width}x${data.dimensions.height}cm)
+Fragility: ${data.fragility_level}
+Distance: ${data.shipping_distance}
+Budget: ₹${data.budget_per_unit}
+Priority: ${data.sustainability_priority}/5
+Current: ${data.current_material_used}
 
-Product Details:
-- Weight: ${data.product_weight}
-- Category: ${data.product_category}
-- Dimensions: ${data.dimensions.length} x ${data.dimensions.width} x ${
-    data.dimensions.height
-  }
-- Fragility: ${data.fragility_level}
-- Shipping Distance: ${data.shipping_distance}
-- Volume: ${data.monthly_shipping_volume} units/month
-- Current Material: ${data.current_material_used}
-- Budget: ₹${data.budget_per_unit} per unit
-- Sustainability Priority: ${data.sustainability_priority}/5
-- Environmental Sensitivity: ${data.moisture_temp_sensitive ? "Yes" : "No"}
-${
-  data.regulatory_compliance
-    ? `- Compliance: ${data.regulatory_compliance}`
-    : ""
-}
-
-Please provide a JSON response with these exact keys:
+Return ONLY this JSON structure:
 {
-  "recommended_materials": ["material1", "material2"],
-  "estimated_cost": number,
-  "cost_comparison": {
-    "plastic_cost": number,
-    "sustainable_cost": number,
-    "cost_difference_percent": number,
-    "cost_difference_absolute": number
-  },
+  "recommended_materials": ["material1"],
+  "estimated_cost": 45,
+  "cost_comparison": {"plastic_cost": 30, "sustainable_cost": 45, "cost_difference_percent": 50, "cost_difference_absolute": 15},
   "environmental_impact": {
-    "co2_reduction": "description",
-    "disposal_method": "description",
-    "recyclability": "description",
-    "biodegradability": "description"
+    "co2_reduction": "75% less CO2 than plastic alternatives",
+    "disposal_method": "Fully recyclable or compostable",
+    "recyclability": "100% recyclable through standard channels",
+    "biodegradability": "Breaks down naturally in 90-180 days"
   },
-  "recommendations": "detailed text recommendations"
-}
+  "recommendations": "Use molded pulp for protection + recycled cardboard for outer box"
+}`;
 
-Return only valid JSON, no markdown or extra text.`;
+  // Use ONLY the fastest model
+  const modelName = "gemini-2.0-flash-exp";
 
-  // Try available models in order of preference
-  const models = [
-    "gemini-2.5-flash",
-    "gemini-2.5-flash-lite",
-    "gemini-2.5-pro",
-    "gemini-2.0-flash",
-  ];
+  try {
+    console.log(`Using fast model: ${modelName}`);
+    const model = genAI.getGenerativeModel({
+      model: modelName,
+      generationConfig: {
+        temperature: 0.7,
+        topP: 0.95,
+        maxOutputTokens: 800,
+      },
+    });
 
-  for (const modelName of models) {
-    try {
-      console.log(`Trying model: ${modelName}`);
-      const model = genAI.getGenerativeModel({ model: modelName });
-      const result = await model.generateContent(prompt);
-      const response = result.response;
-      const text = response.text();
+    const result = await model.generateContent(prompt);
+    const response = result.response;
+    const text = response.text();
 
-      console.log("AI response length:", text.length);
+    console.log("AI response received");
 
-      if (!text) {
-        console.error("No text in response, trying next model");
-        continue;
-      }
-
-      console.log("AI response preview:", text.substring(0, 200));
-
-      // Clean the response
-      let cleanedText = text
-        .replace(/```json\n?/g, "")
-        .replace(/```\n?/g, "")
-        .trim();
-
-      // Try to find JSON in the response
-      const jsonMatch = cleanedText.match(/\{[\s\S]*\}/);
-      if (jsonMatch) {
-        cleanedText = jsonMatch[0];
-      }
-
-      const aiResult = JSON.parse(cleanedText);
-      console.log("✅ Successfully parsed AI response from", modelName);
-      console.log("✅ AI materials:", aiResult.recommended_materials);
-      console.log("✅ AI cost:", aiResult.estimated_cost);
-
-      // Validate required fields exist
-      if (!aiResult.recommended_materials || !aiResult.estimated_cost) {
-        throw new Error("Missing required fields in AI response");
-      }
-
-      return aiResult;
-    } catch (error: any) {
-      console.log(`${modelName} failed:`, error.message);
-      if (error.message.includes("JSON")) {
-        console.log("Failed to parse JSON from", modelName);
-      }
-      if (modelName === models[models.length - 1]) {
-        // Last model, throw error
-        throw error;
-      }
-      // Continue to next model
-      continue;
+    if (!text) {
+      throw new Error("Empty AI response");
     }
-  }
 
-  throw new Error("All AI models failed");
+    // Clean the response
+    let cleanedText = text
+      .replace(/```json\n?/g, "")
+      .replace(/```\n?/g, "")
+      .trim();
+    const jsonMatch = cleanedText.match(/\{[\s\S]*\}/);
+    if (jsonMatch) {
+      cleanedText = jsonMatch[0];
+    }
+
+    const aiResult = JSON.parse(cleanedText);
+    console.log("✅ AI recommendation generated successfully");
+
+    // Validate and add defaults if needed
+    if (!aiResult.recommended_materials) {
+      aiResult.recommended_materials = ["Recycled Cardboard", "Molded Pulp"];
+    }
+    if (!aiResult.estimated_cost) {
+      aiResult.estimated_cost = parseFloat(data.budget_per_unit) * 1.5;
+    }
+
+    return aiResult;
+  } catch (error: any) {
+    console.error("AI failed, using fallback:", error.message);
+    throw error;
+  }
 }

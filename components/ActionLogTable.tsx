@@ -59,12 +59,12 @@ export function ActionLogTable({ logs, onDelete }: ActionLogTableProps) {
 
     if (logs.length === 0) {
         return (
-            <div className="text-center py-12 text-gray-500">
-                <svg className="mx-auto w-12 h-12 text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="text-center py-12 text-gray-500 dark:text-gray-400">
+                <svg className="mx-auto w-12 h-12 text-gray-400 dark:text-gray-500 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                 </svg>
-                <p className="text-gray-600 font-medium">No actions logged yet</p>
-                <p className="text-sm text-gray-500 mt-1">Start tracking your carbon footprint by logging your first action</p>
+                <p className="text-gray-600 dark:text-gray-300 font-medium">No actions logged yet</p>
+                <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">Start tracking your carbon footprint by logging your first action</p>
             </div>
         );
     }
@@ -92,56 +92,57 @@ export function ActionLogTable({ logs, onDelete }: ActionLogTableProps) {
 
     const getCategoryColor = (category: string) => {
         const colors = {
-            TRANSPORT: 'bg-blue-100 text-blue-800',
-            FOOD: 'bg-green-100 text-green-800',
-            ENERGY: 'bg-yellow-100 text-yellow-800',
+            TRANSPORT: 'bg-gradient-to-r from-blue-500 to-blue-600 text-white dark:from-blue-600 dark:to-blue-700 font-bold shadow-md',
+            FOOD: 'bg-gradient-to-r from-green-500 to-green-600 text-white dark:from-green-600 dark:to-green-700 font-bold shadow-md',
+            ENERGY: 'bg-gradient-to-r from-yellow-500 to-yellow-600 text-white dark:from-yellow-500 dark:to-yellow-600 font-bold shadow-md',
+            WASTE: 'bg-gradient-to-r from-orange-500 to-orange-600 text-white dark:from-orange-600 dark:to-orange-700 font-bold shadow-md',
         };
-        return colors[category as keyof typeof colors] || 'bg-gray-100 text-gray-800';
+        return colors[category as keyof typeof colors] || 'bg-gradient-to-r from-gray-500 to-gray-600 text-white dark:from-gray-600 dark:to-gray-700 font-bold shadow-md';
     };
 
     return (
         <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-gray-200">
-                <thead className="bg-gray-50">
+            <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                <thead className="bg-gray-50 dark:bg-gray-700">
                     <tr>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                             Date & Time
                         </th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                             Category
                         </th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                             Activity
                         </th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                             Amount
                         </th>
-                        <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                             CO₂e (kg)
                         </th>
-                        <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                             Actions
                         </th>
                     </tr>
                 </thead>
-                <tbody className="bg-white divide-y divide-gray-200">
+                <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
                     {logs.map((log) => (
-                        <tr key={log.id} className="hover:bg-gray-50 transition-colors">
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                        <tr key={log.id} className="hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
                                 {formatDate(log.loggedAt)}
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap">
-                                <span className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${getCategoryColor(log.category)}`}>
+                                <span className={`px-3 py-1.5 inline-flex text-xs leading-5 rounded-lg ${getCategoryColor(log.category)}`}>
                                     {log.category}
                                 </span>
                             </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
                                 {log.activity}
                             </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600 dark:text-gray-300">
                                 {log.amount} {log.unit}
                             </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm font-semibold text-gray-900 text-right">
+                            <td className="px-6 py-4 whitespace-nowrap text-sm font-semibold text-gray-900 dark:text-white text-right">
                                 {Number(log.calculatedCo2e || 0).toFixed(3)}
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap text-center">

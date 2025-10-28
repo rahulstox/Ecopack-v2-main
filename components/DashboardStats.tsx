@@ -23,6 +23,9 @@ interface DashboardStatsProps {
 export function DashboardStats({ stats }: DashboardStatsProps) {
     const formatNumber = (num: number | undefined) => {
         const numValue = Number(num || 0);
+        if (isNaN(numValue) || numValue === 0) {
+            return '0.00';
+        }
         if (numValue >= 1000) {
             return `${(numValue / 1000).toFixed(2)}k`;
         }
@@ -66,10 +69,10 @@ export function DashboardStats({ stats }: DashboardStatsProps) {
 
     const getColorClasses = (color: string) => {
         const colors = {
-            green: 'bg-green-50 text-green-700',
-            blue: 'bg-blue-50 text-blue-700',
-            purple: 'bg-purple-50 text-purple-700',
-            yellow: 'bg-yellow-50 text-yellow-700',
+            green: 'bg-gradient-to-br from-green-100 to-green-200 text-green-700 dark:from-green-600 dark:to-green-700 dark:text-white',
+            blue: 'bg-gradient-to-br from-blue-100 to-blue-200 text-blue-700 dark:from-blue-600 dark:to-blue-700 dark:text-white',
+            purple: 'bg-gradient-to-br from-purple-100 to-purple-200 text-purple-700 dark:from-purple-600 dark:to-purple-700 dark:text-white',
+            yellow: 'bg-gradient-to-br from-yellow-100 to-yellow-200 text-yellow-700 dark:from-yellow-500 dark:to-yellow-600 dark:text-white',
         };
         return colors[color as keyof typeof colors] || 'bg-gray-50 text-gray-700';
     };
@@ -81,21 +84,21 @@ export function DashboardStats({ stats }: DashboardStatsProps) {
                 return (
                     <div
                         key={index}
-                        className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow"
+                        className="bg-white dark:bg-gray-800 green:bg-green-100 rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow"
                     >
                         <div className="flex items-center justify-between mb-4">
-                            <div className={`p-3 rounded-lg ${getColorClasses(stat.color)}`}>
+                            <div className={`p-3 rounded-xl ${getColorClasses(stat.color)} shadow-md`}>
                                 <Icon className="w-6 h-6" />
                             </div>
                             {stat.trend && (
-                                <div className={`flex items-center ${stat.trend === 'up' ? 'text-red-500' : 'text-green-500'}`}>
+                                <div className={`flex items-center ${stat.trend === 'up' ? 'text-red-500 dark:text-red-400' : 'text-green-500 dark:text-green-400'}`}>
                                     {stat.trend === 'up' ? <TrendingUp className="w-4 h-4" /> : <TrendingDown className="w-4 h-4" />}
                                 </div>
                             )}
                         </div>
-                        <h3 className="text-2xl font-bold text-gray-900 mb-1">{stat.value}</h3>
-                        <p className="text-sm font-medium text-gray-700">{stat.title}</p>
-                        <p className="text-xs text-gray-500 mt-1">{stat.subtitle}</p>
+                        <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-1">{stat.value}</h3>
+                        <p className="text-sm font-medium text-gray-700 dark:text-gray-300">{stat.title}</p>
+                        <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">{stat.subtitle}</p>
                     </div>
                 );
             })}

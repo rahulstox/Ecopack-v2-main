@@ -62,7 +62,7 @@ export default function TrackerPage() {
     }
 
     return (
-        <div className="min-h-screen bg-gray-50">
+        <div className="min-h-screen bg-gray-50 dark:bg-gray-900 green:bg-green-50">
             <div className="flex">
                 <Sidebar totalCo2eSaved={todayEmissions} />
 
@@ -70,14 +70,14 @@ export default function TrackerPage() {
                     <div className="p-6 space-y-6">
                         <div className="flex justify-between items-center">
                             <div>
-                                <h1 className="text-3xl font-bold text-gray-900">Live Activity Tracker</h1>
-                                <p className="text-gray-600 mt-1">Track your emissions in real-time</p>
+                                <h1 className="text-3xl font-bold text-gray-900 dark:text-white green:text-gray-900">Live Activity Tracker</h1>
+                                <p className="text-gray-600 dark:text-gray-400 green:text-gray-700 mt-1">Track your emissions in real-time</p>
                             </div>
                         </div>
 
                         {/* Stats Cards */}
                         <div className="grid md:grid-cols-3 gap-6">
-                            <div className="bg-white rounded-lg shadow-lg p-6">
+                            <div className="bg-white dark:bg-gray-800 green:bg-green-100 rounded-lg shadow-lg p-6">
                                 <div className="flex items-center gap-3 mb-2">
                                     <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
                                         <svg className="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -85,63 +85,63 @@ export default function TrackerPage() {
                                         </svg>
                                     </div>
                                     <div>
-                                        <p className="text-sm text-gray-600">Today's Emissions</p>
-                                        <p className="text-2xl font-bold text-gray-900">{Number(todayEmissions || 0).toFixed(2)} kg</p>
+                                        <p className="text-sm text-gray-600 dark:text-gray-400">Today's Emissions</p>
+                                        <p className="text-2xl font-bold text-gray-900 dark:text-white">{Number(todayEmissions || 0).toFixed(2)} kg</p>
                                     </div>
                                 </div>
                             </div>
 
-                            <div className="bg-white rounded-lg shadow-lg p-6">
+                            <div className="bg-white dark:bg-gray-800 green:bg-green-100 rounded-lg shadow-lg p-6">
                                 <div className="flex items-center gap-3 mb-2">
-                                    <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
-                                        <svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <div className="w-12 h-12 bg-green-100 dark:bg-green-900 rounded-lg flex items-center justify-center">
+                                        <svg className="w-6 h-6 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
                                         </svg>
                                     </div>
                                     <div>
-                                        <p className="text-sm text-gray-600">Week's Total</p>
-                                        <p className="text-2xl font-bold text-gray-900">{Number(weekEmissions || 0).toFixed(2)} kg</p>
+                                        <p className="text-sm text-gray-600 dark:text-gray-400">Week's Total</p>
+                                        <p className="text-2xl font-bold text-gray-900 dark:text-white">{Number(weekEmissions || 0).toFixed(2)} kg</p>
                                     </div>
                                 </div>
                             </div>
 
-                            <div className="bg-white rounded-lg shadow-lg p-6">
+                            <div className="bg-white dark:bg-gray-800 green:bg-green-100 rounded-lg shadow-lg p-6">
                                 <div className="flex items-center gap-3 mb-2">
-                                    <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
-                                        <svg className="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <div className="w-12 h-12 bg-purple-100 dark:bg-purple-900 rounded-lg flex items-center justify-center">
+                                        <svg className="w-6 h-6 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
                                         </svg>
                                     </div>
                                     <div>
-                                        <p className="text-sm text-gray-600">Today's Actions</p>
-                                        <p className="text-2xl font-bold text-gray-900">{todayLogs.length}</p>
+                                        <p className="text-sm text-gray-600 dark:text-gray-400">Today's Actions</p>
+                                        <p className="text-2xl font-bold text-gray-900 dark:text-white">{todayLogs.length}</p>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
                         {/* Today's Activities */}
-                        <div className="bg-white rounded-lg shadow-lg p-6">
-                            <h2 className="text-2xl font-bold text-gray-900 mb-4">Today's Activities</h2>
+                        <div className="bg-white dark:bg-gray-800 green:bg-green-100 rounded-lg shadow-lg p-6">
+                            <h2 className="text-2xl font-bold text-gray-900 dark:text-white green:text-gray-900 mb-4">Today's Activities</h2>
                             {todayLogs.length === 0 ? (
-                                <div className="text-center py-8 text-gray-500">
+                                <div className="text-center py-8 text-gray-500 dark:text-gray-400">
                                     <p>No activities logged today</p>
                                 </div>
                             ) : (
                                 <div className="space-y-3">
                                     {todayLogs.map((log, index) => (
-                                        <div key={index} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                                        <div key={index} className="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
                                             <div className="flex items-center gap-3">
                                                 <div className={`w-2 h-2 rounded-full ${log.category === 'TRANSPORT' ? 'bg-blue-500' :
                                                     log.category === 'FOOD' ? 'bg-green-500' :
                                                         log.category === 'ENERGY' ? 'bg-yellow-500' : 'bg-gray-500'
                                                     }`} />
                                                 <div>
-                                                    <p className="font-semibold text-gray-900">{log.activity}</p>
-                                                    <p className="text-sm text-gray-600">{log.amount} {log.unit}</p>
+                                                    <p className="font-semibold text-gray-900 dark:text-white">{log.activity}</p>
+                                                    <p className="text-sm text-gray-600 dark:text-gray-400">{log.amount} {log.unit}</p>
                                                 </div>
                                             </div>
-                                            <p className="font-bold text-green-600">{Number(log.calculatedCo2e || 0).toFixed(2)} kg</p>
+                                            <p className="font-bold text-green-600 dark:text-green-400">{Number(log.calculatedCo2e || 0).toFixed(2)} kg</p>
                                         </div>
                                     ))}
                                 </div>

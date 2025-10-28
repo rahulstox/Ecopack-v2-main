@@ -47,7 +47,8 @@ html {
 }
 
 @layer base {
-  :root {
+  :root,
+  [data-theme="green"] {
     --background: 0 0% 100%;
     --foreground: 0 0% 3.9%;
     --card: 0 0% 100%;
@@ -74,7 +75,8 @@ html {
     --chart-5: 27 87% 67%;
     --radius: 0.5rem;
   }
-  .dark {
+  .dark,
+  [data-theme="dark"] {
     --background: 0 0% 3.9%;
     --foreground: 0 0% 98%;
     --card: 0 0% 3.9%;
@@ -95,6 +97,33 @@ html {
     --input: 0 0% 14.9%;
     --ring: 0 0% 83.1%;
     --chart-1: 220 70% 50%;
+    --chart-2: 160 60% 45%;
+    --chart-3: 30 80% 55%;
+    --chart-4: 280 65% 60%;
+    --chart-5: 340 75% 55%;
+  }
+
+  [data-theme="green"] {
+    --background: 142 47% 98%;
+    --foreground: 142 47% 5%;
+    --card: 142 47% 98%;
+    --card-foreground: 142 47% 5%;
+    --popover: 142 47% 98%;
+    --popover-foreground: 142 47% 5%;
+    --primary: 142 47% 42%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 142 47% 90%;
+    --secondary-foreground: 142 47% 10%;
+    --muted: 142 47% 90%;
+    --muted-foreground: 142 47% 45%;
+    --accent: 142 47% 85%;
+    --accent-foreground: 142 47% 10%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 142 47% 85%;
+    --input: 142 47% 90%;
+    --ring: 142 47% 42%;
+    --chart-1: 142 60% 50%;
     --chart-2: 160 60% 45%;
     --chart-3: 30 80% 55%;
     --chart-4: 280 65% 60%;

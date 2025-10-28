@@ -4,8 +4,10 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
 import { VisitorCounter } from '@/components/VisitorCounter';
+import { useTheme } from '@/contexts/ThemeContext';
 
 export default function Home() {
+  const { theme, setTheme } = useTheme();
   const [isScrolledUp, setIsScrolledUp] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -71,11 +73,17 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-green-50 to-teal-50">
+    <div className={`min-h-screen transition-colors duration-300 ${theme === 'dark'
+      ? 'bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900'
+      : 'bg-gradient-to-br from-emerald-50 via-green-50 to-teal-50'
+      }`}>
       {/* Fixed Navigation with Glass Effect */}
       <nav className={`fixed top-0 left-0 right-0 z-50 transition-transform duration-300 ${isScrolledUp ? 'translate-y-0' : '-translate-y-full'
         }`}>
-        <div className="bg-white/70 backdrop-blur-lg border-b border-white/20 shadow-lg">
+        <div className={`backdrop-blur-lg border-b shadow-lg ${theme === 'dark'
+          ? 'bg-gray-900/95 border-gray-600/30'
+          : 'bg-white/70 border-white/20'
+          }`}>
           <div className="container mx-auto px-6 py-4 flex justify-between items-center">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 bg-green-600 rounded-lg flex items-center justify-center">
@@ -83,17 +91,23 @@ export default function Home() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
                 </svg>
               </div>
-              <span className="text-2xl font-bold text-gray-800">EcoPack AI</span>
+              <span className={`text-2xl font-bold ${theme === 'dark' ? 'text-white' : 'text-gray-800'}`}>EcoPack AI</span>
             </div>
 
             {/* Navigation Links */}
             <div className="hidden md:flex items-center gap-6">
-              <a href="#home" onClick={(e) => handleNavClick(e, 'home')} className="text-gray-700 hover:text-green-600 font-medium transition-colors cursor-pointer">Home</a>
-              <a href="#about" onClick={(e) => handleNavClick(e, 'about')} className="text-gray-700 hover:text-green-600 font-medium transition-colors cursor-pointer">About Us</a>
-              <a href="#how-it-works" onClick={(e) => handleNavClick(e, 'how-it-works')} className="text-gray-700 hover:text-green-600 font-medium transition-colors cursor-pointer">How It Works</a>
-              <a href="#pricing" onClick={(e) => handleNavClick(e, 'pricing')} className="text-gray-700 hover:text-green-600 font-medium transition-colors cursor-pointer">Pricing</a>
-              <a href="#team" onClick={(e) => handleNavClick(e, 'team')} className="text-gray-700 hover:text-green-600 font-medium transition-colors cursor-pointer">Team</a>
-              <Link href="/contact" className="text-gray-700 hover:text-green-600 font-medium transition-colors cursor-pointer">Contact Us</Link>
+              <a href="#home" onClick={(e) => handleNavClick(e, 'home')} className={`font-medium transition-colors cursor-pointer ${theme === 'dark' ? 'text-gray-200 hover:text-green-400' : 'text-gray-700 hover:text-green-600'
+                }`}>Home</a>
+              <a href="#about" onClick={(e) => handleNavClick(e, 'about')} className={`font-medium transition-colors cursor-pointer ${theme === 'dark' ? 'text-gray-200 hover:text-green-400' : 'text-gray-700 hover:text-green-600'
+                }`}>About Us</a>
+              <a href="#how-it-works" onClick={(e) => handleNavClick(e, 'how-it-works')} className={`font-medium transition-colors cursor-pointer ${theme === 'dark' ? 'text-gray-200 hover:text-green-400' : 'text-gray-700 hover:text-green-600'
+                }`}>How It Works</a>
+              <a href="#pricing" onClick={(e) => handleNavClick(e, 'pricing')} className={`font-medium transition-colors cursor-pointer ${theme === 'dark' ? 'text-gray-200 hover:text-green-400' : 'text-gray-700 hover:text-green-600'
+                }`}>Pricing</a>
+              <a href="#team" onClick={(e) => handleNavClick(e, 'team')} className={`font-medium transition-colors cursor-pointer ${theme === 'dark' ? 'text-gray-200 hover:text-green-400' : 'text-gray-700 hover:text-green-600'
+                }`}>Team</a>
+              <a href="#contact" onClick={(e) => handleNavClick(e, 'contact')} className={`font-medium transition-colors cursor-pointer ${theme === 'dark' ? 'text-gray-200 hover:text-green-400' : 'text-gray-700 hover:text-green-600'
+                }`}>Contact Us</a>
               <Link href="/quiz" className="relative text-white font-semibold transition-all duration-300 cursor-pointer bg-gradient-to-r from-green-600 via-emerald-600 to-teal-600 px-5 py-2.5 rounded-full shadow-xl hover:shadow-2xl hover:scale-105 group flex items-center gap-2 overflow-hidden border border-green-400/30">
                 <div className="absolute inset-0 bg-gradient-to-r from-green-400 to-emerald-400 opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
                 <div className="relative flex items-center gap-2">
@@ -110,9 +124,35 @@ export default function Home() {
 
             {/* Right side with Auth and Mobile Button */}
             <div className="flex items-center gap-4">
+              {/* Theme Switcher */}
+              <div className={`hidden md:flex items-center gap-2 backdrop-blur-sm rounded-full px-2 py-1 ${theme === 'dark' ? 'bg-gray-800/90' : 'bg-white/50'
+                }`}>
+                <button
+                  onClick={() => setTheme('green')}
+                  className={`p-2 rounded-full transition-all ${theme === 'green' ? 'bg-green-600 text-white' : (theme === 'dark' ? 'text-gray-300 hover:bg-gray-600' : 'text-gray-600 hover:bg-green-100')
+                    }`}
+                  title="Green Theme"
+                >
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
+                  </svg>
+                </button>
+                <button
+                  onClick={() => setTheme('dark')}
+                  className={`p-2 rounded-full transition-all ${theme === 'dark' ? 'bg-gray-600 text-white' : 'text-gray-600 hover:bg-gray-100'
+                    }`}
+                  title="Dark Theme"
+                >
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                  </svg>
+                </button>
+              </div>
+
               <button
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                className="md:hidden text-gray-700"
+                className={`md:hidden ${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'
+                  }`}
               >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   {isMobileMenuOpen ? (
@@ -142,14 +182,49 @@ export default function Home() {
 
           {/* Mobile Menu */}
           {isMobileMenuOpen && (
-            <div className="md:hidden bg-white/70 backdrop-blur-lg border-t border-white/20 py-4">
+            <div className={`md:hidden backdrop-blur-lg border-t py-4 ${theme === 'dark'
+              ? 'bg-gray-800/70 border-gray-700/20'
+              : 'bg-white/70 border-white/20'
+              }`}>
               <div className="container mx-auto px-6 space-y-3">
-                <a href="#home" onClick={(e) => { handleNavClick(e, 'home'); setIsMobileMenuOpen(false); }} className="block text-gray-700 hover:text-green-600 font-medium transition-colors">Home</a>
-                <a href="#about" onClick={(e) => { handleNavClick(e, 'about'); setIsMobileMenuOpen(false); }} className="block text-gray-700 hover:text-green-600 font-medium transition-colors">About Us</a>
-                <a href="#how-it-works" onClick={(e) => { handleNavClick(e, 'how-it-works'); setIsMobileMenuOpen(false); }} className="block text-gray-700 hover:text-green-600 font-medium transition-colors">How It Works</a>
-                <a href="#pricing" onClick={(e) => { handleNavClick(e, 'pricing'); setIsMobileMenuOpen(false); }} className="block text-gray-700 hover:text-green-600 font-medium transition-colors">Pricing</a>
-                <a href="#team" onClick={(e) => { handleNavClick(e, 'team'); setIsMobileMenuOpen(false); }} className="block text-gray-700 hover:text-green-600 font-medium transition-colors">Team</a>
-                <Link href="/contact" onClick={() => setIsMobileMenuOpen(false)} className="block text-gray-700 hover:text-green-600 font-medium transition-colors">Contact Us</Link>
+                {/* Theme Switcher in Mobile */}
+                <div className={`backdrop-blur-sm rounded-lg p-3 ${theme === 'dark' ? 'bg-gray-700/50' : 'bg-white/50'
+                  }`}>
+                  <p className={`text-xs mb-2 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'
+                    }`}>Theme</p>
+                  <div className="flex gap-2">
+                    <button
+                      onClick={() => { setTheme('green'); setIsMobileMenuOpen(false); }}
+                      className={`flex-1 p-2 rounded-md transition-all ${theme === 'green' ? 'bg-green-600 text-white' : (theme === 'dark' ? 'bg-gray-800 text-gray-300' : 'bg-white/90 text-gray-600')
+                        }`}
+                    >
+                      <svg className="w-5 h-5 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
+                      </svg>
+                    </button>
+                    <button
+                      onClick={() => { setTheme('dark'); setIsMobileMenuOpen(false); }}
+                      className={`flex-1 p-2 rounded-md transition-all ${theme === 'dark' ? 'bg-gray-600 text-white' : 'bg-white/90 text-gray-600'
+                        }`}
+                    >
+                      <svg className="w-5 h-5 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+                <a href="#home" onClick={(e) => { handleNavClick(e, 'home'); setIsMobileMenuOpen(false); }} className={`block font-medium transition-colors ${theme === 'dark' ? 'text-gray-300 hover:text-green-400' : 'text-gray-700 hover:text-green-600'
+                  }`}>Home</a>
+                <a href="#about" onClick={(e) => { handleNavClick(e, 'about'); setIsMobileMenuOpen(false); }} className={`block font-medium transition-colors ${theme === 'dark' ? 'text-gray-300 hover:text-green-400' : 'text-gray-700 hover:text-green-600'
+                  }`}>About Us</a>
+                <a href="#how-it-works" onClick={(e) => { handleNavClick(e, 'how-it-works'); setIsMobileMenuOpen(false); }} className={`block font-medium transition-colors ${theme === 'dark' ? 'text-gray-300 hover:text-green-400' : 'text-gray-700 hover:text-green-600'
+                  }`}>How It Works</a>
+                <a href="#pricing" onClick={(e) => { handleNavClick(e, 'pricing'); setIsMobileMenuOpen(false); }} className={`block font-medium transition-colors ${theme === 'dark' ? 'text-gray-300 hover:text-green-400' : 'text-gray-700 hover:text-green-600'
+                  }`}>Pricing</a>
+                <a href="#team" onClick={(e) => { handleNavClick(e, 'team'); setIsMobileMenuOpen(false); }} className={`block font-medium transition-colors ${theme === 'dark' ? 'text-gray-300 hover:text-green-400' : 'text-gray-700 hover:text-green-600'
+                  }`}>Team</a>
+                <a href="#contact" onClick={(e) => { handleNavClick(e, 'contact'); setIsMobileMenuOpen(false); }} className={`block font-medium transition-colors ${theme === 'dark' ? 'text-gray-300 hover:text-green-400' : 'text-gray-700 hover:text-green-600'
+                  }`}>Contact Us</a>
                 <Link href="/quiz" onClick={() => setIsMobileMenuOpen(false)} className="relative text-white font-bold transition-all duration-300 bg-gradient-to-r from-green-600 via-emerald-600 to-teal-600 px-4 py-3 rounded-full shadow-xl flex items-center gap-2 justify-center group overflow-hidden border border-green-400/30">
                   <div className="absolute inset-0 bg-gradient-to-r from-green-400 to-emerald-400 opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
                   <div className="relative flex items-center gap-2">
@@ -169,11 +244,12 @@ export default function Home() {
       </nav>
 
       {/* Home Section */}
-      <section id="home" className="container mx-auto px-6 pb-12 pt-8">
+      <section id="home" className={`container mx-auto px-6 pb-12 pt-8 ${theme === 'dark' ? 'text-white' : ''}`}>
         <div className="grid lg:grid-cols-2 gap-12 items-center min-h-[80vh]">
           {/* Left Section - Content */}
           <div className="space-y-8">
-            <div className="inline-flex items-center gap-2 bg-green-600 text-white px-4 py-1.5 rounded-full text-sm font-semibold">
+            <div className={`inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-sm font-semibold ${theme === 'dark' ? 'bg-green-700' : 'bg-green-600'
+              } text-white`}>
               <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
                 <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z" />
                 <path fillRule="evenodd" d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z" clipRule="evenodd" />
@@ -182,13 +258,15 @@ export default function Home() {
             </div>
 
             <div>
-              <h1 className="text-6xl md:text-7xl font-extrabold text-gray-900 mb-4 leading-tight">
+              <h1 className={`text-6xl md:text-7xl font-extrabold mb-4 leading-tight ${theme === 'dark' ? 'text-white' : 'text-gray-900'
+                }`}>
                 EcoPack{' '}
-                <span className="text-green-600">AI</span>
+                <span className={`${theme === 'dark' ? 'text-green-400' : 'text-green-600'}`}>AI</span>
               </h1>
-              <p className="text-xl md:text-2xl text-gray-700 leading-relaxed">
+              <p className={`text-xl md:text-2xl leading-relaxed ${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'
+                }`}>
                 Instant, eco-smart packaging picks for every SKU.{' '}
-                <span className="font-bold text-green-600">
+                <span className={`font-bold ${theme === 'dark' ? 'text-green-400' : 'text-green-600'}`}>
                   Reduce costs, save the planet.
                 </span>
               </p>
@@ -196,16 +274,16 @@ export default function Home() {
 
             <div className="grid grid-cols-3 gap-6 pt-6">
               <div>
-                <div className="text-4xl font-bold text-gray-900">85%</div>
-                <div className="text-sm text-gray-600 mt-1">Plastic Reduction</div>
+                <div className={`text-4xl font-bold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>85%</div>
+                <div className={`text-sm mt-1 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>Plastic Reduction</div>
               </div>
               <div>
-                <div className="text-4xl font-bold text-gray-900">30%</div>
-                <div className="text-sm text-gray-600 mt-1">Cost Savings</div>
+                <div className={`text-4xl font-bold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>30%</div>
+                <div className={`text-sm mt-1 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>Cost Savings</div>
               </div>
               <div>
-                <div className="text-4xl font-bold text-green-600">&lt;1m</div>
-                <div className="text-sm text-gray-600 mt-1">Response Time</div>
+                <div className={`text-4xl font-bold ${theme === 'dark' ? 'text-green-400' : 'text-green-600'}`}>&lt;30s</div>
+                <div className={`text-sm mt-1 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>Response Time</div>
               </div>
             </div>
 
@@ -290,19 +368,24 @@ export default function Home() {
       </section>
 
       {/* Why Choose Section */}
-      <section className="py-20 bg-white">
+      <section className={`py-20 ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'}`}>
         <div className="container mx-auto px-6">
           <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+            <h2 className={`text-4xl md:text-5xl font-bold mb-4 ${theme === 'dark' ? 'text-white' : 'text-gray-900'
+              }`}>
               Why Choose EcoPack AI?
             </h2>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+            <p className={`text-xl max-w-2xl mx-auto ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'
+              }`}>
               Transform your packaging strategy with AI-powered sustainability recommendations
             </p>
           </div>
 
           <div className="grid md:grid-cols-3 gap-8 max-w-7xl mx-auto">
-            <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-3xl p-8 shadow-xl hover:shadow-2xl transition-all duration-300 border border-green-100">
+            <div className={`rounded-3xl p-8 shadow-xl hover:shadow-2xl transition-all duration-300 ${theme === 'dark'
+              ? 'bg-gradient-to-br from-gray-700 to-gray-800 border-gray-600'
+              : 'bg-gradient-to-br from-green-50 to-emerald-50 border-green-100'
+              } border`}>
               <div className="flex items-center gap-3 mb-4">
                 <div className="w-12 h-12 bg-green-600 rounded-xl flex items-center justify-center shadow-lg">
                   <svg className="w-7 h-7 text-white" fill="currentColor" viewBox="0 0 20 20">
@@ -310,18 +393,21 @@ export default function Home() {
                     <path d="M15 7h1a2 2 0 012 2v5.5a1.5 1.5 0 01-3 0V7z" />
                   </svg>
                 </div>
-                <h3 className="text-xl font-bold text-gray-900">Sustainability First</h3>
+                <h3 className={`text-xl font-bold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>Sustainability First</h3>
               </div>
-              <p className="text-gray-600 mb-6">
-                Reduce environmental impact by up to 85% with biodegradable, compostable, and recycled packaging solutions
+              <p className={`${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'} mb-6`}>
+                Get personalized carbon footprint tracking and sustainable packaging recommendations tailored to your business needs
               </p>
-              <div className="bg-green-100 rounded-xl p-4 mt-6">
-                <div className="text-4xl font-bold text-gray-900">85%</div>
-                <div className="text-sm text-gray-600 font-medium">Plastic Reduction</div>
+              <div className={`rounded-xl p-4 mt-6 ${theme === 'dark' ? 'bg-gray-600' : 'bg-green-100'}`}>
+                <div className={`text-4xl font-bold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>Real-time</div>
+                <div className={`text-sm font-medium ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}`}>CO₂e Tracking</div>
               </div>
             </div>
 
-            <div className="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-3xl p-8 shadow-xl hover:shadow-2xl transition-all duration-300 border border-blue-100">
+            <div className={`rounded-3xl p-8 shadow-xl hover:shadow-2xl transition-all duration-300 ${theme === 'dark'
+              ? 'bg-gradient-to-br from-gray-700 to-gray-800 border-gray-600'
+              : 'bg-gradient-to-br from-blue-50 to-cyan-50 border-blue-100'
+              } border`}>
               <div className="flex items-center gap-3 mb-4">
                 <div className="w-12 h-12 bg-blue-600 rounded-xl flex items-center justify-center shadow-lg">
                   <svg className="w-7 h-7 text-white" fill="currentColor" viewBox="0 0 20 20">
@@ -329,32 +415,35 @@ export default function Home() {
                     <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-13a1 1 0 10-2 0v.092a4.535 4.535 0 00-1.676.662C6.602 6.234 6 7.009 6 8c0 .99.602 1.765 1.324 2.246.48.32 1.054.545 1.676.662v1.941c-.391-.127-.68-.317-.843-.504a1 1 0 10-1.51 1.31c.562.649 1.413 1.076 2.353 1.253V15a1 1 0 102 0v-.092a4.535 4.535 0 001.676-.662C13.398 13.766 14 12.991 14 12c0-.99-.602-1.765-1.324-2.246A4.535 4.535 0 0011 9.092V7.151c.391.127.68.317.843.504a1 1 0 101.511-1.31c-.563-.649-1.413-1.076-2.354-1.253V5z" clipRule="evenodd" />
                   </svg>
                 </div>
-                <h3 className="text-xl font-bold text-gray-900">Cost Optimization</h3>
+                <h3 className={`text-xl font-bold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>Cost Optimization</h3>
               </div>
-              <p className="text-gray-600 mb-6">
-                Smart algorithms find the perfect balance between protection and cost, saving up to 30% on packaging expenses
+              <p className={`${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'} mb-6`}>
+                Smart AI recommendations help you balance sustainability and cost, saving up to 25% while meeting product requirements
               </p>
-              <div className="bg-blue-100 rounded-xl p-4 mt-6">
-                <div className="text-4xl font-bold text-gray-900">30%</div>
-                <div className="text-sm text-gray-600 font-medium">Cost Savings</div>
+              <div className={`rounded-xl p-4 mt-6 ${theme === 'dark' ? 'bg-gray-600' : 'bg-blue-100'}`}>
+                <div className={`text-4xl font-bold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>25%</div>
+                <div className={`text-sm font-medium ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}`}>Cost Savings</div>
               </div>
             </div>
 
-            <div className="bg-gradient-to-br from-purple-50 to-violet-50 rounded-3xl p-8 shadow-xl hover:shadow-2xl transition-all duration-300 border border-purple-100">
+            <div className={`rounded-3xl p-8 shadow-xl hover:shadow-2xl transition-all duration-300 ${theme === 'dark'
+              ? 'bg-gradient-to-br from-gray-700 to-gray-800 border-gray-600'
+              : 'bg-gradient-to-br from-purple-50 to-violet-50 border-purple-100'
+              } border`}>
               <div className="flex items-center gap-3 mb-4">
                 <div className="w-12 h-12 bg-purple-600 rounded-xl flex items-center justify-center shadow-lg">
                   <svg className="w-7 h-7 text-white" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clipRule="evenodd" />
                   </svg>
                 </div>
-                <h3 className="text-xl font-bold text-gray-900">Lightning Fast</h3>
+                <h3 className={`text-xl font-bold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>Lightning Fast</h3>
               </div>
-              <p className="text-gray-600 mb-6">
-                Get instant AI-powered recommendations for any product specification in under 60 seconds
+              <p className={`${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'} mb-6`}>
+                Get instant AI-powered packaging recommendations in under 30 seconds with detailed PDF reports and comparisons
               </p>
-              <div className="bg-purple-100 rounded-xl p-4 mt-6">
-                <div className="text-4xl font-bold text-gray-900">&lt;1m</div>
-                <div className="text-sm text-gray-600 font-medium">Response Time</div>
+              <div className={`rounded-xl p-4 mt-6 ${theme === 'dark' ? 'bg-gray-600' : 'bg-purple-100'}`}>
+                <div className={`text-4xl font-bold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>&lt;30s</div>
+                <div className={`text-sm font-medium ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}`}>Processing Time</div>
               </div>
             </div>
           </div>
@@ -362,23 +451,32 @@ export default function Home() {
       </section>
 
       {/* About Us Section */}
-      <section id="about" className="py-20 bg-gradient-to-br from-green-50 to-emerald-50">
+      <section id="about" className={`py-20 ${theme === 'dark'
+        ? 'bg-gradient-to-br from-gray-800 to-gray-900'
+        : 'bg-gradient-to-br from-green-50 to-emerald-50'
+        }`}>
         <div className="container mx-auto px-6">
           <div className="max-w-4xl mx-auto text-center">
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">About Us</h2>
-            <p className="text-xl text-gray-700 mb-8">
+            <h2 className={`text-4xl md:text-5xl font-bold mb-6 ${theme === 'dark' ? 'text-white' : 'text-gray-900'
+              }`}>About Us</h2>
+            <p className={`text-xl mb-8 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'
+              }`}>
               EcoPack AI is a cutting-edge platform that combines artificial intelligence with environmental consciousness to revolutionize packaging decisions.
             </p>
             <div className="grid md:grid-cols-2 gap-8 mt-12">
-              <div className="bg-white rounded-2xl p-8 shadow-lg">
-                <h3 className="text-2xl font-bold text-gray-900 mb-4">Our Mission</h3>
-                <p className="text-gray-600">
+              <div className={`rounded-2xl p-8 shadow-lg ${theme === 'dark' ? 'bg-gray-700' : 'bg-white'
+                }`}>
+                <h3 className={`text-2xl font-bold mb-4 ${theme === 'dark' ? 'text-white' : 'text-gray-900'
+                  }`}>Our Mission</h3>
+                <p className={theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}>
                   To help businesses make sustainable packaging choices that reduce environmental impact while maintaining cost efficiency through AI-powered recommendations.
                 </p>
               </div>
-              <div className="bg-white rounded-2xl p-8 shadow-lg">
-                <h3 className="text-2xl font-bold text-gray-900 mb-4">Our Vision</h3>
-                <p className="text-gray-600">
+              <div className={`rounded-2xl p-8 shadow-lg ${theme === 'dark' ? 'bg-gray-700' : 'bg-white'
+                }`}>
+                <h3 className={`text-2xl font-bold mb-4 ${theme === 'dark' ? 'text-white' : 'text-gray-900'
+                  }`}>Our Vision</h3>
+                <p className={theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}>
                   A world where every packaging decision is optimized for both business success and environmental protection, creating a sustainable future for all.
                 </p>
               </div>
@@ -388,58 +486,196 @@ export default function Home() {
       </section>
 
       {/* How It Works Section */}
-      <section id="how-it-works" className="py-20 bg-white">
+      <section id="how-it-works" className={`py-20 ${theme === 'dark'
+        ? 'bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900'
+        : 'bg-gradient-to-br from-green-50 via-emerald-50 to-teal-50'
+        }`}>
         <div className="container mx-auto px-6">
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 text-center mb-12">How It Works</h2>
+          <div className="text-center mb-16">
+            <h2 className={`text-4xl md:text-6xl font-bold mb-4 ${theme === 'dark' ? 'text-white' : 'text-gray-900'
+              }`}>How It Works</h2>
+            <p className={`text-xl max-w-3xl mx-auto ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'
+              }`}>
+              Get AI-powered packaging recommendations in just three simple steps
+            </p>
+          </div>
+
           <div className="max-w-6xl mx-auto">
-            <div className="grid md:grid-cols-3 gap-8">
-              <div className="text-center">
-                <div className="w-20 h-20 bg-green-600 rounded-full flex items-center justify-center mx-auto mb-6">
-                  <span className="text-3xl font-bold text-white">1</span>
+            {/* Step 1 */}
+            <div className="relative mb-12">
+              {/* Connection Line */}
+              <div className="hidden md:block absolute left-1/2 top-24 w-0.5 h-64 bg-gradient-to-b from-green-400 via-emerald-500 to-purple-400"></div>
+
+              {/* Step Container */}
+              <div className={`relative rounded-3xl p-8 md:p-10 shadow-xl hover:shadow-2xl transition-all duration-300 border group ${theme === 'dark' ? 'bg-gray-800 border-gray-700' : 'bg-white border-green-100'
+                }`}>
+                <div className="flex flex-col md:flex-row items-center gap-8">
+                  {/* Icon Circle */}
+                  <div className="flex-shrink-0">
+                    <div className="w-32 h-32 bg-gradient-to-br from-green-500 to-emerald-600 rounded-full flex items-center justify-center shadow-xl group-hover:scale-110 transition-transform">
+                      <div className="w-28 h-28 bg-gradient-to-br from-green-400 to-emerald-500 rounded-full flex items-center justify-center">
+                        <svg className="w-16 h-16 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                        </svg>
+                      </div>
+                    </div>
+                    <div className="absolute -left-4 top-1/2 -translate-y-1/2 hidden md:flex">
+                      <div className="w-0 h-0 border-t-[12px] border-b-[12px] border-r-[12px] border-t-transparent border-b-transparent border-r-green-600"></div>
+                    </div>
+                  </div>
+
+                  {/* Content */}
+                  <div className="flex-1 text-center md:text-left">
+                    <div className={`inline-block px-3 py-1 rounded-full text-sm font-semibold mb-3 ${theme === 'dark' ? 'bg-green-800 text-green-300' : 'bg-green-100 text-green-700'
+                      }`}>Step 1</div>
+                    <h3 className={`text-3xl font-bold mb-4 ${theme === 'dark' ? 'text-white' : 'text-gray-900'
+                      }`}>Enter Product Details</h3>
+                    <p className={`text-lg leading-relaxed mb-6 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'
+                      }`}>
+                      Input your product specifications including weight, dimensions, category, and shipping requirements. Our intuitive interface makes it quick and easy.
+                    </p>
+                    <div className="flex flex-wrap gap-3 justify-center md:justify-start">
+                      <span className={`px-4 py-2 rounded-full text-sm font-medium ${theme === 'dark' ? 'bg-green-800 text-green-300' : 'bg-green-50 text-green-700'
+                        }`}>Weight & Dimensions</span>
+                      <span className={`px-4 py-2 rounded-full text-sm font-medium ${theme === 'dark' ? 'bg-green-800 text-green-300' : 'bg-green-50 text-green-700'
+                        }`}>Category</span>
+                      <span className={`px-4 py-2 rounded-full text-sm font-medium ${theme === 'dark' ? 'bg-green-800 text-green-300' : 'bg-green-50 text-green-700'
+                        }`}>Shipping Needs</span>
+                    </div>
+                  </div>
                 </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-4">Enter Details</h3>
-                <p className="text-gray-600">
-                  Simply input your product specifications including weight, dimensions, category, and shipping requirements.
-                </p>
               </div>
-              <div className="text-center">
-                <div className="w-20 h-20 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-6">
-                  <span className="text-3xl font-bold text-white">2</span>
+            </div>
+
+            {/* Step 2 */}
+            <div className="relative mb-12">
+              {/* Step Container */}
+              <div className={`relative rounded-3xl p-8 md:p-10 shadow-xl hover:shadow-2xl transition-all duration-300 border group ${theme === 'dark' ? 'bg-gray-800 border-gray-700' : 'bg-white border-blue-100'
+                }`}>
+                <div className="flex flex-col md:flex-row-reverse items-center gap-8">
+                  {/* Icon Circle */}
+                  <div className="flex-shrink-0">
+                    <div className="w-32 h-32 bg-gradient-to-br from-blue-500 to-cyan-600 rounded-full flex items-center justify-center shadow-xl group-hover:scale-110 transition-transform">
+                      <div className="w-28 h-28 bg-gradient-to-br from-blue-400 to-cyan-500 rounded-full flex items-center justify-center">
+                        <svg className="w-16 h-16 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                        </svg>
+                      </div>
+                    </div>
+                    <div className="absolute -right-4 top-1/2 -translate-y-1/2 hidden md:flex">
+                      <div className="w-0 h-0 border-t-[12px] border-b-[12px] border-l-[12px] border-t-transparent border-b-transparent border-l-blue-600"></div>
+                    </div>
+                  </div>
+
+                  {/* Content */}
+                  <div className="flex-1 text-center md:text-right">
+                    <div className={`inline-block px-3 py-1 rounded-full text-sm font-semibold mb-3 ${theme === 'dark' ? 'bg-blue-800 text-blue-300' : 'bg-blue-100 text-blue-700'
+                      }`}>Step 2</div>
+                    <h3 className={`text-3xl font-bold mb-4 ${theme === 'dark' ? 'text-white' : 'text-gray-900'
+                      }`}>AI Powered Analysis</h3>
+                    <p className={`text-lg leading-relaxed mb-6 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'
+                      }`}>
+                      Our advanced AI analyzes your requirements and compares sustainable alternatives based on carbon footprint, cost, durability, and protection level.
+                    </p>
+                    <div className="flex flex-wrap gap-3 justify-center md:justify-end">
+                      <span className={`px-4 py-2 rounded-full text-sm font-medium ${theme === 'dark' ? 'bg-blue-800 text-blue-300' : 'bg-blue-50 text-blue-700'
+                        }`}>Carbon Analysis</span>
+                      <span className={`px-4 py-2 rounded-full text-sm font-medium ${theme === 'dark' ? 'bg-blue-800 text-blue-300' : 'bg-blue-50 text-blue-700'
+                        }`}>Cost Comparison</span>
+                      <span className={`px-4 py-2 rounded-full text-sm font-medium ${theme === 'dark' ? 'bg-blue-800 text-blue-300' : 'bg-blue-50 text-blue-700'
+                        }`}>Sustainability Score</span>
+                    </div>
+                  </div>
                 </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-4">AI Analysis</h3>
-                <p className="text-gray-600">
-                  Our advanced AI analyzes your requirements and compares sustainable alternatives based on carbon footprint, cost, and protection.
-                </p>
               </div>
-              <div className="text-center">
-                <div className="w-20 h-20 bg-purple-600 rounded-full flex items-center justify-center mx-auto mb-6">
-                  <span className="text-3xl font-bold text-white">3</span>
+            </div>
+
+            {/* Step 3 */}
+            <div className="relative">
+              {/* Step Container */}
+              <div className={`relative rounded-3xl p-8 md:p-10 shadow-xl hover:shadow-2xl transition-all duration-300 border group ${theme === 'dark' ? 'bg-gray-800 border-gray-700' : 'bg-white border-purple-100'
+                }`}>
+                <div className="flex flex-col md:flex-row items-center gap-8">
+                  {/* Icon Circle */}
+                  <div className="flex-shrink-0">
+                    <div className="w-32 h-32 bg-gradient-to-br from-purple-500 to-violet-600 rounded-full flex items-center justify-center shadow-xl group-hover:scale-110 transition-transform">
+                      <div className="w-28 h-28 bg-gradient-to-br from-purple-400 to-violet-500 rounded-full flex items-center justify-center">
+                        <svg className="w-16 h-16 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Content */}
+                  <div className="flex-1 text-center md:text-left">
+                    <div className={`inline-block px-3 py-1 rounded-full text-sm font-semibold mb-3 ${theme === 'dark' ? 'bg-purple-800 text-purple-300' : 'bg-purple-100 text-purple-700'
+                      }`}>Step 3</div>
+                    <h3 className={`text-3xl font-bold mb-4 ${theme === 'dark' ? 'text-white' : 'text-gray-900'
+                      }`}>Get Instant Recommendations</h3>
+                    <p className={`text-lg leading-relaxed mb-6 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'
+                      }`}>
+                      Receive instant AI-powered recommendations with detailed analysis of carbon impact, cost savings, environmental benefits, and packaging alternatives.
+                    </p>
+                    <div className="flex flex-wrap gap-3 justify-center md:justify-start">
+                      <span className={`px-4 py-2 rounded-full text-sm font-medium ${theme === 'dark' ? 'bg-purple-800 text-purple-300' : 'bg-purple-50 text-purple-700'
+                        }`}>Detailed Report</span>
+                      <span className={`px-4 py-2 rounded-full text-sm font-medium ${theme === 'dark' ? 'bg-purple-800 text-purple-300' : 'bg-purple-50 text-purple-700'
+                        }`}>Cost Savings</span>
+                      <span className={`px-4 py-2 rounded-full text-sm font-medium ${theme === 'dark' ? 'bg-purple-800 text-purple-300' : 'bg-purple-50 text-purple-700'
+                        }`}>Eco Impact</span>
+                    </div>
+                  </div>
                 </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-4">Get Recommendations</h3>
-                <p className="text-gray-600">
-                  Receive instant recommendations with detailed analysis of carbon impact, cost savings, and environmental benefits.
-                </p>
               </div>
+            </div>
+
+            {/* CTA Button */}
+            <div className="text-center mt-12">
+              <Link
+                href="/dashboard"
+                className="inline-flex items-center gap-3 bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white px-8 py-4 rounded-2xl font-bold text-lg transition-all shadow-xl hover:shadow-2xl group"
+              >
+                <span>Get Started Now</span>
+                <svg className="w-6 h-6 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                </svg>
+              </Link>
             </div>
           </div>
         </div>
       </section>
 
       {/* Pricing Section */}
-      <section id="pricing" className="py-20 bg-gradient-to-br from-blue-50 to-cyan-50">
+      <section id="pricing" className={`py-20 ${theme === 'dark'
+        ? 'bg-gradient-to-br from-gray-800 to-gray-900'
+        : 'bg-gradient-to-br from-blue-50 to-cyan-50'
+        }`}>
         <div className="container mx-auto px-6">
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 text-center mb-4">Pricing</h2>
-          <p className="text-xl text-gray-600 text-center mb-12">Choose the plan that works for you</p>
+          <h2 className={`text-4xl md:text-5xl font-bold text-center mb-4 ${theme === 'dark' ? 'text-white' : 'text-gray-900'
+            }`}>Pricing</h2>
+          <p className={`text-xl text-center mb-12 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'
+            }`}>Choose the plan that works for you</p>
           <div className="max-w-6xl mx-auto grid md:grid-cols-3 gap-8">
-            <div className="bg-white rounded-3xl p-8 shadow-xl border-2 border-gray-200">
-              <h3 className="text-2xl font-bold text-gray-900 mb-4">Free</h3>
-              <div className="text-4xl font-bold text-gray-900 mb-6">$0<span className="text-lg text-gray-500">/month</span></div>
+            <div className={`rounded-3xl p-8 shadow-xl border-2 ${theme === 'dark' ? 'bg-gray-800 border-gray-600' : 'bg-white border-gray-200'
+              }`}>
+              <h3 className={`text-2xl font-bold mb-4 ${theme === 'dark' ? 'text-white' : 'text-gray-900'
+                }`}>Free</h3>
+              <div className={`text-4xl font-bold mb-6 ${theme === 'dark' ? 'text-white' : 'text-gray-900'
+                }`}>$0<span className={`text-lg ${theme === 'dark' ? 'text-gray-400' : 'text-gray-500'
+                  }`}>/month</span></div>
               <ul className="space-y-3 mb-8">
-                <li className="flex items-center gap-2 text-gray-600">✓ 10 recommendations/month</li>
-                <li className="flex items-center gap-2 text-gray-600">✓ Basic carbon footprint tracking</li>
-                <li className="flex items-center gap-2 text-gray-600">✓ Standard support</li>
+                <li className={`flex items-center gap-2 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'
+                  }`}>✓ 10 recommendations/month</li>
+                <li className={`flex items-center gap-2 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'
+                  }`}>✓ Basic carbon footprint tracking</li>
+                <li className={`flex items-center gap-2 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'
+                  }`}>✓ Standard support</li>
               </ul>
-              <button className="w-full bg-gray-200 text-gray-800 py-3 rounded-xl font-semibold hover:bg-gray-300 transition-colors">
+              <button className={`w-full py-3 rounded-xl font-semibold transition-colors ${theme === 'dark'
+                ? 'bg-gray-700 text-white hover:bg-gray-600'
+                : 'bg-gray-200 text-gray-800 hover:bg-gray-300'
+                }`}>
                 Get Started
               </button>
             </div>
@@ -459,16 +695,26 @@ export default function Home() {
                 Get Started
               </button>
             </div>
-            <div className="bg-white rounded-3xl p-8 shadow-xl border-2 border-gray-200">
-              <h3 className="text-2xl font-bold text-gray-900 mb-4">Enterprise</h3>
-              <div className="text-4xl font-bold text-gray-900 mb-6">Custom</div>
+            <div className={`rounded-3xl p-8 shadow-xl border-2 ${theme === 'dark' ? 'bg-gray-800 border-gray-600' : 'bg-white border-gray-200'
+              }`}>
+              <h3 className={`text-2xl font-bold mb-4 ${theme === 'dark' ? 'text-white' : 'text-gray-900'
+                }`}>Enterprise</h3>
+              <div className={`text-4xl font-bold mb-6 ${theme === 'dark' ? 'text-white' : 'text-gray-900'
+                }`}>Custom</div>
               <ul className="space-y-3 mb-8">
-                <li className="flex items-center gap-2 text-gray-600">✓ Everything in Pro</li>
-                <li className="flex items-center gap-2 text-gray-600">✓ API access</li>
-                <li className="flex items-center gap-2 text-gray-600">✓ Custom integrations</li>
-                <li className="flex items-center gap-2 text-gray-600">✓ Dedicated support</li>
+                <li className={`flex items-center gap-2 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'
+                  }`}>✓ Everything in Pro</li>
+                <li className={`flex items-center gap-2 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'
+                  }`}>✓ API access</li>
+                <li className={`flex items-center gap-2 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'
+                  }`}>✓ Custom integrations</li>
+                <li className={`flex items-center gap-2 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'
+                  }`}>✓ Dedicated support</li>
               </ul>
-              <button className="w-full bg-gray-200 text-gray-800 py-3 rounded-xl font-semibold hover:bg-gray-300 transition-colors">
+              <button className={`w-full py-3 rounded-xl font-semibold transition-colors ${theme === 'dark'
+                ? 'bg-gray-700 text-white hover:bg-gray-600'
+                : 'bg-gray-200 text-gray-800 hover:bg-gray-300'
+                }`}>
                 Contact Sales
               </button>
             </div>
@@ -477,47 +723,128 @@ export default function Home() {
       </section>
 
       {/* Team Section */}
-      <section id="team" className="py-20 bg-white">
-        <div className="container mx-auto px-6">
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 text-center mb-4">Our Team</h2>
-          <p className="text-xl text-gray-600 text-center mb-12">Meet the people behind EcoPack AI</p>
-          <div className="max-w-6xl mx-auto grid md:grid-cols-4 gap-8">
-            {[
-              { name: 'John Doe', role: 'CEO & Founder', img: '👨‍💼' },
-              { name: 'Jane Smith', role: 'CTO', img: '👩‍💻' },
-              { name: 'Mike Johnson', role: 'Lead Developer', img: '👨‍💻' },
-              { name: 'Sarah Williams', role: 'Sustainability Expert', img: '👩‍🔬' },
-            ].map((member, idx) => (
-              <div key={idx} className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-2xl p-6 text-center shadow-lg hover:shadow-xl transition-shadow">
-                <div className="w-24 h-24 bg-green-600 rounded-full flex items-center justify-center text-4xl mx-auto mb-4">
-                  {member.img}
+      <section id="team" className={`py-20 ${theme === 'dark'
+        ? 'bg-gradient-to-br from-gray-800 to-gray-900'
+        : 'bg-gradient-to-br from-green-50 to-emerald-50'
+        }`}>
+        <div className="container mx-auto px-6 max-w-6xl">
+          {/* Header */}
+          <div className="text-center mb-16">
+            <div className={`inline-block px-4 py-2 rounded-full text-sm font-semibold mb-4 ${theme === 'dark' ? 'bg-green-800 text-green-300' : 'bg-green-100 text-green-700'
+              }`}>
+              Our Team
+            </div>
+            <h2 className={`text-4xl md:text-6xl font-bold mb-4 ${theme === 'dark' ? 'text-white' : 'text-gray-900'
+              }`}>
+              Meet the Minds Behind EcoPack AI
+            </h2>
+            <p className={`text-xl max-w-2xl mx-auto ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'
+              }`}>
+              Passionate innovators dedicated to creating a sustainable future.
+            </p>
+          </div>
+
+          {/* Team Members */}
+          <div className="grid md:grid-cols-2 gap-12 max-w-4xl mx-auto">
+            {/* Rahul Gupta - Lead Developer */}
+            <div className={`rounded-3xl p-8 shadow-xl hover:shadow-2xl transition-all duration-300 ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'
+              }`}>
+              <div className="flex flex-col items-center text-center">
+                <div className="w-32 h-32 bg-gradient-to-br from-indigo-400 to-purple-500 rounded-2xl flex items-center justify-center mb-6 shadow-lg">
+                  <img
+                    src="/team/rahul.jpg"
+                    alt="Rahul Gupta"
+                    className="w-28 h-28 rounded-xl object-cover"
+                    onError={(e) => {
+                      e.currentTarget.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="112" height="112"%3E%3Crect fill="%23667eea" width="112" height="112" rx="16"/%3E%3Ctext x="50%25" y="50%25" text-anchor="middle" dy=".35em" fill="white" font-size="48" font-family="Arial"%3ERG%3C/text%3E%3C/svg%3E';
+                    }}
+                  />
                 </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-2">{member.name}</h3>
-                <p className="text-gray-600">{member.role}</p>
+                <h3 className={`text-2xl font-bold mb-2 ${theme === 'dark' ? 'text-white' : 'text-gray-900'
+                  }`}>Rahul Gupta</h3>
+                <p className="text-green-600 font-semibold text-lg mb-4">Lead Developer</p>
+                <p className={`mb-6 leading-relaxed ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'
+                  }`}>
+                  Full-stack developer passionate about building scalable applications and innovative solutions for sustainability.
+                </p>
+                <div className="flex items-center gap-3">
+                  <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="w-10 h-10 bg-green-100 hover:bg-green-200 rounded-xl flex items-center justify-center transition-colors group">
+                    <svg className="w-5 h-5 text-green-600 group-hover:scale-110 transition-transform" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
+                    </svg>
+                  </a>
+                  <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="w-10 h-10 bg-green-100 hover:bg-green-200 rounded-xl flex items-center justify-center transition-colors group">
+                    <svg className="w-5 h-5 text-green-600 group-hover:scale-110 transition-transform" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z" />
+                    </svg>
+                  </a>
+                </div>
               </div>
-            ))}
+            </div>
+
+            {/* Pratistha Gupta - Lead Developer */}
+            <div className={`rounded-3xl p-8 shadow-xl hover:shadow-2xl transition-all duration-300 ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'
+              }`}>
+              <div className="flex flex-col items-center text-center">
+                <div className="w-32 h-32 bg-gradient-to-br from-pink-400 to-rose-500 rounded-2xl flex items-center justify-center mb-6 shadow-lg">
+                  <img
+                    src="/team/pratistha.jpg"
+                    alt="Pratistha Gupta"
+                    className="w-28 h-28 rounded-xl object-cover"
+                    onError={(e) => {
+                      e.currentTarget.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="112" height="112"%3E%3Crect fill="%23f43f5e" width="112" height="112" rx="16"/%3E%3Ctext x="50%25" y="50%25" text-anchor="middle" dy=".35em" fill="white" font-size="48" font-family="Arial"%3EPG%3C/text%3E%3C/svg%3E';
+                    }}
+                  />
+                </div>
+                <h3 className={`text-2xl font-bold mb-2 ${theme === 'dark' ? 'text-white' : 'text-gray-900'
+                  }`}>Pratistha Gupta</h3>
+                <p className="text-green-600 font-semibold text-lg mb-4">Lead Developer</p>
+                <p className={`mb-6 leading-relaxed ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'
+                  }`}>
+                  Full-stack developer passionate about building sustainable applications and innovative solutions for environmental impact.
+                </p>
+                <div className="flex items-center gap-3">
+                  <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="w-10 h-10 bg-green-100 hover:bg-green-200 rounded-xl flex items-center justify-center transition-colors group">
+                    <svg className="w-5 h-5 text-green-600 group-hover:scale-110 transition-transform" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
+                    </svg>
+                  </a>
+                  <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="w-10 h-10 bg-green-100 hover:bg-green-200 rounded-xl flex items-center justify-center transition-colors group">
+                    <svg className="w-5 h-5 text-green-600 group-hover:scale-110 transition-transform" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z" />
+                    </svg>
+                  </a>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
       {/* Contact Section */}
-      <section id="contact" className="py-20 bg-white">
+      <section id="contact" className={`py-20 ${theme === 'dark' ? 'bg-gray-900' : 'bg-white'
+        }`}>
         <div className="container mx-auto px-6 max-w-7xl">
           <div className="text-center mb-16">
-            <h2 className="text-5xl md:text-6xl font-bold text-gray-900 mb-4">Get in Touch</h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            <h2 className={`text-5xl md:text-6xl font-bold mb-4 ${theme === 'dark' ? 'text-white' : 'text-gray-900'
+              }`}>Get in Touch</h2>
+            <p className={`text-xl max-w-3xl mx-auto ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'
+              }`}>
               Have questions? We'd love to hear from you. Send us a message and we'll respond as soon as possible.
             </p>
           </div>
 
           <div className="grid lg:grid-cols-2 gap-12">
             {/* Left Column - Contact Form */}
-            <div className="bg-white rounded-3xl shadow-2xl p-8">
-              <h2 className="text-2xl font-bold text-gray-900 mb-6">Send us a Message</h2>
+            <div className={`rounded-3xl shadow-2xl p-8 ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'
+              }`}>
+              <h2 className={`text-2xl font-bold mb-6 ${theme === 'dark' ? 'text-white' : 'text-gray-900'
+                }`}>Send us a Message</h2>
 
               <form onSubmit={handleContactSubmit} className="space-y-6">
                 <div>
-                  <label className="block text-gray-700 font-semibold mb-2">
+                  <label className={`block font-semibold mb-2 ${theme === 'dark' ? 'text-gray-200' : 'text-gray-700'
+                    }`}>
                     Name <span className="text-red-500">*</span>
                   </label>
                   <input
@@ -526,13 +853,15 @@ export default function Home() {
                     value={contactForm.name}
                     onChange={handleContactChange}
                     required
-                    className="w-full px-4 py-3 border-2 border-green-200 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors bg-green-50/50"
+                    className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors ${theme === 'dark' ? 'border-gray-600 bg-gray-700 text-white' : 'border-green-200 bg-green-50/50'
+                      }`}
                     placeholder="Your name"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-gray-700 font-semibold mb-2">
+                  <label className={`block font-semibold mb-2 ${theme === 'dark' ? 'text-gray-200' : 'text-gray-700'
+                    }`}>
                     Email <span className="text-red-500">*</span>
                   </label>
                   <input
@@ -541,13 +870,15 @@ export default function Home() {
                     value={contactForm.email}
                     onChange={handleContactChange}
                     required
-                    className="w-full px-4 py-3 border-2 border-green-200 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors bg-green-50/50"
+                    className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors ${theme === 'dark' ? 'border-gray-600 bg-gray-700 text-white' : 'border-green-200 bg-green-50/50'
+                      }`}
                     placeholder="your@email.com"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-gray-700 font-semibold mb-2">
+                  <label className={`block font-semibold mb-2 ${theme === 'dark' ? 'text-gray-200' : 'text-gray-700'
+                    }`}>
                     Company
                   </label>
                   <input
@@ -555,13 +886,15 @@ export default function Home() {
                     name="company"
                     value={contactForm.company}
                     onChange={handleContactChange}
-                    className="w-full px-4 py-3 border-2 border-green-200 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors bg-green-50/50"
+                    className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors ${theme === 'dark' ? 'border-gray-600 bg-gray-700 text-white' : 'border-green-200 bg-green-50/50'
+                      }`}
                     placeholder="Your company"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-gray-700 font-semibold mb-2">
+                  <label className={`block font-semibold mb-2 ${theme === 'dark' ? 'text-gray-200' : 'text-gray-700'
+                    }`}>
                     Message <span className="text-red-500">*</span>
                   </label>
                   <textarea
@@ -570,15 +903,16 @@ export default function Home() {
                     onChange={handleContactChange}
                     required
                     rows={5}
-                    className="w-full px-4 py-3 border-2 border-green-200 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors bg-green-50/50 resize-none"
+                    className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors resize-none ${theme === 'dark' ? 'border-gray-600 bg-gray-700 text-white' : 'border-green-200 bg-green-50/50'
+                      }`}
                     placeholder="Tell us about your packaging needs..."
                   />
                 </div>
 
                 {contactStatus.message && (
                   <div className={`p-4 rounded-xl ${contactStatus.type === 'success'
-                      ? 'bg-green-100 border-2 border-green-500 text-green-800'
-                      : 'bg-red-100 border-2 border-red-500 text-red-800'
+                    ? 'bg-green-100 border-2 border-green-500 text-green-800'
+                    : 'bg-red-100 border-2 border-red-500 text-red-800'
                     }`}>
                     {contactStatus.message}
                   </div>
@@ -609,19 +943,23 @@ export default function Home() {
             {/* Right Column - Contact Info & Benefits */}
             <div className="space-y-8">
               {/* Contact Information */}
-              <div className="bg-white rounded-3xl shadow-2xl p-8">
-                <h2 className="text-2xl font-bold text-gray-900 mb-6">Contact Information</h2>
+              <div className={`rounded-3xl shadow-2xl p-8 ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'
+                }`}>
+                <h2 className={`text-2xl font-bold mb-6 ${theme === 'dark' ? 'text-white' : 'text-gray-900'
+                  }`}>Contact Information</h2>
 
                 <div className="space-y-6">
                   {/* Email */}
                   <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 bg-green-100 rounded-2xl flex items-center justify-center flex-shrink-0">
-                      <svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div className={`w-12 h-12 rounded-2xl flex items-center justify-center flex-shrink-0 ${theme === 'dark' ? 'bg-green-800' : 'bg-green-100'
+                      }`}>
+                      <svg className={`w-6 h-6 ${theme === 'dark' ? 'text-green-400' : 'text-green-600'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                       </svg>
                     </div>
                     <div>
-                      <h3 className="font-semibold text-gray-700 mb-1">Email</h3>
+                      <h3 className={`font-semibold mb-1 ${theme === 'dark' ? 'text-gray-200' : 'text-gray-700'
+                        }`}>Email</h3>
                       <a href="mailto:ecopackai@gmail.com" className="text-green-600 hover:text-green-700 font-medium transition-colors">
                         ecopackai@gmail.com
                       </a>
@@ -630,39 +968,45 @@ export default function Home() {
 
                   {/* Office */}
                   <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 bg-green-100 rounded-2xl flex items-center justify-center flex-shrink-0">
-                      <svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div className={`w-12 h-12 rounded-2xl flex items-center justify-center flex-shrink-0 ${theme === 'dark' ? 'bg-green-800' : 'bg-green-100'
+                      }`}>
+                      <svg className={`w-6 h-6 ${theme === 'dark' ? 'text-green-400' : 'text-green-600'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                       </svg>
                     </div>
                     <div>
-                      <h3 className="font-semibold text-gray-700 mb-1">Office</h3>
-                      <p className="text-gray-600">San Francisco, CA 94105</p>
-                      <p className="text-gray-600">United States</p>
+                      <h3 className={`font-semibold mb-1 ${theme === 'dark' ? 'text-gray-200' : 'text-gray-700'
+                        }`}>Office</h3>
+                      <p className={theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}>San Francisco, CA 94105</p>
+                      <p className={theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}>United States</p>
                     </div>
                   </div>
                 </div>
               </div>
 
               {/* Why Choose EcoPack AI */}
-              <div className="bg-white rounded-3xl shadow-2xl p-8">
-                <h2 className="text-2xl font-bold text-gray-900 mb-6">Why Choose EcoPack AI?</h2>
+              <div className={`rounded-3xl shadow-2xl p-8 ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'
+                }`}>
+                <h2 className={`text-2xl font-bold mb-6 ${theme === 'dark' ? 'text-white' : 'text-gray-900'
+                  }`}>Why Choose EcoPack AI?</h2>
 
                 <div className="space-y-4">
                   {[
-                    'Instant AI-powered recommendations',
-                    'Reduce costs by up to 30%',
-                    'Lower carbon footprint by 85%',
-                    'Expert support team',
-                    'Trusted by 500+ businesses'
+                    'AI-powered recommendations in under 30 seconds',
+                    'Real-time carbon footprint tracking',
+                    'Detailed PDF reports with comparisons',
+                    'Up to 25% cost savings on packaging',
+                    'Free forever - no hidden costs'
                   ].map((benefit, idx) => (
                     <div key={idx} className="flex items-center gap-3">
-                      <div className="w-10 h-10 bg-green-100 rounded-xl flex items-center justify-center flex-shrink-0">
-                        <svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <div className={`w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 ${theme === 'dark' ? 'bg-green-800' : 'bg-green-100'
+                        }`}>
+                        <svg className={`w-6 h-6 ${theme === 'dark' ? 'text-green-400' : 'text-green-600'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                         </svg>
                       </div>
-                      <span className="text-gray-700 font-medium">{benefit}</span>
+                      <span className={`font-medium ${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'
+                        }`}>{benefit}</span>
                     </div>
                   ))}
                 </div>

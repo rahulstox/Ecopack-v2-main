@@ -25,6 +25,12 @@ export async function GET(request: NextRequest) {
     );
     const totalActions = allLogs.length;
 
+    console.log("📊 Dashboard Stats:", {
+      totalLogs: allLogs.length,
+      totalCo2e,
+      totalActions,
+    });
+
     // Get logs from this month
     const now = new Date();
     const firstDayOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);

@@ -96,7 +96,7 @@ export default function DashboardPage() {
     }
 
     return (
-        <div className="min-h-screen bg-gray-50">
+        <div className="min-h-screen bg-gray-50 dark:bg-gray-900 green:bg-green-50">
             <div className="flex">
                 <Sidebar totalCo2eSaved={stats?.thisMonthCo2e || 0} />
 
@@ -106,10 +106,10 @@ export default function DashboardPage() {
                         {/* Header */}
                         <div className="flex justify-between items-center">
                             <div>
-                                <h1 className="text-3xl font-bold text-gray-900">
+                                <h1 className="text-3xl font-bold text-gray-900 dark:text-white green:text-gray-900">
                                     Welcome back, {user.firstName || 'User'}!
                                 </h1>
-                                <p className="text-gray-600 mt-1">Track your carbon footprint and make a difference.</p>
+                                <p className="text-gray-600 dark:text-gray-400 green:text-gray-700 mt-1">Track your carbon footprint and make a difference.</p>
                             </div>
                             <div className="flex gap-3">
                                 <button
@@ -149,8 +149,8 @@ export default function DashboardPage() {
                         )}
 
                         {/* Action Logs Section */}
-                        <div className="bg-white rounded-lg shadow-lg p-6">
-                            <h2 className="text-2xl font-bold text-gray-900 mb-4">Recent Activities</h2>
+                        <div className="bg-white dark:bg-gray-800 green:bg-green-100 rounded-lg shadow-lg p-6">
+                            <h2 className="text-2xl font-bold text-gray-900 dark:text-white green:text-gray-900 mb-4">Recent Activities</h2>
                             {loading ? (
                                 <div className="text-center py-8 text-gray-500">Loading actions...</div>
                             ) : (

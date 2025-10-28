@@ -13,6 +13,7 @@ async function initializeDatabaseTables() {
     await sql`
       CREATE TABLE IF NOT EXISTS recommendations (
         id SERIAL PRIMARY KEY,
+        userid VARCHAR(255) NOT NULL,
         form_input JSONB NOT NULL,
         ai_output JSONB NOT NULL,
         carbon_score NUMERIC NOT NULL,
@@ -20,6 +21,25 @@ async function initializeDatabaseTables() {
       );
     `;
     console.log('Checked/created "recommendations" table.');
+
+    // Add userid column if it doesn't exist (for existing tables)
+    try {
+      await sql`ALTER TABLE recommendations ADD COLUMN IF NOT EXISTS userid VARCHAR(255) DEFAULT 'anonymous'`;
+      // Set default values for existing rows
+      await sql`UPDATE recommendations SET userid = 'anonymous' WHERE userid IS NULL OR userid = ''`;
+      console.log("Added userid column to recommendations table.");
+    } catch (alterError: any) {
+      // Column might already exist
+      if (!alterError.message.includes("already exists")) {
+        console.log("Note: Could not add userid column:", alterError.message);
+      }
+    }
+
+    // Add index on userid for faster queries
+    await sql`
+      CREATE INDEX IF NOT EXISTS idx_recommendations_userid ON recommendations(userid);
+    `;
+    console.log("Checked/created index on recommendations.userid.");
 
     // Table for user profile/onboarding data
     await sql`
@@ -118,18 +138,37 @@ async function ensureInitialized() {
 // --- Functions for Recommendations Tool ---
 
 export async function insertRecommendation(data: {
+  userid: string;
   form_input: any;
   ai_output: any;
   carbon_score: number;
 }) {
   await ensureInitialized(); // Ensure tables exist
   return await sql`
-    INSERT INTO recommendations (form_input, ai_output, carbon_score)
-    VALUES (${JSON.stringify(data.form_input)}, ${JSON.stringify(
-    data.ai_output
-  )}, ${data.carbon_score})
+    INSERT INTO recommendations (userid, form_input, ai_output, carbon_score)
+    VALUES (${data.userid}, ${JSON.stringify(
+    data.form_input
+  )}, ${JSON.stringify(data.ai_output)}, ${data.carbon_score})
     RETURNING id;
   `;
+}
+
+export async function getUserRecommendations(userId: string) {
+  await ensureInitialized();
+  const result = await sql`
+    SELECT * FROM recommendations 
+    WHERE userid = ${userId}
+    ORDER BY created_at DESC
+  `;
+  return result as any[];
+}
+
+export async function getRecommendationById(id: number) {
+  await ensureInitialized();
+  const result = await sql`
+    SELECT * FROM recommendations WHERE id = ${id}
+  `;
+  return result[0] as any;
 }
 
 export async function getAllRecommendations() {
@@ -138,14 +177,6 @@ export async function getAllRecommendations() {
     SELECT * FROM recommendations
     ORDER BY created_at DESC;
   `;
-}
-
-export async function getRecommendationById(id: number) {
-  await ensureInitialized(); // Ensure tables exist
-  const result = await sql`
-    SELECT * FROM recommendations WHERE id = ${id};
-  `;
-  return result[0];
 }
 
 // --- Functions for User Profile ---

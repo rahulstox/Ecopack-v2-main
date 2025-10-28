@@ -3,13 +3,16 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useUser } from '@clerk/nextjs';
+import { useTheme } from '@/contexts/ThemeContext';
 import {
     Home,
     Activity,
     BarChart3,
     FileText,
     Settings,
-    Leaf
+    Leaf,
+    Sun,
+    Moon
 } from 'lucide-react';
 
 interface SidebarProps {
@@ -19,20 +22,20 @@ interface SidebarProps {
 export function Sidebar({ totalCo2eSaved = 0 }: SidebarProps) {
     const pathname = usePathname();
     const { user } = useUser();
+    const { theme, setTheme } = useTheme();
 
     const menuItems = [
         { icon: Home, label: 'Dashboard', href: '/dashboard' },
+        { icon: Leaf, label: 'Recommendations', href: '/recommend' },
         { icon: Activity, label: 'Live Tracker', href: '/tracker' },
         { icon: BarChart3, label: 'Reports', href: '/reports' },
-        { icon: Leaf, label: 'Recommendations', href: '/recommend' },
-        { icon: FileText, label: 'History', href: '/history' },
         { icon: Settings, label: 'Profile & Settings', href: '/onboarding' },
     ];
 
     return (
         <div className="fixed left-0 top-0 h-full w-64 bg-gradient-to-b from-green-600 to-emerald-700 text-white hidden lg:block z-40">
             <div className="p-6">
-                <div className="flex items-center gap-3 mb-8">
+                <Link href="/" className="flex items-center gap-3 mb-8 hover:opacity-80 transition-opacity cursor-pointer">
                     <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center backdrop-blur-sm">
                         <Leaf className="w-6 h-6" />
                     </div>
@@ -40,7 +43,7 @@ export function Sidebar({ totalCo2eSaved = 0 }: SidebarProps) {
                         <h1 className="text-xl font-bold">Ecopack-Ai</h1>
                         <p className="text-xs text-white/70">Greener Packaging</p>
                     </div>
-                </div>
+                </Link>
 
                 <nav className="space-y-2">
                     {menuItems.map((item, index) => {
@@ -78,6 +81,31 @@ export function Sidebar({ totalCo2eSaved = 0 }: SidebarProps) {
                         );
                     })}
                 </nav>
+            </div>
+
+            {/* Theme Switcher */}
+            <div className="mx-6 mb-4">
+                <div className="bg-white/10 backdrop-blur-sm rounded-lg p-3">
+                    <p className="text-xs text-white/90 mb-2">Theme</p>
+                    <div className="flex gap-2">
+                        <button
+                            onClick={() => setTheme('green')}
+                            className={`flex-1 p-2 rounded-md transition-all ${theme === 'green' ? 'bg-white text-green-600' : 'bg-white/10 text-white/70 hover:bg-white/20'
+                                }`}
+                            title="Green Theme"
+                        >
+                            <Sun className="w-4 h-4 mx-auto" />
+                        </button>
+                        <button
+                            onClick={() => setTheme('dark')}
+                            className={`flex-1 p-2 rounded-md transition-all ${theme === 'dark' ? 'bg-white text-green-600' : 'bg-white/10 text-white/70 hover:bg-white/20'
+                                }`}
+                            title="Dark Theme"
+                        >
+                            <Moon className="w-4 h-4 mx-auto" />
+                        </button>
+                    </div>
+                </div>
             </div>
 
             {/* Bottom Section */}
