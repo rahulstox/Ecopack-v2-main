@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+html {
+  scroll-behavior: smooth;
+}
+
 @layer utilities {
   .delay-150 {
     animation-delay: 150ms;
@@ -12,18 +16,19 @@
   .delay-500 {
     animation-delay: 500ms;
   }
-  
+
   .perspective-1000 {
     perspective: 1000px;
   }
-  
+
   .transform-style-3d {
     transform-style: preserve-3d;
   }
 }
 
 @keyframes float {
-  0%, 100% {
+  0%,
+  100% {
     transform: translateY(0px) rotateY(0deg) rotateX(0deg);
   }
   25% {
@@ -40,8 +45,6 @@
 .animate-float {
   animation: float 6s ease-in-out infinite;
 }
-
-
 
 @layer base {
   :root {
@@ -99,8 +102,6 @@
   }
 }
 
-
-
 @layer base {
   * {
     @apply border-border;
@@ -109,4 +110,3 @@
     @apply bg-background text-foreground;
   }
 }
-

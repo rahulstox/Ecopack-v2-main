@@ -8,6 +8,7 @@ import { LogActionModal } from '@/components/LogActionModal';
 import { DashboardStats } from '@/components/DashboardStats';
 import { UserProfile } from '@/components/UserProfile';
 import { CategoryBreakdownChart } from '@/components/CategoryBreakdownChart';
+import { OnboardingModal } from '@/components/OnboardingModal';
 
 export default function DashboardPage() {
     const { user, isLoaded } = useUser();
@@ -169,6 +170,9 @@ export default function DashboardPage() {
                 onClose={handleModalClose}
                 userId={user.id}
             />
+
+            {/* Onboarding Modal */}
+            <OnboardingModal />
         </div>
     );
 }

@@ -54,6 +54,29 @@ async function initializeDatabaseTables() {
     `;
     console.log('Checked/created "ActionLog" table.');
 
+    // Table for quiz results
+    await sql`
+      CREATE TABLE IF NOT EXISTS quiz_results (
+        id SERIAL PRIMARY KEY,
+        userid VARCHAR(255) NOT NULL,
+        score INTEGER NOT NULL,
+        total INTEGER NOT NULL,
+        percentage NUMERIC NOT NULL,
+        completedat TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      );
+    `;
+    console.log('Checked/created "quiz_results" table.');
+
+    // Table for site statistics
+    await sql`
+      CREATE TABLE IF NOT EXISTS site_stats (
+        id INTEGER PRIMARY KEY,
+        visit_count INTEGER DEFAULT 0,
+        last_updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      );
+    `;
+    console.log('Checked/created "site_stats" table.');
+
     console.log("Database tables initialization check complete.");
   } catch (error) {
     console.error("Database initialization error:", error);

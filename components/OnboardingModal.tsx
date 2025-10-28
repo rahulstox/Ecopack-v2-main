@@ -158,6 +158,10 @@ export function OnboardingModal() {
                 await user.reload(); // Attempt to reload user data to get new metadata
                 setIsOpen(false); // Close modal on success
                 router.refresh(); // Refresh server components if needed
+
+                // Redirect to dashboard after successful onboarding
+                router.push('/dashboard');
+
                 alert('Profile saved successfully!'); // Simple confirmation
             } else {
                 alert(`Error: ${result.error}`);
