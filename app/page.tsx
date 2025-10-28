@@ -797,7 +797,7 @@ export default function Home() {
                   />
                 </div>
                 <h3 className={`text-2xl font-bold mb-2 ${theme === 'dark' ? 'text-white' : 'text-gray-900'
-                  }`}>Pratistha Gupta</h3>
+                  }`}>Pratishtha Gupta</h3>
                 <p className="text-green-600 font-semibold text-lg mb-4">Lead Developer</p>
                 <p className={`mb-6 leading-relaxed ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'
                   }`}>
