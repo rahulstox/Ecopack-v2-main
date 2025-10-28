@@ -30,6 +30,7 @@ export async function GET(request: NextRequest) {
     const firstDayOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
 
     const thisMonthLogs = allLogs.filter((log) => {
+      if (!log.loggedAt) return false;
       const logDate = new Date(log.loggedAt);
       return logDate >= firstDayOfMonth;
     });

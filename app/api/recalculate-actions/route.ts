@@ -53,7 +53,10 @@ export async function POST(request: NextRequest) {
           calculatedCo2e = calculatorService.calculate({
             category: log.category,
             activity: log.activity,
-            amount: parseFloat(log.amount),
+            amount:
+              typeof log.amount === "string"
+                ? parseFloat(log.amount)
+                : log.amount,
             unit: log.unit,
           });
         } else if (log.category === "ENERGY") {
@@ -72,7 +75,10 @@ export async function POST(request: NextRequest) {
           calculatedCo2e = calculatorService.calculate({
             category: log.category,
             activity: log.activity,
-            amount: log.amount,
+            amount:
+              typeof log.amount === "string"
+                ? parseFloat(log.amount)
+                : log.amount,
             unit: log.unit,
           });
         }
