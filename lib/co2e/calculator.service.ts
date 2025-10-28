@@ -133,10 +133,21 @@ export class Co2eCalculatorService {
       }
     }
 
+    // Handle gram to kilogram conversion for food items
+    let adjustedAmount = amount;
+    if (unit === "G" && category === "FOOD") {
+      adjustedAmount = amount / 1000; // Convert grams to kg
+      console.log(
+        `📏 Converted ${amount}g to ${adjustedAmount}kg for food calculation`
+      );
+    }
+
     const factor = getEmissionFactor(category, activityKey, userProfile);
     console.log(`📈 Factor found: ${factor} for key: ${activityKey}`);
-    const calculatedCo2e = amount * factor;
-    console.log(`💾 Final CO₂e: ${calculatedCo2e} kg`);
+    const calculatedCo2e = adjustedAmount * factor;
+    console.log(
+      `💾 Final CO₂e: ${calculatedCo2e} kg (${adjustedAmount} ${unit} × ${factor})`
+    );
 
     // Round to a reasonable number of decimal places (e.g., 3)
     return Math.round(calculatedCo2e * 1000) / 1000;

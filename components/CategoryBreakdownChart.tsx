@@ -12,7 +12,7 @@ export function CategoryBreakdownChart({ categoryBreakdown }: CategoryBreakdownC
     const chartData = Object.entries(categoryBreakdown)
         .map(([key, value]) => ({
             name: key,
-            value: parseFloat((value || 0).toFixed(2)),
+            value: parseFloat(Number(value || 0).toFixed(2)),
         }))
         .filter(item => item.value > 0); // Only show categories with data
 

@@ -84,7 +84,7 @@ export function Sidebar({ totalCo2eSaved = 0 }: SidebarProps) {
             <div className="absolute bottom-0 w-full p-6 border-t border-white/20">
                 <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4">
                     <p className="text-sm text-white/90 mb-2">Total CO₂e Saved</p>
-                    <p className="text-2xl font-bold">{totalCo2eSaved.toFixed(2)} kg</p>
+                    <p className="text-2xl font-bold">{Number(totalCo2eSaved || 0).toFixed(2)} kg</p>
                     <p className="text-xs text-white/70 mt-1">This month</p>
                 </div>
                 {user && (

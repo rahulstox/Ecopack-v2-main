@@ -18,9 +18,9 @@ export async function GET(request: NextRequest) {
     // Get all logs for stats calculation
     const allLogs = await getActionLogsByUserId(userId, 1000, 0);
 
-    // Calculate stats with null safety
+    // Calculate stats with null safety - convert to numbers
     const totalCo2e = allLogs.reduce(
-      (sum, log) => sum + (log.calculatedCo2e || 0),
+      (sum, log) => sum + Number(log.calculatedCo2e || 0),
       0
     );
     const totalActions = allLogs.length;
@@ -35,14 +35,14 @@ export async function GET(request: NextRequest) {
     });
 
     const thisMonthCo2e = thisMonthLogs.reduce(
-      (sum, log) => sum + (log.calculatedCo2e || 0),
+      (sum, log) => sum + Number(log.calculatedCo2e || 0),
       0
     );
     const thisMonthActions = thisMonthLogs.length;
 
     // Calculate category breakdown with null safety
     const categoryBreakdown = allLogs.reduce((acc, log) => {
-      const value = log.calculatedCo2e || 0;
+      const value = Number(log.calculatedCo2e || 0);
       acc[log.category] = (acc[log.category] || 0) + value;
       return acc;
     }, {} as Record<string, number>);

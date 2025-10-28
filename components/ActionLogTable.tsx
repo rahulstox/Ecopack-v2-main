@@ -142,7 +142,7 @@ export function ActionLogTable({ logs, onDelete }: ActionLogTableProps) {
                                 {log.amount} {log.unit}
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap text-sm font-semibold text-gray-900 text-right">
-                                {(log.calculatedCo2e || 0).toFixed(3)}
+                                {Number(log.calculatedCo2e || 0).toFixed(3)}
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap text-center">
                                 <button

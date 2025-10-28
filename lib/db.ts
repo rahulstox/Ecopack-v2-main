@@ -273,12 +273,13 @@ export async function insertActionLog(data: ActionLogData) {
     data;
 
   // Insert with explicit loggedAt timestamp to ensure it's always set
+  // Note: PostgreSQL column names are lowercase
   const result = await sql`
-        INSERT INTO ActionLog (userId, category, activity, amount, unit, calculatedCo2e, rawInput, loggedAt)
+        INSERT INTO ActionLog (userid, category, activity, amount, unit, calculatedco2e, rawinput, loggedat)
         VALUES (${userId}, ${category}, ${activity}, ${amount}, ${unit}, ${calculatedCo2e}, ${
     rawInput ?? null
   }, CURRENT_TIMESTAMP)
-        RETURNING id, loggedAt;
+        RETURNING id, loggedat as "loggedAt";
     `;
   console.log("💾 Inserted log with timestamp:", result[0].loggedAt);
   return result[0];
@@ -291,16 +292,20 @@ export async function getActionLogsByUserId(
 ) {
   await ensureInitialized(); // Ensure tables exist
   const result = await sql`
-        SELECT id, userId, category, activity, amount, unit, calculatedCo2e, rawInput, loggedAt 
+        SELECT id, userid as "userId", category, activity, amount, unit, 
+               calculatedco2e as "calculatedCo2e", rawinput as "rawInput", 
+               COALESCE(loggedat, CURRENT_TIMESTAMP) as "loggedAt" 
         FROM ActionLog
-        WHERE userId = ${userId}
-        ORDER BY loggedAt DESC
+        WHERE userid = ${userId}
+        ORDER BY COALESCE(loggedat, CURRENT_TIMESTAMP) DESC
         LIMIT ${limit} OFFSET ${offset};
     `;
 
   console.log("📊 Fetched action logs:", result.length, "entries");
   if (result.length > 0) {
     console.log("📅 Sample loggedAt:", result[0].loggedAt);
+    console.log("📅 loggedAt type:", typeof result[0].loggedAt);
+    console.log("📊 Sample calculatedCo2e:", result[0].calculatedCo2e);
   }
 
   return result as ActionLogData[]; // Type assertion

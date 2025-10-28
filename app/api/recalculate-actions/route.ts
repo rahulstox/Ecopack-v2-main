@@ -48,11 +48,14 @@ export async function POST(request: NextRequest) {
             log.unit
           );
         } else if (log.category === "FOOD") {
-          calculatedCo2e = await calculatorService.calculateFood(
-            log.activity,
-            log.amount,
-            log.unit
-          );
+          // Use direct calculate method instead of async calculateFood
+          // to avoid ClimateIQ API issues
+          calculatedCo2e = calculatorService.calculate({
+            category: log.category,
+            activity: log.activity,
+            amount: parseFloat(log.amount),
+            unit: log.unit,
+          });
         } else if (log.category === "ENERGY") {
           calculatedCo2e = await calculatorService.calculateEnergy(
             log.activity,
@@ -78,10 +81,10 @@ export async function POST(request: NextRequest) {
           `✅ Calculated CO₂e for log ${log.id}: ${calculatedCo2e} kg`
         );
 
-        // Update the database
+        // Update the database with lowercase column name
         await sql`
           UPDATE ActionLog 
-          SET calculatedCo2e = ${calculatedCo2e}
+          SET calculatedco2e = ${calculatedCo2e}
           WHERE id = ${log.id}
         `;
 

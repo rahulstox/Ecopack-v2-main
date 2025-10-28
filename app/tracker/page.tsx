@@ -39,8 +39,8 @@ export default function TrackerPage() {
                     return logDate >= weekAgo;
                 });
 
-                const todayTotal = todayLogs.reduce((sum: number, log: any) => sum + (log.calculatedCo2e || 0), 0);
-                const weekTotal = weekLogs.reduce((sum: number, log: any) => sum + (log.calculatedCo2e || 0), 0);
+                const todayTotal = todayLogs.reduce((sum: number, log: any) => sum + Number(log.calculatedCo2e || 0), 0);
+                const weekTotal = weekLogs.reduce((sum: number, log: any) => sum + Number(log.calculatedCo2e || 0), 0);
 
                 setTodayEmissions(todayTotal);
                 setWeekEmissions(weekTotal);
@@ -86,7 +86,7 @@ export default function TrackerPage() {
                                     </div>
                                     <div>
                                         <p className="text-sm text-gray-600">Today's Emissions</p>
-                                        <p className="text-2xl font-bold text-gray-900">{todayEmissions.toFixed(2)} kg</p>
+                                        <p className="text-2xl font-bold text-gray-900">{Number(todayEmissions || 0).toFixed(2)} kg</p>
                                     </div>
                                 </div>
                             </div>
@@ -100,7 +100,7 @@ export default function TrackerPage() {
                                     </div>
                                     <div>
                                         <p className="text-sm text-gray-600">Week's Total</p>
-                                        <p className="text-2xl font-bold text-gray-900">{weekEmissions.toFixed(2)} kg</p>
+                                        <p className="text-2xl font-bold text-gray-900">{Number(weekEmissions || 0).toFixed(2)} kg</p>
                                     </div>
                                 </div>
                             </div>
@@ -141,7 +141,7 @@ export default function TrackerPage() {
                                                     <p className="text-sm text-gray-600">{log.amount} {log.unit}</p>
                                                 </div>
                                             </div>
-                                            <p className="font-bold text-green-600">{(log.calculatedCo2e || 0).toFixed(2)} kg</p>
+                                            <p className="font-bold text-green-600">{Number(log.calculatedCo2e || 0).toFixed(2)} kg</p>
                                         </div>
                                     ))}
                                 </div>

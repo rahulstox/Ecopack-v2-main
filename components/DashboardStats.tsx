@@ -22,11 +22,11 @@ interface DashboardStatsProps {
 
 export function DashboardStats({ stats }: DashboardStatsProps) {
     const formatNumber = (num: number | undefined) => {
-        if (num === undefined || num === null) return '0.00';
-        if (num >= 1000) {
-            return `${(num / 1000).toFixed(2)}k`;
+        const numValue = Number(num || 0);
+        if (numValue >= 1000) {
+            return `${(numValue / 1000).toFixed(2)}k`;
         }
-        return num.toFixed(2);
+        return numValue.toFixed(2);
     };
 
     const statCards = [

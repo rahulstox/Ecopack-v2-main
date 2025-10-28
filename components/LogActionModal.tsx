@@ -20,6 +20,23 @@ interface LogActionModalProps {
     userId: string;
 }
 
+// Define activities and units by category
+const ACTIVITIES_BY_CATEGORY = {
+    TRANSPORT: ['Car Drive', 'Bus Ride', 'Train Ride', 'Flight', 'Motorcycle', 'Bike Ride', 'Walk'],
+    FOOD: ['Beef Meal', 'Chicken Meal', 'Pork Meal', 'Fish Meal', 'Eggs', 'Milk', 'Cheese', 'Rice', 'Vegetables', 'Fruits', 'Veg Meal'],
+    ENERGY: ['Electricity', 'Natural Gas', 'Solar Power', 'Heating', 'Cooling'],
+    PACKAGING: ['Plastic Packaging', 'Cardboard', 'Paper', 'Glass Bottle', 'Metal Can', 'Aluminum'],
+    WASTE: ['Plastic Waste', 'Paper Waste', 'Glass Waste', 'Metal Waste', 'Organic Waste', 'Electronic Waste'],
+};
+
+const UNITS_BY_CATEGORY = {
+    TRANSPORT: ['KM', 'Miles'],
+    FOOD: ['G', 'KG', 'L', 'LITER', 'DOZEN'],
+    ENERGY: ['KWH', 'MWh'],
+    PACKAGING: ['KG', 'G', 'Pieces'],
+    WASTE: ['KG', 'G', 'Bags'],
+};
+
 export function LogActionModal({ isOpen, onClose, userId }: LogActionModalProps) {
     const [activeTab, setActiveTab] = useState<'manual' | 'ai'>('manual');
     const [loading, setLoading] = useState(false);
@@ -29,8 +46,37 @@ export function LogActionModal({ isOpen, onClose, userId }: LogActionModalProps)
         amount: '',
         unit: '',
     });
+    const [activitySearch, setActivitySearch] = useState('');
     const [aiInput, setAiInput] = useState('');
     const [aiLoading, setAiLoading] = useState(false);
+
+    // Get filtered activities based on search
+    const getFilteredActivities = () => {
+        if (!manualForm.category) return [];
+        const activities = ACTIVITIES_BY_CATEGORY[manualForm.category as keyof typeof ACTIVITIES_BY_CATEGORY] || [];
+        if (!activitySearch) return activities;
+        return activities.filter(activity =>
+            activity.toLowerCase().includes(activitySearch.toLowerCase())
+        );
+    };
+
+    // Get available units based on category
+    const getAvailableUnits = () => {
+        if (!manualForm.category) return [];
+        return UNITS_BY_CATEGORY[manualForm.category as keyof typeof UNITS_BY_CATEGORY] || [];
+    };
+
+    // Auto-select first unit when category changes
+    const handleCategoryChange = (category: string) => {
+        const units = UNITS_BY_CATEGORY[category as keyof typeof UNITS_BY_CATEGORY] || [];
+        setManualForm({
+            ...manualForm,
+            category,
+            activity: '',
+            unit: units[0] || '',
+        });
+        setActivitySearch('');
+    };
 
     const handleManualSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -136,7 +182,7 @@ export function LogActionModal({ isOpen, onClose, userId }: LogActionModalProps)
                             <Label htmlFor="category">Category *</Label>
                             <Select
                                 value={manualForm.category}
-                                onValueChange={(value) => setManualForm({ ...manualForm, category: value })}
+                                onValueChange={handleCategoryChange}
                             >
                                 <SelectTrigger id="category">
                                     <SelectValue placeholder="Select category" />
@@ -153,13 +199,45 @@ export function LogActionModal({ isOpen, onClose, userId }: LogActionModalProps)
 
                         <div>
                             <Label htmlFor="activity">Activity *</Label>
-                            <Input
-                                id="activity"
-                                value={manualForm.activity}
-                                onChange={(e) => setManualForm({ ...manualForm, activity: e.target.value })}
-                                placeholder="e.g., Petrol Car, Chicken Meal"
-                                required
-                            />
+                            <div className="relative">
+                                <Input
+                                    id="activity"
+                                    value={activitySearch}
+                                    onChange={(e) => {
+                                        setActivitySearch(e.target.value);
+                                        setManualForm({ ...manualForm, activity: e.target.value });
+                                    }}
+                                    placeholder="Search or type activity..."
+                                    required
+                                />
+                                {activitySearch && getFilteredActivities().length > 0 && (
+                                    <div className="absolute z-50 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-40 overflow-y-auto">
+                                        {getFilteredActivities().map((activity) => (
+                                            <button
+                                                key={activity}
+                                                type="button"
+                                                className="w-full text-left px-4 py-2 hover:bg-green-50 hover:text-green-700 cursor-pointer transition-colors border-b border-gray-100 last:border-b-0"
+                                                onClick={() => {
+                                                    setManualForm({ ...manualForm, activity });
+                                                    setActivitySearch(activity);
+                                                }}
+                                            >
+                                                <div className="flex items-center gap-2">
+                                                    <svg className="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                                                    </svg>
+                                                    <span className="font-medium">{activity}</span>
+                                                </div>
+                                            </button>
+                                        ))}
+                                    </div>
+                                )}
+                            </div>
+                            {!activitySearch && manualForm.category && (
+                                <p className="text-xs text-gray-500 mt-1">
+                                    Start typing to search: {getFilteredActivities().slice(0, 3).join(', ')}...
+                                </p>
+                            )}
                         </div>
 
                         <div className="grid grid-cols-2 gap-4">
@@ -180,20 +258,24 @@ export function LogActionModal({ isOpen, onClose, userId }: LogActionModalProps)
                                 <Select
                                     value={manualForm.unit}
                                     onValueChange={(value) => setManualForm({ ...manualForm, unit: value })}
+                                    disabled={!manualForm.category}
                                 >
                                     <SelectTrigger id="unit">
-                                        <SelectValue placeholder="Select unit" />
+                                        <SelectValue placeholder={manualForm.category ? "Select unit" : "Select category first"} />
                                     </SelectTrigger>
                                     <SelectContent>
-                                        <SelectItem value="KM">KM</SelectItem>
-                                        <SelectItem value="KG">KG</SelectItem>
-                                        <SelectItem value="G">G</SelectItem>
-                                        <SelectItem value="KWH">KWH</SelectItem>
-                                        <SelectItem value="L">L</SelectItem>
-                                        <SelectItem value="DOZEN">Dozen</SelectItem>
-                                        <SelectItem value="LITER">Liter</SelectItem>
+                                        {getAvailableUnits().map((unit) => (
+                                            <SelectItem key={unit} value={unit}>
+                                                {unit}
+                                            </SelectItem>
+                                        ))}
                                     </SelectContent>
                                 </Select>
+                                {manualForm.category && manualForm.unit && (
+                                    <p className="text-xs text-gray-500 mt-1">
+                                        ✓ Unit auto-selected for {manualForm.category.toLowerCase()}
+                                    </p>
+                                )}
                             </div>
                         </div>
 
