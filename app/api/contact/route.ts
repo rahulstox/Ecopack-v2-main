@@ -4,9 +4,6 @@ import { Resend } from "resend";
 
 export const dynamic = "force-dynamic";
 
-// Initialize Resend with API key
-const resend = new Resend(process.env.RESEND_API_KEY);
-
 export async function POST(request: NextRequest) {
   try {
     const { userId } = await auth();
@@ -33,6 +30,13 @@ export async function POST(request: NextRequest) {
 
     // Send email using Resend API
     try {
+      // Initialize Resend lazily (only when needed, not at module level)
+      const apiKey = process.env.RESEND_API_KEY;
+      if (!apiKey) {
+        throw new Error("RESEND_API_KEY is not configured");
+      }
+
+      const resend = new Resend(apiKey);
       const data = await resend.emails.send({
         from: "EcoPack AI <onboarding@resend.dev>", // Using Resend's test domain
         to: ["ecopackai@gmail.com"], // Your Resend verified email
