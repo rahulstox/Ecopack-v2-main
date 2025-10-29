@@ -68,6 +68,23 @@ function RecommendPageContent() {
   const [recommendationData, setRecommendationData] = useState<any>(null);
   const [showCategorySuggestions, setShowCategorySuggestions] = useState(false);
   const [showMaterialSuggestions, setShowMaterialSuggestions] = useState(false);
+  const [co2eSaved, setCo2eSaved] = useState(0);
+
+  // Fetch CO2e saved data
+  useEffect(() => {
+    const fetchCo2e = async () => {
+      try {
+        const response = await fetch('/api/dashboard-stats');
+        const data = await response.json();
+        if (data.success && data.thisMonthCo2e) {
+          setCo2eSaved(data.thisMonthCo2e);
+        }
+      } catch (error) {
+        console.error('Error fetching CO2e:', error);
+      }
+    };
+    fetchCo2e();
+  }, []);
 
   // Load recommendation if viewId is provided
   useEffect(() => {
@@ -708,17 +725,44 @@ function RecommendPageContent() {
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 green:bg-green-50">
       <div className="flex">
-        <Sidebar totalCo2eSaved={0} />
+        <Sidebar totalCo2eSaved={co2eSaved} />
         <div className="flex-1 ml-0 lg:ml-64">
           <div className="p-6">
             {!showResults ? (
               /* Form Section */
-              <div className={`rounded-lg shadow-lg p-8 ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'}`}>
-                <div className="mb-6">
-                  <h1 className={`text-3xl font-bold ${headingClass}`}>Get Recommendation</h1>
-                  <p className={`mt-2 ${textClass}`}>
-                    Enter your product details for AI-powered sustainable packaging recommendations
-                  </p>
+              <div className={`rounded-xl shadow-2xl p-8 ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'} border ${theme === 'dark' ? 'border-gray-700' : 'border-gray-100'}`}>
+                {/* Enhanced Header Section */}
+                <div className="mb-8">
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className={`w-14 h-14 rounded-xl bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center shadow-lg`}>
+                      <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                      </svg>
+                    </div>
+                    <div>
+                      <h1 className={`text-4xl font-bold ${headingClass}`}>Get AI Recommendation</h1>
+                      <p className={`mt-1 text-lg ${textClass}`}>
+                        Intelligent sustainable packaging recommendations powered by Advanced AI
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Info Banner */}
+                  <div className={`mt-6 p-4 rounded-lg bg-gradient-to-r from-blue-50 to-indigo-50 ${theme === 'dark' ? 'from-blue-900/30 to-indigo-900/30' : ''} border border-blue-200 ${theme === 'dark' ? 'border-blue-700' : ''}`}>
+                    <div className="flex items-start gap-3">
+                      <svg className="w-5 h-5 text-blue-600 dark:text-blue-400 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
+                      </svg>
+                      <div>
+                        <p className={`font-semibold ${textClass}`}>How it works</p>
+                        <p className={`text-sm mt-1 ${textClass}`}>
+                          Provide your product specifications, and our AI analyzes thousands of sustainable packaging options
+                          to recommend the best solution for your needs. Get detailed carbon footprint analysis, cost comparison,
+                          and environmental impact assessment in seconds.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
                 </div>
 
                 {/* Quick Fill Templates */}
@@ -1071,39 +1115,59 @@ function RecommendPageContent() {
             ) : (
               /* Results Dashboard Section */
               <div className="space-y-6">
-                {/* Header */}
-                <div className={`rounded-lg shadow-lg p-6 ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'}`}>
-                  <div className="flex justify-between items-center">
-                    <div>
+                {/* Enhanced Header */}
+                <div className={`rounded-xl shadow-2xl ${theme === 'dark' ? 'bg-gradient-to-br from-gray-800 to-gray-900' : 'bg-gradient-to-br from-white to-gray-50'} border ${theme === 'dark' ? 'border-gray-700' : 'border-gray-200'} p-8`}>
+                  <div className="flex flex-col lg:flex-row justify-between items-start gap-6">
+                    <div className="flex-1">
                       <button
                         onClick={() => setShowResults(false)}
-                        className={`text-sm ${theme === 'dark' ? 'text-blue-400' : 'text-blue-600'} hover:underline mb-2 flex items-center gap-1`}
+                        className={`text-sm font-medium mb-4 ${theme === 'dark' ? 'text-blue-400 hover:text-blue-300' : 'text-blue-600 hover:text-blue-700'} hover:underline flex items-center gap-2 transition-colors`}
                       >
-                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
                         </svg>
                         Back to Form
                       </button>
-                      <h1 className={`text-3xl font-bold ${headingClass}`}>Sustainability Recommendation</h1>
-                      <div className="flex items-center gap-3 mt-2 flex-wrap">
-                        <span className="bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300 px-3 py-1 rounded-full text-sm font-semibold">
-                          Optimal Solution
-                        </span>
-                        <span className="bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 px-3 py-1 rounded-full text-sm font-semibold flex items-center gap-1">
-                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      <div className="flex items-start gap-4 mb-4">
+                        <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center shadow-lg`}>
+                          <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                           </svg>
-                          Generated in &lt;60s
-                        </span>
-                        <span className={`text-sm ${textClass}`}>
-                          {formData.product_weight} {formData.product_category} • {formData.sustainability_priority}/5 Priority
-                        </span>
+                        </div>
+                        <div>
+                          <h1 className={`text-4xl font-bold mb-2 ${headingClass}`}>AI Recommendation Generated</h1>
+                          <p className={`text-base ${textClass} mb-3`}>
+                            Intelligent sustainable packaging solution for your product
+                          </p>
+                          <div className="flex flex-wrap items-center gap-3">
+                            <span className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold shadow-md ${theme === 'dark' ? 'bg-green-900/50 text-green-300 border border-green-700' : 'bg-gradient-to-r from-green-100 to-emerald-100 text-green-700 border border-green-300'}`}>
+                              <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                              </svg>
+                              Optimal Solution
+                            </span>
+                            {recommendationData?.aiOutput?.processing_time && (
+                              <span className={`inline-flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium ${theme === 'dark' ? 'bg-blue-900/30 text-blue-300 border border-blue-700' : 'bg-blue-50 text-blue-700 border border-blue-200'}`}>
+                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                Processed in {recommendationData.aiOutput.processing_time.ai_processing?.toFixed(1) || '3'}s
+                              </span>
+                            )}
+                            <span className={`text-sm px-3 py-1.5 rounded-lg ${theme === 'dark' ? 'bg-gray-700 text-gray-300' : 'bg-gray-100 text-gray-700'}`}>
+                              {formData.product_weight} {formData.product_category}
+                            </span>
+                            <span className={`text-sm px-3 py-1.5 rounded-lg ${theme === 'dark' ? 'bg-gray-700 text-gray-300' : 'bg-gray-100 text-gray-700'}`}>
+                              Priority: {formData.sustainability_priority}/5
+                            </span>
+                          </div>
+                        </div>
                       </div>
                     </div>
-                    <div className="flex gap-3">
+                    <div className="flex flex-col sm:flex-row gap-3">
                       <button
                         onClick={handleShare}
-                        className={`px-4 py-2 rounded-lg border ${theme === 'dark' ? 'border-gray-600 text-gray-300 hover:bg-gray-700' : 'border-gray-300 hover:bg-gray-50'} transition-colors flex items-center gap-2`}
+                        className={`px-6 py-3 rounded-xl border-2 font-semibold transition-all shadow-md hover:shadow-lg ${theme === 'dark' ? 'border-gray-600 text-gray-300 hover:bg-gray-700' : 'border-gray-300 text-gray-700 hover:bg-gray-50'} flex items-center gap-2`}
                       >
                         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
@@ -1112,44 +1176,59 @@ function RecommendPageContent() {
                       </button>
                       <button
                         onClick={handleExportReport}
-                        className={`px-4 py-2 rounded-lg border ${theme === 'dark' ? 'border-gray-600 text-gray-300 hover:bg-gray-700' : 'border-gray-300 hover:bg-gray-50'} transition-colors flex items-center gap-2`}
+                        className={`px-6 py-3 rounded-xl bg-gradient-to-r from-green-600 to-emerald-600 text-white font-semibold transition-all shadow-lg hover:shadow-xl hover:from-green-700 hover:to-emerald-700 flex items-center gap-2`}
                       >
                         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
                         </svg>
-                        Export Report
+                        Export PDF
                       </button>
                     </div>
                   </div>
                 </div>
 
-                {/* Tab Navigation */}
-                <div className={`rounded-lg ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'} p-1 flex gap-2`}>
+                {/* Enhanced Tab Navigation */}
+                <div className={`rounded-xl ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'} shadow-lg p-2 flex gap-2 border ${theme === 'dark' ? 'border-gray-700' : 'border-gray-200'}`}>
                   <button
                     onClick={() => setActiveTab('overview')}
-                    className={`px-6 py-2 rounded font-semibold text-sm transition-all ${activeTab === 'overview'
-                      ? (theme === 'dark' ? 'bg-green-600 text-white' : 'bg-green-100 text-green-700')
-                      : textClass + ' hover:opacity-70'
+                    className={`px-6 py-3 rounded-lg font-semibold text-sm transition-all flex items-center gap-2 ${activeTab === 'overview'
+                      ? (theme === 'dark'
+                        ? 'bg-gradient-to-r from-green-600 to-emerald-600 text-white shadow-md'
+                        : 'bg-gradient-to-r from-green-100 to-emerald-100 text-green-700 border-2 border-green-300')
+                      : (theme === 'dark' ? 'text-gray-400 hover:text-gray-300 hover:bg-gray-700' : textClass + ' hover:bg-gray-50')
                       }`}
                   >
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                    </svg>
                     Overview
                   </button>
                   <button
                     onClick={() => setActiveTab('detailed')}
-                    className={`px-6 py-2 rounded font-semibold text-sm transition-all ${activeTab === 'detailed'
-                      ? (theme === 'dark' ? 'bg-green-600 text-white' : 'bg-green-100 text-green-700')
-                      : textClass + ' hover:opacity-70'
+                    className={`px-6 py-3 rounded-lg font-semibold text-sm transition-all flex items-center gap-2 ${activeTab === 'detailed'
+                      ? (theme === 'dark'
+                        ? 'bg-gradient-to-r from-green-600 to-emerald-600 text-white shadow-md'
+                        : 'bg-gradient-to-r from-green-100 to-emerald-100 text-green-700 border-2 border-green-300')
+                      : (theme === 'dark' ? 'text-gray-400 hover:text-gray-300 hover:bg-gray-700' : textClass + ' hover:bg-gray-50')
                       }`}
                   >
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
                     Detailed Analysis
                   </button>
                   <button
                     onClick={() => setActiveTab('comparison')}
-                    className={`px-6 py-2 rounded font-semibold text-sm transition-all ${activeTab === 'comparison'
-                      ? (theme === 'dark' ? 'bg-green-600 text-white' : 'bg-green-100 text-green-700')
-                      : textClass + ' hover:opacity-70'
+                    className={`px-6 py-3 rounded-lg font-semibold text-sm transition-all flex items-center gap-2 ${activeTab === 'comparison'
+                      ? (theme === 'dark'
+                        ? 'bg-gradient-to-r from-green-600 to-emerald-600 text-white shadow-md'
+                        : 'bg-gradient-to-r from-green-100 to-emerald-100 text-green-700 border-2 border-green-300')
+                      : (theme === 'dark' ? 'text-gray-400 hover:text-gray-300 hover:bg-gray-700' : textClass + ' hover:bg-gray-50')
                       }`}
                   >
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                    </svg>
                     Comparison
                   </button>
                 </div>
