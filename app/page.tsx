@@ -309,13 +309,13 @@ export default function Home() {
       </nav>
 
       {/* Home Section */}
-      <section id="home" className={`container mx-auto px-6 pb-12 pt-8 ${theme === 'dark' ? 'text-white' : ''}`}>
-        <div className="grid lg:grid-cols-2 gap-12 items-center min-h-[80vh]">
+      <section id="home" className={`container mx-auto px-4 sm:px-6 pb-12 pt-8 ${theme === 'dark' ? 'text-white' : ''}`}>
+        <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center min-h-[80vh]">
           {/* Left Section - Content */}
-          <div className="space-y-8">
-            <div className={`inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-sm font-semibold ${theme === 'dark' ? 'bg-green-700' : 'bg-green-600'
+          <div className="space-y-6 sm:space-y-8">
+            <div className={`inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 rounded-full text-xs sm:text-sm font-semibold ${theme === 'dark' ? 'bg-green-700' : 'bg-green-600'
               } text-white`}>
-              <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+              <svg className="w-3 h-3 sm:w-4 sm:h-4" fill="currentColor" viewBox="0 0 20 20">
                 <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z" />
                 <path fillRule="evenodd" d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z" clipRule="evenodd" />
               </svg>
@@ -323,12 +323,12 @@ export default function Home() {
             </div>
 
             <div>
-              <h1 className={`text-6xl md:text-7xl font-extrabold mb-4 leading-tight ${theme === 'dark' ? 'text-white' : 'text-gray-900'
+              <h1 className={`text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold mb-3 sm:mb-4 leading-tight ${theme === 'dark' ? 'text-white' : 'text-gray-900'
                 }`}>
                 EcoPack{' '}
                 <span className={`${theme === 'dark' ? 'text-green-400' : 'text-green-600'}`}>AI</span>
               </h1>
-              <p className={`text-xl md:text-2xl leading-relaxed ${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'
+              <p className={`text-base sm:text-lg md:text-xl lg:text-2xl leading-relaxed ${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'
                 }`}>
                 Instant, eco-smart packaging picks for every SKU.{' '}
                 <span className={`font-bold ${theme === 'dark' ? 'text-green-400' : 'text-green-600'}`}>
@@ -337,34 +337,46 @@ export default function Home() {
               </p>
             </div>
 
-            <div className="grid grid-cols-3 gap-6 pt-6">
+            <div className="grid grid-cols-3 gap-3 sm:gap-4 md:gap-6 pt-4 sm:pt-6">
               <div>
-                <div className={`text-4xl font-bold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>85%</div>
-                <div className={`text-sm mt-1 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>Plastic Reduction</div>
+                <div className={`text-2xl sm:text-3xl md:text-4xl font-bold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>85%</div>
+                <div className={`text-xs sm:text-sm mt-1 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>Plastic Reduction</div>
               </div>
               <div>
-                <div className={`text-4xl font-bold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>30%</div>
-                <div className={`text-sm mt-1 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>Cost Savings</div>
+                <div className={`text-2xl sm:text-3xl md:text-4xl font-bold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>30%</div>
+                <div className={`text-xs sm:text-sm mt-1 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>Cost Savings</div>
               </div>
               <div>
-                <div className={`text-4xl font-bold ${theme === 'dark' ? 'text-green-400' : 'text-green-600'}`}>&lt;20s</div>
-                <div className={`text-sm mt-1 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>Response Time</div>
+                <div className={`text-2xl sm:text-3xl md:text-4xl font-bold ${theme === 'dark' ? 'text-green-400' : 'text-green-600'}`}>&lt;20s</div>
+                <div className={`text-xs sm:text-sm mt-1 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>Response Time</div>
               </div>
             </div>
 
-            <div className="flex flex-wrap gap-4 pt-4">
-              <Link
-                href="/dashboard"
-                className="inline-flex items-center gap-2 bg-green-700 hover:bg-green-800 text-white px-8 py-4 rounded-xl font-semibold text-lg transition-all shadow-lg hover:shadow-xl"
-              >
-                Get Started
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                </svg>
-              </Link>
+            <div className="flex flex-col sm:flex-row flex-wrap gap-3 sm:gap-4 pt-4">
+              <SignedIn>
+                <Link
+                  href="/dashboard"
+                  className="inline-flex items-center justify-center gap-2 bg-green-700 hover:bg-green-800 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-semibold text-base sm:text-lg transition-all shadow-lg hover:shadow-xl"
+                >
+                  Get Started
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                  </svg>
+                </Link>
+              </SignedIn>
+              <SignedOut>
+                <SignInButton mode="modal">
+                  <button className="inline-flex items-center justify-center gap-2 bg-green-700 hover:bg-green-800 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-semibold text-base sm:text-lg transition-all shadow-lg hover:shadow-xl">
+                    Get Started
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                    </svg>
+                  </button>
+                </SignInButton>
+              </SignedOut>
               <Link
                 href="/history"
-                className="inline-flex items-center gap-2 bg-white hover:bg-gray-50 text-gray-800 border-2 border-gray-300 px-8 py-4 rounded-xl font-semibold text-lg transition-all shadow-lg hover:shadow-xl"
+                className="inline-flex items-center justify-center gap-2 bg-white hover:bg-gray-50 text-gray-800 border-2 border-gray-300 px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-semibold text-base sm:text-lg transition-all shadow-lg hover:shadow-xl"
               >
                 View Demo
               </Link>
@@ -372,7 +384,7 @@ export default function Home() {
           </div>
 
           {/* Right Section - 3D Visualization */}
-          <div className="relative lg:h-[600px] lg:w-full">
+          <div className="relative h-[400px] sm:h-[500px] lg:h-[600px] lg:w-full hidden sm:block">
             <div className="relative bg-white rounded-3xl shadow-2xl p-12 h-full flex items-center justify-center overflow-hidden">
               <div className="absolute inset-0 flex items-center justify-center">
                 <div className="w-[400px] h-[400px] bg-gradient-to-br from-emerald-200 to-teal-300 rounded-full animate-pulse opacity-20"></div>
@@ -436,7 +448,7 @@ export default function Home() {
       <section className={`py-20 ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'}`}>
         <div className="container mx-auto px-6">
           <div className="text-center mb-16">
-            <h2 className={`text-4xl md:text-5xl font-bold mb-4 ${theme === 'dark' ? 'text-white' : 'text-gray-900'
+            <h2 className={`text-3xl sm:text-4xl md:text-5xl font-bold mb-4 ${theme === 'dark' ? 'text-white' : 'text-gray-900'
               }`}>
               Why Choose EcoPack AI?
             </h2>
@@ -504,10 +516,10 @@ export default function Home() {
                 <h3 className={`text-xl font-bold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>Lightning Fast</h3>
               </div>
               <p className={`${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'} mb-6`}>
-                Get instant AI-powered packaging recommendations in under 20 seconds with detailed PDF reports and comparisons
+                Get instant AI-powered packaging recommendations in under 5 seconds with detailed PDF reports and comparisons
               </p>
               <div className={`rounded-xl p-4 mt-6 ${theme === 'dark' ? 'bg-gray-600' : 'bg-purple-100'}`}>
-                <div className={`text-4xl font-bold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>&lt;20s</div>
+                <div className={`text-4xl font-bold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>&lt;5s</div>
                 <div className={`text-sm font-medium ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}`}>Processing Time</div>
               </div>
             </div>
@@ -522,7 +534,7 @@ export default function Home() {
         }`}>
         <div className="container mx-auto px-6">
           <div className="max-w-4xl mx-auto text-center">
-            <h2 className={`text-4xl md:text-5xl font-bold mb-6 ${theme === 'dark' ? 'text-white' : 'text-gray-900'
+            <h2 className={`text-3xl sm:text-4xl md:text-5xl font-bold mb-6 ${theme === 'dark' ? 'text-white' : 'text-gray-900'
               }`}>About Us</h2>
             <p className={`text-xl mb-8 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'
               }`}>
@@ -697,15 +709,27 @@ export default function Home() {
 
             {/* CTA Button */}
             <div className="text-center mt-12">
-              <Link
-                href="/dashboard"
-                className="inline-flex items-center gap-3 bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white px-8 py-4 rounded-2xl font-bold text-lg transition-all shadow-xl hover:shadow-2xl group"
-              >
-                <span>Get Started Now</span>
-                <svg className="w-6 h-6 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                </svg>
-              </Link>
+              <SignedIn>
+                <Link
+                  href="/dashboard"
+                  className="inline-flex items-center gap-3 bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white px-8 py-4 rounded-2xl font-bold text-lg transition-all shadow-xl hover:shadow-2xl group"
+                >
+                  <span>Get Started Now</span>
+                  <svg className="w-6 h-6 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                  </svg>
+                </Link>
+              </SignedIn>
+              <SignedOut>
+                <SignInButton mode="modal">
+                  <button className="inline-flex items-center gap-3 bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white px-8 py-4 rounded-2xl font-bold text-lg transition-all shadow-xl hover:shadow-2xl group">
+                    <span>Get Started Now</span>
+                    <svg className="w-6 h-6 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                    </svg>
+                  </button>
+                </SignInButton>
+              </SignedOut>
             </div>
           </div>
         </div>
@@ -717,12 +741,12 @@ export default function Home() {
         : 'bg-gradient-to-br from-blue-50 to-cyan-50'
         }`}>
         <div className="container mx-auto px-6">
-          <h2 className={`text-4xl md:text-5xl font-bold text-center mb-4 ${theme === 'dark' ? 'text-white' : 'text-gray-900'
+          <h2 className={`text-3xl sm:text-4xl md:text-5xl font-bold text-center mb-4 ${theme === 'dark' ? 'text-white' : 'text-gray-900'
             }`}>Pricing</h2>
-          <p className={`text-xl text-center mb-12 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'
+          <p className={`text-base sm:text-lg md:text-xl text-center mb-12 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'
             }`}>Choose the plan that works for you</p>
-          <div className="max-w-6xl mx-auto grid md:grid-cols-3 gap-8">
-            <div className={`rounded-3xl p-8 shadow-xl border-2 ${theme === 'dark' ? 'bg-gray-800 border-gray-600' : 'bg-white border-gray-200'
+          <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+            <div className={`rounded-3xl p-6 sm:p-8 shadow-xl border-2 ${theme === 'dark' ? 'bg-gray-800 border-gray-600' : 'bg-white border-gray-200'
               }`}>
               <h3 className={`text-2xl font-bold mb-4 ${theme === 'dark' ? 'text-white' : 'text-gray-900'
                 }`}>Free</h3>
@@ -806,14 +830,26 @@ export default function Home() {
                   <span className="line-through">Team collaboration</span>
                 </li>
               </ul>
-              <button className={`w-full py-3 rounded-xl font-semibold transition-all ${theme === 'dark'
-                ? 'bg-gray-700 text-white hover:bg-gray-600'
-                : 'bg-gray-200 text-gray-800 hover:bg-gray-300'
-                }`}>
-                Get Started
-              </button>
+              <SignedIn>
+                <Link href="/dashboard" className={`block w-full py-3 rounded-xl font-semibold transition-all text-center ${theme === 'dark'
+                  ? 'bg-gray-700 text-white hover:bg-gray-600'
+                  : 'bg-gray-200 text-gray-800 hover:bg-gray-300'
+                  }`}>
+                  Get Started
+                </Link>
+              </SignedIn>
+              <SignedOut>
+                <SignInButton mode="modal">
+                  <button className={`w-full py-3 rounded-xl font-semibold transition-all ${theme === 'dark'
+                    ? 'bg-gray-700 text-white hover:bg-gray-600'
+                    : 'bg-gray-200 text-gray-800 hover:bg-gray-300'
+                    }`}>
+                    Get Started
+                  </button>
+                </SignInButton>
+              </SignedOut>
             </div>
-            <div className="bg-gradient-to-br from-green-600 to-emerald-600 rounded-3xl p-8 shadow-2xl border-4 border-green-500 transform scale-105 relative overflow-hidden">
+            <div className="bg-gradient-to-br from-green-600 to-emerald-600 rounded-3xl p-6 sm:p-8 shadow-2xl border-4 border-green-500 md:transform md:scale-105 relative overflow-hidden">
               <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -mr-16 -mt-16"></div>
               <div className="absolute bottom-0 left-0 w-24 h-24 bg-white/10 rounded-full -ml-12 -mb-12"></div>
               <div className="relative">
@@ -879,12 +915,21 @@ export default function Home() {
                     <span className="font-medium">🎯 Goal tracking & milestones</span>
                   </li>
                 </ul>
-                <button className="w-full bg-white text-green-600 py-3.5 rounded-xl font-bold hover:bg-gray-50 transition-all shadow-xl hover:shadow-2xl hover:scale-105">
-                  Get Started Now
-                </button>
+                <SignedIn>
+                  <Link href="/dashboard" className="block w-full bg-white text-green-600 py-3.5 rounded-xl font-bold hover:bg-gray-50 transition-all shadow-xl hover:shadow-2xl hover:scale-105 text-center">
+                    Get Started Now
+                  </Link>
+                </SignedIn>
+                <SignedOut>
+                  <SignInButton mode="modal">
+                    <button className="w-full bg-white text-green-600 py-3.5 rounded-xl font-bold hover:bg-gray-50 transition-all shadow-xl hover:shadow-2xl hover:scale-105">
+                      Get Started Now
+                    </button>
+                  </SignInButton>
+                </SignedOut>
               </div>
             </div>
-            <div className={`rounded-3xl p-8 shadow-xl border-2 ${theme === 'dark' ? 'bg-gray-800 border-gray-600' : 'bg-white border-gray-200'
+            <div className={`rounded-3xl p-6 sm:p-8 shadow-xl border-2 ${theme === 'dark' ? 'bg-gray-800 border-gray-600' : 'bg-white border-gray-200'
               }`}>
               <h3 className={`text-2xl font-bold mb-4 ${theme === 'dark' ? 'text-white' : 'text-gray-900'
                 }`}>Enterprise</h3>
@@ -948,31 +993,31 @@ export default function Home() {
       </section>
 
       {/* Team Section */}
-      <section id="team" className={`py-20 ${theme === 'dark'
+      <section id="team" className={`py-16 sm:py-20 ${theme === 'dark'
         ? 'bg-gradient-to-br from-gray-800 to-gray-900'
         : 'bg-gradient-to-br from-green-50 to-emerald-50'
         }`}>
-        <div className="container mx-auto px-6 max-w-6xl">
+        <div className="container mx-auto px-4 sm:px-6 max-w-6xl">
           {/* Header */}
-          <div className="text-center mb-16">
-            <div className={`inline-block px-4 py-2 rounded-full text-sm font-semibold mb-4 ${theme === 'dark' ? 'bg-green-800 text-green-300' : 'bg-green-100 text-green-700'
+          <div className="text-center mb-12 sm:mb-16">
+            <div className={`inline-block px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-semibold mb-4 ${theme === 'dark' ? 'bg-green-800 text-green-300' : 'bg-green-100 text-green-700'
               }`}>
               Our Team
             </div>
-            <h2 className={`text-4xl md:text-6xl font-bold mb-4 ${theme === 'dark' ? 'text-white' : 'text-gray-900'
+            <h2 className={`text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 ${theme === 'dark' ? 'text-white' : 'text-gray-900'
               }`}>
               Meet the Minds Behind EcoPack AI
             </h2>
-            <p className={`text-xl max-w-2xl mx-auto ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'
+            <p className={`text-base sm:text-lg md:text-xl max-w-2xl mx-auto ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'
               }`}>
               Passionate innovators dedicated to creating a sustainable future.
             </p>
           </div>
 
           {/* Team Members */}
-          <div className="grid md:grid-cols-2 gap-12 max-w-4xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 max-w-4xl mx-auto">
             {/* Rahul Gupta - Lead Developer */}
-            <div className={`rounded-3xl p-8 shadow-xl hover:shadow-2xl transition-all duration-300 ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'
+            <div className={`rounded-3xl p-6 sm:p-8 shadow-xl hover:shadow-2xl transition-all duration-300 ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'
               }`}>
               <div className="flex flex-col items-center text-center">
                 <div className="w-32 h-32 bg-gradient-to-br from-indigo-400 to-purple-500 rounded-2xl flex items-center justify-center mb-6 shadow-lg">
@@ -1008,7 +1053,7 @@ export default function Home() {
             </div>
 
             {/* Pratistha Gupta - Lead Developer */}
-            <div className={`rounded-3xl p-8 shadow-xl hover:shadow-2xl transition-all duration-300 ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'
+            <div className={`rounded-3xl p-6 sm:p-8 shadow-xl hover:shadow-2xl transition-all duration-300 ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'
               }`}>
               <div className="flex flex-col items-center text-center">
                 <div className="w-32 h-32 bg-gradient-to-br from-pink-400 to-rose-500 rounded-2xl flex items-center justify-center mb-6 shadow-lg">
@@ -1047,21 +1092,21 @@ export default function Home() {
       </section>
 
       {/* Contact Section */}
-      <section id="contact" className={`py-20 ${theme === 'dark' ? 'bg-gray-900' : 'bg-white'
+      <section id="contact" className={`py-16 sm:py-20 ${theme === 'dark' ? 'bg-gray-900' : 'bg-white'
         }`}>
-        <div className="container mx-auto px-6 max-w-7xl">
-          <div className="text-center mb-16">
-            <h2 className={`text-5xl md:text-6xl font-bold mb-4 ${theme === 'dark' ? 'text-white' : 'text-gray-900'
+        <div className="container mx-auto px-4 sm:px-6 max-w-7xl">
+          <div className="text-center mb-12 sm:mb-16">
+            <h2 className={`text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 ${theme === 'dark' ? 'text-white' : 'text-gray-900'
               }`}>Get in Touch</h2>
-            <p className={`text-xl max-w-3xl mx-auto ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'
+            <p className={`text-base sm:text-lg md:text-xl max-w-3xl mx-auto ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'
               }`}>
               Have questions? We'd love to hear from you. Send us a message and we'll respond as soon as possible.
             </p>
           </div>
 
-          <div className="grid lg:grid-cols-2 gap-12">
+          <div className="grid lg:grid-cols-2 gap-8 lg:gap-12">
             {/* Left Column - Contact Form */}
-            <div className={`rounded-3xl shadow-2xl p-8 ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'
+            <div className={`rounded-3xl shadow-2xl p-6 sm:p-8 ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'
               }`}>
               <h2 className={`text-2xl font-bold mb-6 ${theme === 'dark' ? 'text-white' : 'text-gray-900'
                 }`}>Send us a Message</h2>

@@ -242,7 +242,7 @@ Users receive:
 
 ### User Experience
 
-- **Fast Results**: <20s response time
+- **Fast Results**: <5s response time
 - **Easy to Use**: Intuitive interface
 - **Comprehensive**: Complete packaging solution
 - **Professional Reports**: Shareable PDF exports
