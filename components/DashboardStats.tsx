@@ -78,27 +78,38 @@ export function DashboardStats({ stats }: DashboardStatsProps) {
     };
 
     return (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
             {statCards.map((stat, index) => {
                 const Icon = stat.icon;
+                const gradientClasses = {
+                    green: 'from-green-500 to-emerald-600',
+                    blue: 'from-blue-500 to-cyan-600',
+                    purple: 'from-purple-500 to-pink-600',
+                    yellow: 'from-yellow-400 to-orange-500',
+                };
                 return (
                     <div
                         key={index}
-                        className="bg-white dark:bg-gray-800 green:bg-green-100 rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow"
+                        className="group relative bg-white/90 dark:bg-gray-800/90 backdrop-blur-xl rounded-xl sm:rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 p-4 sm:p-6 border border-gray-200/50 dark:border-gray-700/50 hover:scale-[1.02] overflow-hidden"
                     >
-                        <div className="flex items-center justify-between mb-4">
-                            <div className={`p-3 rounded-xl ${getColorClasses(stat.color)} shadow-md`}>
-                                <Icon className="w-6 h-6" />
-                            </div>
-                            {stat.trend && (
-                                <div className={`flex items-center ${stat.trend === 'up' ? 'text-red-500 dark:text-red-400' : 'text-green-500 dark:text-green-400'}`}>
-                                    {stat.trend === 'up' ? <TrendingUp className="w-4 h-4" /> : <TrendingDown className="w-4 h-4" />}
+                        {/* Decorative gradient overlay */}
+                        <div className={`absolute top-0 right-0 w-32 h-32 bg-gradient-to-br ${gradientClasses[stat.color as keyof typeof gradientClasses]} opacity-10 rounded-full blur-2xl group-hover:opacity-20 transition-opacity`}></div>
+
+                        <div className="relative">
+                            <div className="flex items-center justify-between mb-3 sm:mb-4">
+                                <div className={`p-2.5 sm:p-3.5 rounded-xl sm:rounded-2xl bg-gradient-to-br ${gradientClasses[stat.color as keyof typeof gradientClasses]} shadow-lg group-hover:scale-110 transition-transform duration-300`}>
+                                    <Icon className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
                                 </div>
-                            )}
+                                {stat.trend && (
+                                    <div className={`flex items-center ${stat.trend === 'up' ? 'text-red-500 dark:text-red-400' : 'text-green-500 dark:text-green-400'}`}>
+                                        {stat.trend === 'up' ? <TrendingUp className="w-5 h-5" /> : <TrendingDown className="w-5 h-5" />}
+                                    </div>
+                                )}
+                            </div>
+                            <h3 className="text-2xl sm:text-3xl font-extrabold text-gray-900 dark:text-white mb-1 sm:mb-1.5 bg-clip-text">{stat.value}</h3>
+                            <p className="text-xs sm:text-sm font-bold text-gray-700 dark:text-gray-300 mb-0.5 sm:mb-1">{stat.title}</p>
+                            <p className="text-xs text-gray-500 dark:text-gray-400 font-medium">{stat.subtitle}</p>
                         </div>
-                        <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-1">{stat.value}</h3>
-                        <p className="text-sm font-medium text-gray-700 dark:text-gray-300">{stat.title}</p>
-                        <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">{stat.subtitle}</p>
                     </div>
                 );
             })}

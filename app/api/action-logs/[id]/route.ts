@@ -21,12 +21,7 @@ export async function DELETE(
     const resolvedParams = await params;
     const id = parseInt(resolvedParams.id);
 
-    console.log(
-      `🗑️ Delete request for ID: ${id}, Raw ID: ${resolvedParams.id}`
-    );
-
     if (isNaN(id)) {
-      console.error(`❌ Invalid ID: ${resolvedParams.id}`);
       return NextResponse.json(
         { success: false, error: "Invalid ID" },
         { status: 400 }
@@ -46,11 +41,9 @@ export async function DELETE(
     }
 
     // Delete the log
-    const deleteResult = await sql`
+    await sql`
       DELETE FROM ActionLog WHERE id = ${id} AND userId = ${userId}
     `;
-
-    console.log(`✅ Deleted action log ${id} for user ${userId}`);
 
     return NextResponse.json({
       success: true,

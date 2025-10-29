@@ -68,16 +68,16 @@ export default function TrackerPage() {
             <div className="flex">
                 <Sidebar totalCo2eSaved={todayEmissions} />
 
-                <div className="flex-1 ml-0 lg:ml-64">
-                    <div className="p-6 space-y-6">
+                <div className="flex-1 ml-0 lg:ml-64 relative pt-16 lg:pt-0">
+                    <div className="p-4 sm:p-6 space-y-4 sm:space-y-6">
                         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                             <div>
-                                <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white green:text-gray-900">Live Activity Tracker</h1>
-                                <p className="text-gray-600 dark:text-gray-400 green:text-gray-700 mt-2">Track your emissions in real-time</p>
+                                <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white green:text-gray-900">Live Activity Tracker</h1>
+                                <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400 green:text-gray-700 mt-1 sm:mt-2">Track your emissions in real-time</p>
                             </div>
                             {!isPro && (
-                                <div className="flex items-center gap-2 bg-gradient-to-r from-amber-500 via-orange-500 to-red-500 text-white px-5 py-2.5 rounded-lg text-sm font-bold shadow-lg border border-white/20">
-                                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <div className="flex items-center gap-2 bg-gradient-to-r from-amber-500 via-orange-500 to-red-500 text-white px-3 sm:px-5 py-2 sm:py-2.5 rounded-lg text-xs sm:text-sm font-bold shadow-lg border border-white/20">
+                                    <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                                     </svg>
                                     <span>Premium Feature</span>
@@ -87,7 +87,7 @@ export default function TrackerPage() {
 
                         {/* Locked Overlay */}
                         {!isPro && (
-                            <div className="relative bg-white dark:bg-gray-800 green:bg-green-100 rounded-2xl shadow-2xl border border-gray-200 dark:border-gray-700 overflow-hidden min-h-[500px]">
+                            <div className="relative bg-white dark:bg-gray-800 green:bg-green-100 rounded-xl sm:rounded-2xl shadow-2xl border border-gray-200 dark:border-gray-700 overflow-hidden min-h-[400px] sm:min-h-[500px]">
                                 {/* Animated gradient background */}
                                 <div className="absolute inset-0 bg-gradient-to-br from-slate-900/95 via-gray-900/95 to-slate-800/95 dark:from-black/95 dark:via-gray-900/95 dark:to-black/95 backdrop-blur-md z-10">
                                     {/* Decorative pattern */}
@@ -96,30 +96,30 @@ export default function TrackerPage() {
                                         <div className="absolute bottom-0 right-0 w-96 h-96 bg-gradient-to-br from-purple-400 to-pink-500 rounded-full blur-3xl translate-x-1/2 translate-y-1/2"></div>
                                     </div>
 
-                                    <div className="relative z-20 flex flex-col items-center justify-center text-center p-8 h-full min-h-[500px]">
-                                        <div className="bg-gradient-to-br from-amber-400 via-orange-500 to-red-500 rounded-full p-4 mb-6 shadow-2xl animate-pulse">
-                                            <svg className="w-20 h-20 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <div className="relative z-20 flex flex-col items-center justify-center text-center p-4 sm:p-6 lg:p-8 h-full min-h-[400px] sm:min-h-[500px]">
+                                        <div className="bg-gradient-to-br from-amber-400 via-orange-500 to-red-500 rounded-full p-3 sm:p-4 mb-4 sm:mb-6 shadow-2xl animate-pulse">
+                                            <svg className="w-16 h-16 sm:w-20 sm:h-20 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                                             </svg>
                                         </div>
-                                        <div className="mb-4">
-                                            <h2 className="text-4xl sm:text-5xl font-extrabold text-white mb-3 bg-gradient-to-r from-white to-gray-200 bg-clip-text text-transparent">
+                                        <div className="mb-3 sm:mb-4">
+                                            <h2 className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-extrabold text-white mb-2 sm:mb-3 bg-gradient-to-r from-white to-gray-200 bg-clip-text text-transparent">
                                                 Live Activity Tracker
                                             </h2>
-                                            <div className="h-1 w-24 bg-gradient-to-r from-green-400 to-emerald-500 mx-auto rounded-full"></div>
+                                            <div className="h-1 w-16 sm:w-24 bg-gradient-to-r from-green-400 to-emerald-500 mx-auto rounded-full"></div>
                                         </div>
-                                        <p className="text-lg sm:text-xl text-gray-300 mb-2 max-w-lg leading-relaxed">
+                                        <p className="text-base sm:text-lg lg:text-xl text-gray-300 mb-2 max-w-lg leading-relaxed px-4">
                                             Unlock advanced real-time tracking features
                                         </p>
-                                        <p className="text-base text-gray-400 mb-8 max-w-md">
+                                        <p className="text-sm sm:text-base text-gray-400 mb-6 sm:mb-8 max-w-md px-4">
                                             Get instant insights into your carbon footprint with GPS tracking, live maps, and intelligent analytics
                                         </p>
                                         <Link
                                             href="/#pricing"
-                                            className="group bg-gradient-to-r from-green-500 via-emerald-500 to-teal-500 hover:from-green-600 hover:via-emerald-600 hover:to-teal-600 text-white px-10 py-4 rounded-xl font-bold text-lg transition-all shadow-2xl hover:shadow-green-500/50 hover:scale-105 inline-flex items-center gap-3 border border-white/20"
+                                            className="group bg-gradient-to-r from-green-500 via-emerald-500 to-teal-500 hover:from-green-600 hover:via-emerald-600 hover:to-teal-600 text-white px-6 sm:px-10 py-3 sm:py-4 rounded-xl font-bold text-sm sm:text-base lg:text-lg transition-all shadow-2xl hover:shadow-green-500/50 hover:scale-105 inline-flex items-center gap-2 sm:gap-3 border border-white/20"
                                         >
                                             <span>Upgrade to Pro</span>
-                                            <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <svg className="w-4 h-4 sm:w-5 sm:h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
                                             </svg>
                                         </Link>
@@ -129,7 +129,7 @@ export default function TrackerPage() {
                                 {/* Blurred Preview Content */}
                                 <div className="opacity-30 blur-sm">
                                     {/* Stats Cards */}
-                                    <div className="grid md:grid-cols-3 gap-6 mb-6">
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 p-4 sm:p-6">
                                         <div className="bg-gray-100 dark:bg-gray-700 rounded-lg shadow-lg p-6">
                                             <div className="flex items-center gap-3 mb-2">
                                                 <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
@@ -176,7 +176,7 @@ export default function TrackerPage() {
 
                         {/* Stats Cards - Show only for Pro users */}
                         {isPro && (
-                            <div className="grid md:grid-cols-3 gap-6">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
                                 <div className="bg-white dark:bg-gray-800 green:bg-green-100 rounded-lg shadow-lg p-6">
                                     <div className="flex items-center gap-3 mb-2">
                                         <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
@@ -223,8 +223,8 @@ export default function TrackerPage() {
 
                         {/* Today's Activities */}
                         {isPro && (
-                            <div className="bg-white dark:bg-gray-800 green:bg-green-100 rounded-lg shadow-lg p-6">
-                                <h2 className="text-2xl font-bold text-gray-900 dark:text-white green:text-gray-900 mb-4">Today's Activities</h2>
+                            <div className="bg-white dark:bg-gray-800 green:bg-green-100 rounded-lg shadow-lg p-4 sm:p-6">
+                                <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white green:text-gray-900 mb-3 sm:mb-4">Today's Activities</h2>
                                 {todayLogs.length === 0 ? (
                                     <div className="text-center py-8 text-gray-500 dark:text-gray-400">
                                         <p>No activities logged today</p>
@@ -252,22 +252,22 @@ export default function TrackerPage() {
                         )}
 
                         {/* Future Enhancements Section */}
-                        <div className="bg-gradient-to-br from-white via-gray-50 to-blue-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 rounded-2xl shadow-2xl p-8 sm:p-10 border border-gray-200 dark:border-gray-700">
-                            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 mb-8 pb-6 border-b border-gray-200 dark:border-gray-700">
-                                <div className="bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-600 rounded-xl p-3.5 shadow-lg">
-                                    <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <div className="bg-gradient-to-br from-white via-gray-50 to-blue-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 rounded-xl sm:rounded-2xl shadow-2xl p-4 sm:p-6 lg:p-8 xl:p-10 border border-gray-200 dark:border-gray-700">
+                            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4 mb-6 sm:mb-8 pb-4 sm:pb-6 border-b border-gray-200 dark:border-gray-700">
+                                <div className="bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-600 rounded-xl p-2.5 sm:p-3.5 shadow-lg">
+                                    <svg className="w-6 h-6 sm:w-8 sm:h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
                                     </svg>
                                 </div>
                                 <div className="flex-1">
-                                    <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900 dark:text-white mb-2">Future Enhancements</h2>
-                                    <p className="text-lg text-gray-600 dark:text-gray-400">Premium features coming soon with Pro plan</p>
+                                    <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-gray-900 dark:text-white mb-1 sm:mb-2">Future Enhancements</h2>
+                                    <p className="text-sm sm:text-base lg:text-lg text-gray-600 dark:text-gray-400">Premium features coming soon with Pro plan</p>
                                 </div>
                             </div>
 
-                            <div className="grid md:grid-cols-2 gap-6 lg:gap-8">
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 lg:gap-8">
                                 {/* Live Maps */}
-                                <div className="group relative bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-200 dark:border-gray-700 overflow-hidden">
+                                <div className="group relative bg-white dark:bg-gray-800 rounded-xl p-4 sm:p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-200 dark:border-gray-700 overflow-hidden">
                                     {/* Lock Badge */}
                                     <div className="absolute top-3 right-3 z-10">
                                         <span className="inline-flex items-center gap-1 bg-gradient-to-r from-amber-500 to-orange-500 text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-lg border border-white/20">
@@ -312,7 +312,7 @@ export default function TrackerPage() {
                                 </div>
 
                                 {/* Real-time Alerts */}
-                                <div className="group relative bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-200 dark:border-gray-700 overflow-hidden">
+                                <div className="group relative bg-white dark:bg-gray-800 rounded-xl p-4 sm:p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-200 dark:border-gray-700 overflow-hidden">
                                     <div className="absolute top-3 right-3 z-10">
                                         <span className="inline-flex items-center gap-1 bg-gradient-to-r from-amber-500 to-orange-500 text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-lg border border-white/20">
                                             <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -343,7 +343,7 @@ export default function TrackerPage() {
                                 </div>
 
                                 {/* Smart Activity Detection */}
-                                <div className="group relative bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-200 dark:border-gray-700 overflow-hidden">
+                                <div className="group relative bg-white dark:bg-gray-800 rounded-xl p-4 sm:p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-200 dark:border-gray-700 overflow-hidden">
                                     <div className="absolute top-3 right-3 z-10">
                                         <span className="inline-flex items-center gap-1 bg-gradient-to-r from-amber-500 to-orange-500 text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-lg border border-white/20">
                                             <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -374,7 +374,7 @@ export default function TrackerPage() {
                                 </div>
 
                                 {/* Advanced Analytics */}
-                                <div className="group relative bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-200 dark:border-gray-700 overflow-hidden">
+                                <div className="group relative bg-white dark:bg-gray-800 rounded-xl p-4 sm:p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-200 dark:border-gray-700 overflow-hidden">
                                     <div className="absolute top-3 right-3 z-10">
                                         <span className="inline-flex items-center gap-1 bg-gradient-to-r from-amber-500 to-orange-500 text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-lg border border-white/20">
                                             <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -405,7 +405,7 @@ export default function TrackerPage() {
                                 </div>
 
                                 {/* Multi-Device Sync */}
-                                <div className="group relative bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-200 dark:border-gray-700 overflow-hidden">
+                                <div className="group relative bg-white dark:bg-gray-800 rounded-xl p-4 sm:p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-200 dark:border-gray-700 overflow-hidden">
                                     <div className="absolute top-3 right-3 z-10">
                                         <span className="inline-flex items-center gap-1 bg-gradient-to-r from-amber-500 to-orange-500 text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-lg border border-white/20">
                                             <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -436,7 +436,7 @@ export default function TrackerPage() {
                                 </div>
 
                                 {/* Team Collaboration */}
-                                <div className="group relative bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-200 dark:border-gray-700 overflow-hidden">
+                                <div className="group relative bg-white dark:bg-gray-800 rounded-xl p-4 sm:p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-200 dark:border-gray-700 overflow-hidden">
                                     <div className="absolute top-3 right-3 z-10">
                                         <span className="inline-flex items-center gap-1 bg-gradient-to-r from-amber-500 to-orange-500 text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-lg border border-white/20">
                                             <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

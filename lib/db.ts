@@ -289,7 +289,6 @@ export async function upsertUserProfile(data: UserProfileData) {
       RETURNING *
     `) as any[];
 
-    console.log(`Upsert successful for ${userId}`);
     return result[0] as UserProfileData;
   } catch (error) {
     console.error("Error during upsertUserProfile SQL execution:", error);

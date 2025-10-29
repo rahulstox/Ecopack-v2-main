@@ -1,196 +1,263 @@
-# 🌱 EcoPack AI - Sustainable Packaging Recommendations
+# 🌱 EcoPack AI - Sustainable Packaging & Carbon Footprint Tracker
 
-AI-powered sustainable packaging recommendation system built with Next.js, Neon Postgres, and OpenAI.
+AI-powered sustainable packaging recommendation system and comprehensive carbon footprint tracking platform built with Next.js, Neon Postgres, and Advanced AI.
 
-## Features
+## ✨ Features
 
-- 🤖 **AI Recommendations**: Get intelligent packaging suggestions using OpenAI GPT-4
-- 📊 **Carbon Footprint**: Calculate and visualize carbon emissions breakdown
-- 💾 **History Tracking**: Store and review past recommendations in Neon Postgres
-- 📈 **Cost Analysis**: Compare sustainable materials vs traditional plastic
-- ♻️ **Environmental Impact**: Detailed analysis of recyclability and disposal methods
+### 📦 **AI-Powered Packaging Recommendations**
 
-## Tech Stack
+- 🤖 **Advanced AI Analysis**: Intelligent packaging suggestions powered by Google Gemini
+- 📊 **Carbon Footprint**: Detailed CO₂e emissions breakdown and calculation
+- 💾 **Recommendation History**: Store and review all past recommendations
+- 📈 **Cost Analysis**: Compare sustainable materials vs traditional options
+- ♻️ **Environmental Impact**: Detailed recyclability and disposal method analysis
+- 📄 **PDF Export**: Export comprehensive reports for client presentations
 
-- **Framework**: Next.js 14 (App Router)
+### 🏭 **Live Activity Tracking**
+
+- 📍 **Real-time Tracking**: Monitor your daily carbon emissions
+- 📊 **Activity Logs**: Track transport, food, energy, waste, and packaging activities
+- 📈 **Detailed Analytics**: Category breakdown with charts and visualizations
+- 🔒 **Premium Features**: Advanced tracking with live maps (Pro plan)
+
+### 📋 **Comprehensive Reports**
+
+- 📊 **Emissions Reports**: Weekly, monthly, and all-time CO₂e tracking
+- 📈 **Category Breakdown**: Visual charts for FOOD, TRANSPORT, ENERGY, WASTE
+- 💡 **Personalized Recommendations**: AI-suggested actions to reduce emissions
+- 📦 **Packaging Analysis**: Detailed material recommendations with carbon scores
+
+### 👤 **User Features**
+
+- 🔐 **Authentication**: Secure user accounts with Clerk
+- 📱 **Profile Management**: Personalized settings and preferences
+- 🎨 **Theme Support**: Light and dark mode options
+- 📊 **Dashboard**: Comprehensive overview of your environmental impact
+
+## 🛠️ Tech Stack
+
+- **Framework**: Next.js 16 (App Router)
 - **Database**: Neon Postgres with `@neondatabase/serverless`
-- **AI**: Google Gemini Pro
-- **Styling**: Tailwind CSS
-- **Visualization**: Progress bars and structured layouts (Recharts ready for future expansion)
+- **AI**: Google Gemini Pro API
+- **Authentication**: Clerk
+- **Styling**: Tailwind CSS with Radix UI
+- **Visualization**: Chart.js & Recharts
+- **PDF Generation**: jsPDF
+- **Email**: Resend API
+- **Performance**: Vercel Speed Insights
 
-## Getting Started
+## 🚀 Getting Started
 
 ### Prerequisites
 
 - Node.js 18+ installed
-- Neon Postgres database account
-- Google Gemini Pro API key (free tier available)
+- Neon Postgres database account ([neon.tech](https://neon.tech))
+- Google Gemini API key ([aistudio.google.com](https://aistudio.google.com))
+- Clerk account for authentication ([clerk.com](https://clerk.com))
 
 ### Installation
 
-1. **Install dependencies**:
+1. **Clone the repository**:
+
+   ```bash
+   git clone <repository-url>
+   cd Ecopack-v2-main
+   ```
+
+2. **Install dependencies**:
+
    ```bash
    npm install
    ```
 
-2. **Set up environment variables**:
+3. **Set up environment variables**:
    Create a `.env.local` file in the root directory:
+
    ```env
+   # Database
    DATABASE_URL="postgresql://user:password@host/database?sslmode=require"
+
+   # AI
    GOOGLE_API_KEY="your-google-gemini-api-key-here"
+
+   # Authentication
+   NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY="pk_test_..."
+   CLERK_SECRET_KEY="sk_test_..."
+
+   # Email (Optional)
+   RESEND_API_KEY="re_..."
+
+   # ClimateIQ API (Optional - for enhanced calculations)
+   CLIMATEIQ_API_KEY="your_climateiq_api_key"
    ```
 
-3. **Initialize the database**:
-   The table will be created automatically on first API call, or you can manually run:
-   ```sql
-   CREATE TABLE IF NOT EXISTS recommendations (
-     id SERIAL PRIMARY KEY,
-     form_input JSONB NOT NULL,
-     ai_output JSONB NOT NULL,
-     carbon_score NUMERIC NOT NULL,
-     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-   );
+4. **Initialize the database**:
+   Tables will be created automatically on first API call, or you can visit:
+
+   ```
+   http://localhost:3000/api/init
    ```
 
-4. **Run the development server**:
+5. **Run the development server**:
+
    ```bash
    npm run dev
    ```
 
-5. **Open your browser**:
+6. **Open your browser**:
    Navigate to [http://localhost:3000](http://localhost:3000)
 
-## Project Structure
+## 📁 Project Structure
 
 ```
 ecopack-ai/
 ├── app/
 │   ├── api/
-│   │   ├── recommend/route.ts          # POST endpoint for AI recommendations
-│   │   └── recommendations/             # GET all recommendations
-│   │       ├── route.ts
-│   │       └── [id]/route.ts           # GET single recommendation
-│   ├── recommend/
-│   │   └── page.tsx                     # Recommendation form UI
-│   ├── history/
-│   │   └── page.tsx                     # History page with detail modal
-│   ├── layout.tsx
-│   ├── page.tsx                         # Homepage
-│   └── globals.css
+│   │   ├── recommend/route.ts              # AI packaging recommendations
+│   │   ├── recommendations/                # Recommendation management
+│   │   ├── action-logs/                    # Activity logging
+│   │   ├── dashboard-stats/                 # Dashboard analytics
+│   │   ├── profile/                        # User profile management
+│   │   ├── contact/                         # Contact form handling
+│   │   └── ...                               # Other API routes
+│   ├── dashboard/page.tsx                    # Main dashboard
+│   ├── recommend/page.tsx                   # Packaging recommendations
+│   ├── tracker/page.tsx                      # Live activity tracker
+│   ├── reports/page.tsx                     # Emissions reports
+│   ├── onboarding/page.tsx                  # Profile & settings
+│   ├── quiz/page.tsx                        # Carbon footprint quiz
+│   ├── page.tsx                              # Landing page
+│   ├── layout.tsx                            # Root layout
+│   └── globals.css                           # Global styles
+├── components/
+│   ├── Sidebar.tsx                           # Navigation sidebar
+│   ├── DashboardStats.tsx                   # Stats cards
+│   ├── ActionLogTable.tsx                    # Activity logs table
+│   ├── CategoryBreakdownChart.tsx            # Charts
+│   └── ui/                                    # Reusable UI components
 ├── lib/
-│   ├── db.ts                            # Neon database utilities
-│   ├── openai.ts                        # OpenAI integration
-│   └── carbon.ts                        # Carbon footprint calculations
+│   ├── db.ts                                 # Database utilities
+│   ├── gemini.ts                             # Google Gemini AI integration
+│   ├── carbon.ts                             # Carbon calculations
+│   ├── climateiq.ts                          # ClimateIQ API integration
+│   └── co2e/                                 # CO₂e calculation services
+├── contexts/
+│   └── ThemeContext.tsx                      # Theme management
+├── public/                                    # Static assets
 └── README.md
 ```
 
-## Usage
+## 💡 Usage
 
-### Creating a Recommendation
+### Getting Packaging Recommendations
 
-1. Navigate to **Get Recommendations**
+1. Navigate to **Recommendations** in the sidebar
 2. Fill in product details:
-   - Product weight
-   - Category
-   - Dimensions (L x W x H)
+   - Product weight and category
+   - Dimensions (Length × Width × Height)
    - Fragility level
    - Shipping distance
-   - Volume and budget
-   - Sustainability priority
-3. Submit the form
-4. View detailed recommendations with carbon scores
-
-### Viewing History
-
-1. Navigate to **View History**
-2. Browse past recommendations
-3. Click any card to view detailed analysis:
+   - Monthly shipping volume
+   - Budget and sustainability priority
+3. Click **Get Recommendation**
+4. View detailed analysis with:
+   - Recommended sustainable materials
    - Carbon footprint breakdown
-   - Material recommendations
    - Cost comparison
-   - Environmental impact
+   - Environmental impact assessment
+5. Export as PDF for presentations
 
-## Carbon Footprint Calculation
+### Tracking Activities
 
-The system calculates carbon scores using:
-- **Material emissions**: Based on material type and weight
-- **Transport emissions**: Based on shipping distance
-- **Disposal emissions**: Based on fragility and end-of-life
+1. Navigate to **Dashboard** or **Live Tracker**
+2. Click **Log New Action**
+3. Select category (Transport, Food, Energy, Waste, Packaging)
+4. Enter activity details and amount
+5. View real-time CO₂e calculations and impact
 
-Score range: 0-100 (lower is better for the environment)
+### Viewing Reports
 
-## API Endpoints
+1. Navigate to **Reports** in the sidebar
+2. View **Emissions Report** tab for:
+   - Total CO₂e saved
+   - Monthly emissions
+   - Category breakdown
+   - Personalized recommendations
+3. View **Packaging Recommendations** tab for:
+   - All past packaging analyses
+   - Carbon scores
+   - Material recommendations
 
-### POST /api/recommend
-Generate AI recommendations with carbon analysis.
+## 🔧 Environment Variables
 
-**Request Body**:
-```json
-{
-  "product_weight": "500g",
-  "product_category": "Electronics",
-  "dimensions": { "length": "20", "width": "15", "height": "10" },
-  "fragility_level": "Medium",
-  "shipping_distance": "national",
-  "monthly_shipping_volume": "1000",
-  "current_material_used": "Plastic",
-  "budget_per_unit": "50",
-  "sustainability_priority": "4",
-  "moisture_temp_sensitive": false
-}
+| Variable                            | Description                     | Required    |
+| ----------------------------------- | ------------------------------- | ----------- |
+| `DATABASE_URL`                      | Neon Postgres connection string | ✅ Yes      |
+| `GOOGLE_API_KEY`                    | Google Gemini API key           | ✅ Yes      |
+| `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` | Clerk publishable key           | ✅ Yes      |
+| `CLERK_SECRET_KEY`                  | Clerk secret key                | ✅ Yes      |
+| `RESEND_API_KEY`                    | Resend API key for emails       | ⚠️ Optional |
+| `CLIMATEIQ_API_KEY`                 | ClimateIQ API key               | ⚠️ Optional |
+
+## 🚀 Deployment
+
+### Build the project
+
+```bash
+npm run build
 ```
 
-**Response**:
-```json
-{
-  "success": true,
-  "data": {
-    "recommended_materials": ["Cardboard", "Biodegradable packing"],
-    "estimated_cost": 45,
-    "cost_comparison": {...},
-    "environmental_impact": {...},
-    "carbon_footprint": {...}
-  },
-  "id": 1
-}
-```
+### Deploy to Vercel (Recommended)
 
-### GET /api/recommendations
-Fetch all past recommendations.
+1. Push your code to GitHub
+2. Import project in [Vercel](https://vercel.com)
+3. Add all environment variables in Vercel dashboard
+4. Deploy automatically on every push to main branch
 
-### GET /api/recommendations/[id]
-Fetch a specific recommendation by ID.
+### Production Checklist
 
-## Environment Variables
+- ✅ All environment variables configured
+- ✅ Neon database accessible from production
+- ✅ Clerk authentication configured
+- ✅ Domain verified (if using custom domain)
+- ✅ Email service configured (Resend)
+- ✅ Analytics enabled (Speed Insights)
 
-| Variable | Description |
-|----------|-------------|
-| `DATABASE_URL` | Neon Postgres connection string |
-| `GOOGLE_API_KEY` | Your Google Gemini Pro API key |
+## 📚 Documentation
 
-## Deployment
+- **ABOUT.md** - Complete application description and features
+- **PRESENTATION_SUMMARY.md** - Concise client-ready summary
+- **DEPLOYMENT_GUIDE.md** - Detailed deployment instructions
+- **SETUP.md** - Setup and configuration guide
+- **CLIMATEIQ_INTEGRATION.md** - ClimateIQ API integration details
 
-1. **Build the project**:
-   ```bash
-   npm run build
-   ```
+## 🐛 Troubleshooting
 
-2. **Deploy to Vercel** (recommended):
-   - Push to GitHub
-   - Import project in Vercel
-   - Add environment variables
-   - Deploy
+### Database Connection Issues
 
-3. **Production considerations**:
-   - Ensure Neon database is accessible from production
-   - Set up proper CORS if needed
-   - Configure rate limiting for API routes
+- Verify `DATABASE_URL` is correct
+- Ensure SSL mode is enabled (`?sslmode=require`)
+- Check Neon database is active
 
-## License
+### AI Recommendations Not Working
+
+- Verify `GOOGLE_API_KEY` is set correctly
+- Check API quota limits
+- Review error logs in console
+
+### Authentication Issues
+
+- Ensure Clerk keys are correctly configured
+- Verify Clerk redirect URLs match your domain
+
+## 📄 License
 
 MIT
 
-## Contributing
+## 🤝 Contributing
 
-Contributions welcome! Please feel free to submit a Pull Request.
+Contributions are welcome! Please feel free to submit a Pull Request.
 
+---
+
+**🌍 Made with ❤️ for a sustainable future**

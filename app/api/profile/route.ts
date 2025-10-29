@@ -6,7 +6,6 @@ import { upsertUserProfile, getUserProfile, UserProfileData } from "@/lib/db";
 export const dynamic = "force-dynamic"; // Ensure fresh execution on every request
 
 export async function GET(request: NextRequest) {
-  console.log("--- /api/profile GET request received ---");
   try {
     const { userId } = await auth();
 
@@ -37,16 +36,10 @@ export async function GET(request: NextRequest) {
 }
 
 export async function POST(request: NextRequest) {
-  console.log("--- /api/profile POST request received ---");
   try {
-    // 1️⃣ Get Authenticated User (Await the auth() call)
-    const { userId } = await auth(); // <-- Added await here
-    console.log("User ID from auth():", userId);
+    const { userId } = await auth();
 
     if (!userId) {
-      console.error(
-        "API /api/profile Error: Unauthorized - No userId found in session."
-      );
       return NextResponse.json(
         { success: false, error: "Unauthorized" },
         { status: 401 }
@@ -75,30 +68,22 @@ export async function POST(request: NextRequest) {
       // Add any other fields as per your schema
     };
 
-    // 4️⃣ Save to Database
-    console.log("Attempting to save profile data to DB for user:", userId);
+    // Save to Database
     const savedProfile = await upsertUserProfile(profileData);
     if (!savedProfile) {
       throw new Error("Failed to save user profile to the database.");
     }
-    console.log("Profile data saved successfully to DB.");
 
-    // 5️⃣ Update Clerk Public Metadata (clerkClient is used directly)
-    console.log("Attempting to update Clerk metadata for user:", userId);
+    // Update Clerk Public Metadata
     try {
-      // Use clerkClient directly, it's not a function call
       await clerkClient.users.updateUserMetadata(userId, {
         publicMetadata: {
           onboardingComplete: true,
         },
       });
-      console.log(`✅ Clerk metadata updated successfully for user ${userId}`);
     } catch (clerkError) {
-      console.error(
-        `⚠️ Clerk metadata update failed for ${userId}:`,
-        clerkError
-      );
       // Not critical — user profile still saved in DB
+      console.error("Clerk metadata update failed:", clerkError);
     }
 
     // 6️⃣ Return Success Response

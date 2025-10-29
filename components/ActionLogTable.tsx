@@ -20,17 +20,6 @@ interface ActionLogTableProps {
 export function ActionLogTable({ logs, onDelete }: ActionLogTableProps) {
     const [deletingId, setDeletingId] = useState<number | null>(null);
 
-    // Debug: Log the first log entry to see what data we're receiving
-    if (logs.length > 0 && typeof window !== 'undefined') {
-        console.log('📊 ActionLogTable received logs:', logs);
-        console.log('📅 Sample log data:', {
-            id: logs[0].id,
-            loggedAt: logs[0].loggedAt,
-            category: logs[0].category,
-            activity: logs[0].activity
-        });
-    }
-
     const handleDelete = async (id: number) => {
         if (!confirm('Are you sure you want to delete this action?')) {
             return;
@@ -101,79 +90,87 @@ export function ActionLogTable({ logs, onDelete }: ActionLogTableProps) {
     };
 
     return (
-        <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-                <thead className="bg-gray-50 dark:bg-gray-700">
-                    <tr>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                            Date & Time
-                        </th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                            Category
-                        </th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                            Activity
-                        </th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                            Amount
-                        </th>
-                        <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                            CO₂e (kg)
-                        </th>
-                        <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                            Actions
-                        </th>
-                    </tr>
-                </thead>
-                <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
-                    {logs.map((log) => (
-                        <tr key={log.id} className="hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
-                                {formatDate(log.loggedAt)}
-                            </td>
-                            <td className="px-6 py-4 whitespace-nowrap">
-                                <span className={`px-3 py-1.5 inline-flex text-xs leading-5 rounded-lg ${getCategoryColor(log.category)}`}>
-                                    {log.category}
-                                </span>
-                            </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
-                                {log.activity}
-                            </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600 dark:text-gray-300">
-                                {log.amount} {log.unit}
-                            </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm font-semibold text-gray-900 dark:text-white text-right">
-                                {Number(log.calculatedCo2e || 0).toFixed(3)}
-                            </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-center">
-                                <button
-                                    onClick={() => handleDelete(log.id)}
-                                    disabled={deletingId === log.id}
-                                    className="inline-flex items-center px-3 py-1.5 text-sm font-medium text-red-700 bg-red-50 rounded-lg hover:bg-red-100 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                                    title="Delete this action"
-                                >
-                                    {deletingId === log.id ? (
-                                        <>
-                                            <svg className="animate-spin h-4 w-4 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                                                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                                            </svg>
-                                            Deleting...
-                                        </>
-                                    ) : (
-                                        <>
-                                            <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                            </svg>
-                                            Delete
-                                        </>
-                                    )}
-                                </button>
-                            </td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
+        <div className="overflow-x-auto -mx-4 sm:mx-0">
+            <div className="inline-block min-w-full align-middle">
+                <div className="overflow-hidden shadow ring-1 ring-black ring-opacity-5 dark:ring-gray-700 sm:rounded-lg">
+                    <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                        <thead className="bg-gray-50 dark:bg-gray-700">
+                            <tr>
+                                <th className="px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                    Date & Time
+                                </th>
+                                <th className="px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                    Category
+                                </th>
+                                <th className="hidden sm:table-cell px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                    Activity
+                                </th>
+                                <th className="hidden md:table-cell px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                    Amount
+                                </th>
+                                <th className="px-3 sm:px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                    CO₂e
+                                </th>
+                                <th className="px-3 sm:px-6 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                    Actions
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+                            {logs.map((log) => (
+                                <tr key={log.id} className="hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+                                    <td className="px-3 sm:px-6 py-3 sm:py-4 whitespace-nowrap text-xs sm:text-sm text-gray-900 dark:text-white">
+                                        <div className="flex flex-col">
+                                            <span>{formatDate(log.loggedAt).split(',')[0]}</span>
+                                            <span className="text-xs text-gray-500 dark:text-gray-400 sm:hidden">{formatDate(log.loggedAt).split(',')[1]}</span>
+                                        </div>
+                                    </td>
+                                    <td className="px-3 sm:px-6 py-3 sm:py-4 whitespace-nowrap">
+                                        <span className={`px-2 sm:px-3 py-1 sm:py-1.5 inline-flex text-xs leading-5 rounded-lg ${getCategoryColor(log.category)}`}>
+                                            <span className="hidden sm:inline">{log.category}</span>
+                                            <span className="sm:hidden">{log.category.substring(0, 4)}</span>
+                                        </span>
+                                    </td>
+                                    <td className="hidden sm:table-cell px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
+                                        {log.activity}
+                                    </td>
+                                    <td className="hidden md:table-cell px-6 py-4 whitespace-nowrap text-sm text-gray-600 dark:text-gray-300">
+                                        {log.amount} {log.unit}
+                                    </td>
+                                    <td className="px-3 sm:px-6 py-3 sm:py-4 whitespace-nowrap text-xs sm:text-sm font-semibold text-gray-900 dark:text-white text-right">
+                                        {Number(log.calculatedCo2e || 0).toFixed(2)}
+                                    </td>
+                                    <td className="px-3 sm:px-6 py-3 sm:py-4 whitespace-nowrap text-center">
+                                        <button
+                                            onClick={() => handleDelete(log.id)}
+                                            disabled={deletingId === log.id}
+                                            className="inline-flex items-center px-2 sm:px-3 py-1 sm:py-1.5 text-xs sm:text-sm font-medium text-red-700 bg-red-50 dark:bg-red-900/20 dark:text-red-400 rounded-lg hover:bg-red-100 dark:hover:bg-red-900/30 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                                            title="Delete this action"
+                                        >
+                                            {deletingId === log.id ? (
+                                                <>
+                                                    <svg className="animate-spin h-4 w-4 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                                    </svg>
+                                                    Deleting...
+                                                </>
+                                            ) : (
+                                                <>
+                                                    <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                                    </svg>
+                                                    Delete
+                                                </>
+                                            )}
+                                        </button>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     );
 }

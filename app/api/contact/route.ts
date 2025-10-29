@@ -18,16 +18,6 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Log the submission
-    console.log("Contact Form Submission:", {
-      name,
-      email,
-      company,
-      message,
-      userId: userId || "Anonymous",
-      timestamp: new Date().toISOString(),
-    });
-
     // Send email using Resend API
     try {
       // Initialize Resend lazily (only when needed, not at module level)
@@ -141,8 +131,6 @@ ${message}
 Reply to this email or contact ${email} directly.
         `,
       });
-
-      console.log("Email sent successfully:", data);
 
       return NextResponse.json({
         success: true,

@@ -726,36 +726,36 @@ function RecommendPageContent() {
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 green:bg-green-50">
       <div className="flex">
         <Sidebar totalCo2eSaved={co2eSaved} />
-        <div className="flex-1 ml-0 lg:ml-64">
-          <div className="p-6">
+        <div className="flex-1 ml-0 lg:ml-64 relative pt-16 lg:pt-0">
+          <div className="p-4 sm:p-6">
             {!showResults ? (
               /* Form Section */
-              <div className={`rounded-xl shadow-2xl p-8 ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'} border ${theme === 'dark' ? 'border-gray-700' : 'border-gray-100'}`}>
+              <div className={`rounded-xl shadow-2xl p-4 sm:p-6 lg:p-8 ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'} border ${theme === 'dark' ? 'border-gray-700' : 'border-gray-100'}`}>
                 {/* Enhanced Header Section */}
-                <div className="mb-8">
-                  <div className="flex items-center gap-3 mb-4">
-                    <div className={`w-14 h-14 rounded-xl bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center shadow-lg`}>
-                      <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div className="mb-6 sm:mb-8">
+                  <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-3 mb-4">
+                    <div className={`w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center shadow-lg flex-shrink-0`}>
+                      <svg className="w-6 h-6 sm:w-7 sm:h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
                       </svg>
                     </div>
                     <div>
-                      <h1 className={`text-4xl font-bold ${headingClass}`}>Get AI Recommendation</h1>
-                      <p className={`mt-1 text-lg ${textClass}`}>
+                      <h1 className={`text-2xl sm:text-3xl lg:text-4xl font-bold ${headingClass}`}>Get AI Recommendation</h1>
+                      <p className={`mt-1 text-sm sm:text-base lg:text-lg ${textClass}`}>
                         Intelligent sustainable packaging recommendations powered by Advanced AI
                       </p>
                     </div>
                   </div>
 
                   {/* Info Banner */}
-                  <div className={`mt-6 p-4 rounded-lg bg-gradient-to-r from-blue-50 to-indigo-50 ${theme === 'dark' ? 'from-blue-900/30 to-indigo-900/30' : ''} border border-blue-200 ${theme === 'dark' ? 'border-blue-700' : ''}`}>
-                    <div className="flex items-start gap-3">
-                      <svg className="w-5 h-5 text-blue-600 dark:text-blue-400 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                  <div className={`mt-4 sm:mt-6 p-3 sm:p-4 rounded-lg bg-gradient-to-r from-blue-50 to-indigo-50 ${theme === 'dark' ? 'from-blue-900/30 to-indigo-900/30' : ''} border border-blue-200 ${theme === 'dark' ? 'border-blue-700' : ''}`}>
+                    <div className="flex items-start gap-2 sm:gap-3">
+                      <svg className="w-4 h-4 sm:w-5 sm:h-5 text-blue-600 dark:text-blue-400 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                         <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
                       </svg>
                       <div>
-                        <p className={`font-semibold ${textClass}`}>How it works</p>
-                        <p className={`text-sm mt-1 ${textClass}`}>
+                        <p className={`font-semibold text-sm sm:text-base ${textClass}`}>How it works</p>
+                        <p className={`text-xs sm:text-sm mt-1 ${textClass}`}>
                           Provide your product specifications, and our AI analyzes thousands of sustainable packaging options
                           to recommend the best solution for your needs. Get detailed carbon footprint analysis, cost comparison,
                           and environmental impact assessment in seconds.
@@ -766,8 +766,8 @@ function RecommendPageContent() {
                 </div>
 
                 {/* Quick Fill Templates */}
-                <div className={`mb-6 p-4 rounded-lg ${theme === 'dark' ? 'bg-gray-700' : 'bg-blue-50'} border-2 border-blue-200`}>
-                  <p className={`text-sm font-semibold mb-2 ${labelClass}`}>⚡ Quick Start Templates</p>
+                <div className={`mb-4 sm:mb-6 p-3 sm:p-4 rounded-lg ${theme === 'dark' ? 'bg-gray-700' : 'bg-blue-50'} border-2 border-blue-200`}>
+                  <p className={`text-xs sm:text-sm font-semibold mb-2 ${labelClass}`}>⚡ Quick Start Templates</p>
                   <div className="flex flex-wrap gap-2">
                     {Object.keys(quickFillTemplates).map((template) => (
                       <button
@@ -793,8 +793,8 @@ function RecommendPageContent() {
                   </div>
                 </div>
 
-                <form onSubmit={handleSubmit} className="space-y-6">
-                  <div className="grid md:grid-cols-2 gap-6">
+                <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
                     {/* Product Weight */}
                     <div>
                       <label className={`block text-sm font-medium mb-2 ${labelClass}`}>
@@ -1016,7 +1016,7 @@ function RecommendPageContent() {
                   </div>
 
                   {/* Budget Range Selector */}
-                  <div className="grid md:grid-cols-2 gap-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
                     <div>
                       <label className={`block text-sm font-medium mb-2 ${labelClass}`}>
                         Budget Range (₹)
@@ -1135,7 +1135,7 @@ function RecommendPageContent() {
                           </svg>
                         </div>
                         <div>
-                          <h1 className={`text-4xl font-bold mb-2 ${headingClass}`}>AI Recommendation Generated</h1>
+                          <h1 className={`text-2xl sm:text-3xl lg:text-4xl font-bold mb-2 ${headingClass}`}>AI Recommendation Generated</h1>
                           <p className={`text-base ${textClass} mb-3`}>
                             Intelligent sustainable packaging solution for your product
                           </p>
@@ -1244,7 +1244,7 @@ function RecommendPageContent() {
                         <div className="space-y-4">
                           <div>
                             <p className="text-sm text-gray-600 dark:text-gray-400">Sustainability Score</p>
-                            <p className="text-4xl font-bold text-green-600">
+                            <p className="text-2xl sm:text-3xl lg:text-4xl font-bold text-green-600">
                               {(() => {
                                 const score = recommendationData?.aiOutput?.carbon_footprint?.total_carbon_score || 3;
                                 if (score >= 4.5) return 'Excellent';
@@ -1260,7 +1260,7 @@ function RecommendPageContent() {
                           </div>
                           <div className="pt-4 border-t border-green-200 dark:border-gray-600">
                             <p className="text-sm text-gray-600 dark:text-gray-400">Total CO2 Emissions</p>
-                            <p className="text-3xl font-bold text-green-600">
+                            <p className="text-xl sm:text-2xl lg:text-3xl font-bold text-green-600">
                               {(() => {
                                 const totalKg = parseFloat(recommendationData?.aiOutput?.carbon_footprint?.total_carbon_kg?.toString() || '0.96');
                                 // Calculate based on product weight and shipping distance for accuracy
@@ -1424,7 +1424,7 @@ function RecommendPageContent() {
                       <div className="grid md:grid-cols-2 gap-4 mb-4">
                         <div className={`rounded-xl p-6 border ${theme === 'dark' ? 'border-gray-600 bg-gray-700' : 'border-gray-300'}`}>
                           <p className={`text-sm mb-2 ${textClass}`}>Current Material Cost</p>
-                          <p className="text-3xl font-bold text-gray-900 dark:text-white">
+                          <p className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 dark:text-white">
                             ₹{recommendationData?.aiOutput?.cost_comparison?.plastic_cost ||
                               recommendationData?.aiOutput?.cost_comparison?.current_cost ||
                               '30'
@@ -1467,7 +1467,7 @@ function RecommendPageContent() {
                   <div className="space-y-6">
                     {/* Environmental Impact Section */}
                     <div className={`rounded-lg shadow-lg p-6 ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'}`}>
-                      <h2 className={`text-2xl font-bold mb-6 ${headingClass}`}>Environmental Impact</h2>
+                      <h2 className={`text-xl sm:text-2xl font-bold mb-4 sm:mb-6 ${headingClass}`}>Environmental Impact</h2>
 
                       <div className="space-y-4">
                         {/* CO2 Reduction */}

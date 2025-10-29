@@ -80,9 +80,7 @@ export async function POST(request: NextRequest) {
       calculatedCo2e,
     };
 
-    console.log("💾 Inserting action log:", actionLogData);
     const result = await insertActionLog(actionLogData);
-    console.log("✅ Inserted with ID:", result.id);
 
     return NextResponse.json({
       success: true,

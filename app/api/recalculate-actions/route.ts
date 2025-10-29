@@ -19,9 +19,6 @@ export async function POST(request: NextRequest) {
     // Get all logs
     const allLogs = await getActionLogsByUserId(userId, 1000, 0);
 
-    console.log(`🔄 Recalculating for user ${userId}`);
-    console.log(`📊 Found ${allLogs.length} action logs`);
-
     if (allLogs.length === 0) {
       return NextResponse.json({
         success: false,
@@ -36,9 +33,6 @@ export async function POST(request: NextRequest) {
 
     for (const log of allLogs) {
       try {
-        console.log(
-          `📝 Processing log ${log.id}: ${log.category} - ${log.activity}`
-        );
         let calculatedCo2e = 0;
 
         if (log.category === "TRANSPORT") {
@@ -82,10 +76,6 @@ export async function POST(request: NextRequest) {
             unit: log.unit,
           });
         }
-
-        console.log(
-          `✅ Calculated CO₂e for log ${log.id}: ${calculatedCo2e} kg`
-        );
 
         // Update the database with lowercase column name
         await sql`

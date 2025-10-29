@@ -148,34 +148,34 @@ export default function OnboardingPage() {
         <div className="min-h-screen bg-gray-50 dark:bg-gray-900 green:bg-green-50">
             <div className="flex">
                 <Sidebar totalCo2eSaved={co2eSaved} />
-                <div className="flex-1 ml-0 lg:ml-64">
-                    <div className="p-6 max-w-4xl mx-auto">
-                        <div className={`bg-white dark:bg-gray-800 green:bg-green-100 rounded-xl shadow-2xl p-8 border ${theme === 'dark' ? 'border-gray-700' : 'border-gray-100'}`}>
+                <div className="flex-1 ml-0 lg:ml-64 relative pt-16 lg:pt-0">
+                    <div className="p-4 sm:p-6 max-w-4xl mx-auto">
+                        <div className={`bg-white dark:bg-gray-800 green:bg-green-100 rounded-xl shadow-2xl p-4 sm:p-6 lg:p-8 border ${theme === 'dark' ? 'border-gray-700' : 'border-gray-100'}`}>
                             {/* Enhanced Header Section */}
-                            <div className="mb-8">
-                                <div className="flex items-center gap-4 mb-4">
-                                    <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center shadow-lg`}>
-                                        <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <div className="mb-6 sm:mb-8">
+                                <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4 mb-4">
+                                    <div className={`w-12 h-12 sm:w-16 sm:h-16 rounded-xl sm:rounded-2xl bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center shadow-lg flex-shrink-0`}>
+                                        <svg className="w-6 h-6 sm:w-8 sm:h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                                         </svg>
                                     </div>
                                     <div>
-                                        <h1 className={`text-4xl font-bold mb-2 ${headingClass}`}>Profile & Settings</h1>
-                                        <p className={`text-lg ${textClass}`}>
+                                        <h1 className={`text-2xl sm:text-3xl lg:text-4xl font-bold mb-1 sm:mb-2 ${headingClass}`}>Profile & Settings</h1>
+                                        <p className={`text-sm sm:text-base lg:text-lg ${textClass}`}>
                                             Personalize your experience and configure carbon footprint calculation settings
                                         </p>
                                     </div>
                                 </div>
 
                                 {/* Info Banner */}
-                                <div className={`mt-6 p-5 rounded-xl bg-gradient-to-r from-blue-50 to-indigo-50 ${theme === 'dark' ? 'from-blue-900/30 to-indigo-900/30' : ''} border border-blue-200 ${theme === 'dark' ? 'border-blue-700' : ''}`}>
-                                    <div className="flex items-start gap-3">
-                                        <svg className="w-6 h-6 text-blue-600 dark:text-blue-400 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                <div className={`mt-4 sm:mt-6 p-3 sm:p-4 lg:p-5 rounded-xl bg-gradient-to-r from-blue-50 to-indigo-50 ${theme === 'dark' ? 'from-blue-900/30 to-indigo-900/30' : ''} border border-blue-200 ${theme === 'dark' ? 'border-blue-700' : ''}`}>
+                                    <div className="flex items-start gap-2 sm:gap-3">
+                                        <svg className="w-5 h-5 sm:w-6 sm:h-6 text-blue-600 dark:text-blue-400 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                                             <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
                                         </svg>
                                         <div>
-                                            <p className={`font-semibold text-base ${textClass}`}>Why update your profile?</p>
-                                            <p className={`text-sm mt-2 ${textClass}`}>
+                                            <p className={`font-semibold text-sm sm:text-base ${textClass}`}>Why update your profile?</p>
+                                            <p className={`text-xs sm:text-sm mt-1 sm:mt-2 ${textClass}`}>
                                                 Providing accurate information about your lifestyle, transportation, and household helps us calculate your carbon footprint more precisely.
                                                 All fields are optional, but more details lead to better insights and personalized recommendations.
                                             </p>
@@ -185,14 +185,14 @@ export default function OnboardingPage() {
                             </div>
 
                             {/* Enhanced User Info Section */}
-                            <div className="bg-gradient-to-br from-green-50 via-emerald-50 to-teal-50 dark:from-gray-700 dark:via-gray-800 dark:to-gray-900 rounded-xl p-8 mb-8 border-2 border-green-200 dark:border-green-800 shadow-lg">
-                                <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6">
-                                    <div className={`w-24 h-24 bg-gradient-to-br from-green-500 to-emerald-600 rounded-2xl flex items-center justify-center text-white text-4xl font-bold shadow-xl`}>
+                            <div className="bg-gradient-to-br from-green-50 via-emerald-50 to-teal-50 dark:from-gray-700 dark:via-gray-800 dark:to-gray-900 rounded-xl p-4 sm:p-6 lg:p-8 mb-6 sm:mb-8 border-2 border-green-200 dark:border-green-800 shadow-lg">
+                                <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6">
+                                    <div className={`w-16 h-16 sm:w-20 sm:h-20 lg:w-24 lg:h-24 bg-gradient-to-br from-green-500 to-emerald-600 rounded-xl sm:rounded-2xl flex items-center justify-center text-white text-2xl sm:text-3xl lg:text-4xl font-bold shadow-xl flex-shrink-0`}>
                                         {user.firstName?.[0] || 'U'}{user.lastName?.[0] || ''}
                                     </div>
-                                    <div className="flex-1">
-                                        <h2 className={`text-3xl font-bold mb-2 ${headingClass}`}>{user.fullName || user.firstName || 'User'}</h2>
-                                        <p className={`text-lg mb-3 ${textClass}`}>{user.primaryEmailAddress?.emailAddress}</p>
+                                    <div className="flex-1 min-w-0">
+                                        <h2 className={`text-xl sm:text-2xl lg:text-3xl font-bold mb-1 sm:mb-2 ${headingClass}`}>{user.fullName || user.firstName || 'User'}</h2>
+                                        <p className={`text-sm sm:text-base lg:text-lg mb-2 sm:mb-3 ${textClass} truncate`}>{user.primaryEmailAddress?.emailAddress}</p>
                                         <div className="flex flex-wrap items-center gap-3">
                                             <span className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold shadow-md ${theme === 'dark' ? 'bg-green-900/50 text-green-300 border border-green-700' : 'bg-green-100 text-green-700 border border-green-300'}`}>
                                                 <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
@@ -210,20 +210,20 @@ export default function OnboardingPage() {
 
 
                             {/* Enhanced Settings Section */}
-                            <div className="mb-8">
-                                <div className="flex items-center gap-3 mb-6">
-                                    <div className={`w-12 h-12 rounded-xl bg-gradient-to-br from-purple-500 to-indigo-600 flex items-center justify-center`}>
-                                        <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <div className="mb-6 sm:mb-8">
+                                <div className="flex items-center gap-2 sm:gap-3 mb-4 sm:mb-6">
+                                    <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-gradient-to-br from-purple-500 to-indigo-600 flex items-center justify-center flex-shrink-0`}>
+                                        <svg className="w-5 h-5 sm:w-6 sm:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                                         </svg>
                                     </div>
-                                    <h2 className={`text-2xl font-bold ${headingClass}`}>Preferences & Settings</h2>
+                                    <h2 className={`text-xl sm:text-2xl font-bold ${headingClass}`}>Preferences & Settings</h2>
                                 </div>
 
-                                <div className={`bg-gradient-to-r from-indigo-50 to-purple-50 dark:from-gray-700 dark:to-gray-800 rounded-lg p-6 mb-6`}>
-                                    <h3 className={`text-lg font-semibold mb-4 ${headingClass}`}>⚙️ Notifications & Goals</h3>
-                                    <div className="space-y-4">
+                                <div className={`bg-gradient-to-r from-indigo-50 to-purple-50 dark:from-gray-700 dark:to-gray-800 rounded-lg p-4 sm:p-6 mb-4 sm:mb-6`}>
+                                    <h3 className={`text-base sm:text-lg font-semibold mb-3 sm:mb-4 ${headingClass}`}>⚙️ Notifications & Goals</h3>
+                                    <div className="space-y-3 sm:space-y-4">
                                         <div>
                                             <label className={`block text-sm font-medium mb-2 ${labelClass}`}>Notification Preferences</label>
                                             <select name="notificationPreferences" value={formData.notificationPreferences} onChange={handleChange} className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent ${inputClass}`}>
@@ -241,9 +241,9 @@ export default function OnboardingPage() {
                                     </div>
                                 </div>
 
-                                <div className={`bg-gradient-to-r from-amber-50 to-orange-50 dark:from-gray-700 dark:to-gray-800 rounded-lg p-6 mb-6`}>
-                                    <h3 className={`text-lg font-semibold mb-4 ${headingClass}`}>🌍 Language & Region</h3>
-                                    <div className="space-y-4">
+                                <div className={`bg-gradient-to-r from-amber-50 to-orange-50 dark:from-gray-700 dark:to-gray-800 rounded-lg p-4 sm:p-6 mb-4 sm:mb-6`}>
+                                    <h3 className={`text-base sm:text-lg font-semibold mb-3 sm:mb-4 ${headingClass}`}>🌍 Language & Region</h3>
+                                    <div className="space-y-3 sm:space-y-4">
                                         <div>
                                             <label className={`block text-sm font-medium mb-2 ${labelClass}`}>Language</label>
                                             <select name="language" value={formData.language} onChange={handleChange} className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent ${inputClass}`}>
@@ -277,18 +277,18 @@ export default function OnboardingPage() {
                                 </div>
                             </div>
 
-                            <form onSubmit={handleSubmit} className="space-y-6">
+                            <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
                                 {/* Enhanced Transport Section */}
-                                <fieldset className={`border-2 p-8 rounded-xl shadow-lg ${theme === 'dark' ? 'border-green-700 bg-gray-700/40' : 'border-green-300 bg-gradient-to-br from-green-50 to-emerald-50'}`}>
-                                    <legend className={`text-xl font-bold px-4 flex items-center gap-2 ${headingClass}`}>
-                                        <div className={`w-10 h-10 rounded-lg bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center`}>
-                                            <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <fieldset className={`border-2 p-4 sm:p-6 lg:p-8 rounded-xl shadow-lg ${theme === 'dark' ? 'border-green-700 bg-gray-700/40' : 'border-green-300 bg-gradient-to-br from-green-50 to-emerald-50'}`}>
+                                    <legend className={`text-base sm:text-lg lg:text-xl font-bold px-2 sm:px-4 flex flex-col sm:flex-row items-start sm:items-center gap-2 ${headingClass}`}>
+                                        <div className={`w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center flex-shrink-0`}>
+                                            <svg className="w-4 h-4 sm:w-5 sm:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
                                             </svg>
                                         </div>
                                         <span>Transportation & Commute</span>
                                     </legend>
-                                    <div className="space-y-4 mt-4">
+                                    <div className="space-y-3 sm:space-y-4 mt-3 sm:mt-4">
                                         <div>
                                             <label className={`block text-sm font-medium mb-2 ${labelClass}`}>Primary Vehicle Type</label>
                                             <select name="primaryVehicleType" value={formData.primaryVehicleType} onChange={handleChange} className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent ${inputClass}`}>
@@ -339,16 +339,16 @@ export default function OnboardingPage() {
                                 </fieldset>
 
                                 {/* Enhanced Household Section */}
-                                <fieldset className={`border-2 p-8 rounded-xl shadow-lg ${theme === 'dark' ? 'border-blue-700 bg-gray-700/40' : 'border-blue-300 bg-gradient-to-br from-blue-50 to-cyan-50'}`}>
-                                    <legend className={`text-xl font-bold px-4 flex items-center gap-2 ${headingClass}`}>
-                                        <div className={`w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500 to-cyan-600 flex items-center justify-center`}>
-                                            <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <fieldset className={`border-2 p-4 sm:p-6 lg:p-8 rounded-xl shadow-lg ${theme === 'dark' ? 'border-blue-700 bg-gray-700/40' : 'border-blue-300 bg-gradient-to-br from-blue-50 to-cyan-50'}`}>
+                                    <legend className={`text-base sm:text-lg lg:text-xl font-bold px-2 sm:px-4 flex flex-col sm:flex-row items-start sm:items-center gap-2 ${headingClass}`}>
+                                        <div className={`w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-gradient-to-br from-blue-500 to-cyan-600 flex items-center justify-center flex-shrink-0`}>
+                                            <svg className="w-4 h-4 sm:w-5 sm:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
                                             </svg>
                                         </div>
                                         <span>Household & Energy</span>
                                     </legend>
-                                    <div className="space-y-4 mt-4">
+                                    <div className="space-y-3 sm:space-y-4 mt-3 sm:mt-4">
                                         <div>
                                             <label className={`block text-sm font-medium mb-2 ${labelClass}`}>Household Size (Number of people)</label>
                                             <input type="number" name="householdSize" value={formData.householdSize} onChange={handleChange} className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent ${inputClass}`} placeholder="e.g., 4" />
@@ -369,10 +369,10 @@ export default function OnboardingPage() {
                                 </fieldset>
 
                                 {/* Enhanced Diet Section */}
-                                <fieldset className={`border-2 p-8 rounded-xl shadow-lg ${theme === 'dark' ? 'border-purple-700 bg-gray-700/40' : 'border-purple-300 bg-gradient-to-br from-purple-50 to-pink-50'}`}>
-                                    <legend className={`text-xl font-bold px-4 flex items-center gap-2 ${headingClass}`}>
-                                        <div className={`w-10 h-10 rounded-lg bg-gradient-to-br from-purple-500 to-pink-600 flex items-center justify-center`}>
-                                            <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <fieldset className={`border-2 p-4 sm:p-6 lg:p-8 rounded-xl shadow-lg ${theme === 'dark' ? 'border-purple-700 bg-gray-700/40' : 'border-purple-300 bg-gradient-to-br from-purple-50 to-pink-50'}`}>
+                                    <legend className={`text-base sm:text-lg lg:text-xl font-bold px-2 sm:px-4 flex flex-col sm:flex-row items-start sm:items-center gap-2 ${headingClass}`}>
+                                        <div className={`w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-gradient-to-br from-purple-500 to-pink-600 flex items-center justify-center flex-shrink-0`}>
+                                            <svg className="w-4 h-4 sm:w-5 sm:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
                                             </svg>
                                         </div>
@@ -392,9 +392,9 @@ export default function OnboardingPage() {
                                 </fieldset>
 
                                 {/* Account Management Section */}
-                                <div className={`bg-gradient-to-r from-red-50 to-pink-50 dark:from-gray-700 dark:to-gray-800 rounded-lg p-6 mb-6`}>
-                                    <h3 className={`text-lg font-semibold mb-4 ${headingClass}`}>🔐 Account Management</h3>
-                                    <div className="space-y-3">
+                                <div className={`bg-gradient-to-r from-red-50 to-pink-50 dark:from-gray-700 dark:to-gray-800 rounded-lg p-4 sm:p-6 mb-4 sm:mb-6`}>
+                                    <h3 className={`text-base sm:text-lg font-semibold mb-3 sm:mb-4 ${headingClass}`}>🔐 Account Management</h3>
+                                    <div className="space-y-2 sm:space-y-3">
                                         <button
                                             type="button"
                                             className="w-full text-left px-4 py-3 bg-white dark:bg-gray-700 border-2 border-gray-200 dark:border-gray-600 rounded-lg hover:border-blue-500 dark:hover:border-blue-500 transition-colors"
@@ -424,11 +424,11 @@ export default function OnboardingPage() {
                                 </div>
 
                                 {/* Enhanced Action Buttons */}
-                                <div className="flex flex-col sm:flex-row gap-4 pt-6 border-t-2 border-gray-200 dark:border-gray-700">
+                                <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 pt-4 sm:pt-6 border-t-2 border-gray-200 dark:border-gray-700">
                                     <button
                                         type="submit"
                                         disabled={loading}
-                                        className={`flex-1 bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white py-4 rounded-xl font-bold text-lg transition-all disabled:bg-gray-400 shadow-xl hover:shadow-2xl flex items-center justify-center gap-2`}
+                                        className={`flex-1 bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white py-3 sm:py-4 rounded-xl font-bold text-base sm:text-lg transition-all disabled:bg-gray-400 shadow-xl hover:shadow-2xl flex items-center justify-center gap-2`}
                                     >
                                         {loading ? (
                                             <>
@@ -450,7 +450,7 @@ export default function OnboardingPage() {
                                     <button
                                         type="button"
                                         onClick={() => router.push('/dashboard')}
-                                        className={`px-8 py-4 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-200 rounded-xl font-semibold transition-all shadow-md hover:shadow-lg`}
+                                        className={`px-6 sm:px-8 py-3 sm:py-4 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-200 rounded-xl font-semibold text-sm sm:text-base transition-all shadow-md hover:shadow-lg`}
                                     >
                                         Cancel
                                     </button>

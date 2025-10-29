@@ -21,11 +21,6 @@ export async function GET(request: NextRequest) {
 
     const logs = await getActionLogsByUserId(userId, limit, offset);
 
-    console.log("📋 Returning logs to client:", logs.length);
-    if (logs.length > 0) {
-      console.log("📅 First log loggedAt value:", logs[0].loggedAt);
-    }
-
     return NextResponse.json({
       success: true,
       data: logs,

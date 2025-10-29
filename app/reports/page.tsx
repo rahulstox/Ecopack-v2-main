@@ -208,30 +208,30 @@ export default function ReportsPage() {
             <div className="flex">
                 <Sidebar totalCo2eSaved={reportData?.thisMonthCo2e || 0} />
 
-                <div className="flex-1 ml-0 lg:ml-64">
-                    <div className="p-6 space-y-6">
+                <div className="flex-1 ml-0 lg:ml-64 relative pt-16 lg:pt-0">
+                    <div className="p-4 sm:p-6 space-y-4 sm:space-y-6">
                         {/* Header */}
                         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-2">
                             <div>
-                                <h1 className="text-3xl sm:text-4xl font-extrabold text-gray-900 dark:text-white green:text-gray-900 mb-2">Emissions & Sustainability Reports</h1>
-                                <p className="text-base sm:text-lg text-gray-600 dark:text-gray-400 green:text-gray-700">
+                                <h1 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-gray-900 dark:text-white green:text-gray-900 mb-2">Emissions & Sustainability Reports</h1>
+                                <p className="text-sm sm:text-base lg:text-lg text-gray-600 dark:text-gray-400 green:text-gray-700">
                                     Comprehensive analytics and actionable insights to reduce your carbon footprint
                                 </p>
                             </div>
                         </div>
 
                         {/* Tabs */}
-                        <div className="border-b-2 border-gray-200 dark:border-gray-700 mb-6">
-                            <div className="flex gap-6">
+                        <div className="border-b-2 border-gray-200 dark:border-gray-700 mb-4 sm:mb-6 overflow-x-auto -mx-4 sm:mx-0">
+                            <div className="flex gap-3 sm:gap-6 px-4 sm:px-0 min-w-max sm:min-w-0">
                                 <button
                                     onClick={() => setActiveTab('emissions')}
-                                    className={`pb-4 px-1 font-semibold text-base transition-all relative ${activeTab === 'emissions'
+                                    className={`pb-3 sm:pb-4 px-1 font-semibold text-sm sm:text-base transition-all relative whitespace-nowrap ${activeTab === 'emissions'
                                         ? 'text-green-600 dark:text-green-400'
                                         : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200'
                                         }`}
                                 >
-                                    <div className="flex items-center gap-2.5">
-                                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <div className="flex items-center gap-2 sm:gap-2.5">
+                                        <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                                         </svg>
                                         <span>Emissions Report</span>
@@ -242,15 +242,16 @@ export default function ReportsPage() {
                                 </button>
                                 <button
                                     onClick={() => setActiveTab('recommendations')}
-                                    className={`pb-4 px-1 font-semibold text-base transition-all relative flex items-center gap-2.5 ${activeTab === 'recommendations'
+                                    className={`pb-3 sm:pb-4 px-1 font-semibold text-sm sm:text-base transition-all relative flex items-center gap-2 sm:gap-2.5 whitespace-nowrap ${activeTab === 'recommendations'
                                         ? 'text-green-600 dark:text-green-400'
                                         : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200'
                                         }`}
                                 >
-                                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
                                     </svg>
-                                    <span>Packaging Recommendations</span>
+                                    <span className="hidden xs:inline">Packaging Recommendations</span>
+                                    <span className="xs:hidden">Packaging</span>
                                     {recommendationReports.length > 0 && (
                                         <span className="ml-1 px-2 py-0.5 bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300 rounded-full text-xs font-bold">
                                             {recommendationReports.length}
@@ -268,25 +269,25 @@ export default function ReportsPage() {
                         ) : activeTab === 'recommendations' ? (
                             <>
                                 {recommendationReports.length === 0 ? (
-                                    <div className="bg-gradient-to-br from-white to-gray-50 dark:from-gray-800 dark:to-gray-900 rounded-2xl shadow-xl p-12 text-center border-2 border-dashed border-gray-300 dark:border-gray-600">
+                                    <div className="bg-gradient-to-br from-white to-gray-50 dark:from-gray-800 dark:to-gray-900 rounded-xl sm:rounded-2xl shadow-xl p-6 sm:p-8 lg:p-12 text-center border-2 border-dashed border-gray-300 dark:border-gray-600">
                                         <div className="max-w-md mx-auto">
-                                            <div className="w-24 h-24 bg-gradient-to-br from-green-100 to-emerald-100 dark:from-green-900/30 dark:to-emerald-900/30 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg">
-                                                <svg className="w-12 h-12 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <div className="w-16 h-16 sm:w-24 sm:h-24 bg-gradient-to-br from-green-100 to-emerald-100 dark:from-green-900/30 dark:to-emerald-900/30 rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-6 shadow-lg">
+                                                <svg className="w-8 h-8 sm:w-12 sm:h-12 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
                                                 </svg>
                                             </div>
-                                            <h2 className="text-3xl font-extrabold text-gray-900 dark:text-white mb-3">No Packaging Recommendations Yet</h2>
-                                            <p className="text-gray-600 dark:text-gray-400 mb-2 leading-relaxed">
+                                            <h2 className="text-xl sm:text-2xl lg:text-3xl font-extrabold text-gray-900 dark:text-white mb-2 sm:mb-3">No Packaging Recommendations Yet</h2>
+                                            <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400 mb-2 leading-relaxed">
                                                 Get AI-powered packaging recommendations tailored to your products. Our system analyzes your product specifications and suggests the most sustainable, cost-effective packaging solutions.
                                             </p>
-                                            <p className="text-sm text-gray-500 dark:text-gray-500 mb-8">
+                                            <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-500 mb-6 sm:mb-8">
                                                 Each recommendation includes detailed carbon footprint analysis, cost comparisons, and material suggestions.
                                             </p>
                                             <a
                                                 href="/recommend"
-                                                className="inline-flex items-center gap-2 bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white px-8 py-4 rounded-xl font-bold text-lg transition-all shadow-lg hover:shadow-xl hover:scale-105"
+                                                className="inline-flex items-center gap-2 bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-bold text-sm sm:text-base lg:text-lg transition-all shadow-lg hover:shadow-xl hover:scale-105"
                                             >
-                                                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                                                 </svg>
                                                 Get Your First Recommendation
@@ -315,7 +316,7 @@ export default function ReportsPage() {
                                         </div>
 
                                         {/* Recommendations Grid */}
-                                        <div className="grid md:grid-cols-2 gap-6">
+                                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
                                             {recommendationReports.map((report) => {
                                                 const formInput = report.form_input;
                                                 const aiOutput = report.ai_output;
@@ -343,7 +344,7 @@ export default function ReportsPage() {
                                                 };
 
                                                 return (
-                                                    <div key={report.id} className="group bg-gradient-to-br from-white to-gray-50 dark:from-gray-800 dark:to-gray-900 rounded-xl shadow-lg p-6 hover:shadow-2xl transition-all duration-300 border-2 border-gray-200 dark:border-gray-700 hover:border-green-400 dark:hover:border-green-600">
+                                                    <div key={report.id} className="group bg-gradient-to-br from-white to-gray-50 dark:from-gray-800 dark:to-gray-900 rounded-xl shadow-lg p-4 sm:p-6 hover:shadow-2xl transition-all duration-300 border-2 border-gray-200 dark:border-gray-700 hover:border-green-400 dark:hover:border-green-600">
                                                         {/* Header */}
                                                         <div className="flex justify-between items-start mb-5 pb-4 border-b border-gray-200 dark:border-gray-700">
                                                             <div className="flex-1">
@@ -379,7 +380,7 @@ export default function ReportsPage() {
                                                         {/* Product Details Section */}
                                                         <div className="mb-5 pb-4 border-b border-gray-200 dark:border-gray-700">
                                                             <p className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-3">Product Specifications</p>
-                                                            <div className="grid grid-cols-2 gap-4">
+                                                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                                                                 <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-3">
                                                                     <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">Product Weight</p>
                                                                     <p className="font-bold text-gray-900 dark:text-white text-sm">
@@ -645,9 +646,9 @@ export default function ReportsPage() {
                                                                 <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5 overflow-hidden">
                                                                     <div
                                                                         className={`h-full rounded-full transition-all duration-500 ${category === 'FOOD' ? 'bg-gradient-to-r from-green-500 to-emerald-600' :
-                                                                                category === 'TRANSPORT' ? 'bg-gradient-to-r from-blue-500 to-cyan-600' :
-                                                                                    category === 'ENERGY' ? 'bg-gradient-to-r from-yellow-500 to-orange-600' :
-                                                                                        'bg-gradient-to-r from-purple-500 to-pink-600'
+                                                                            category === 'TRANSPORT' ? 'bg-gradient-to-r from-blue-500 to-cyan-600' :
+                                                                                category === 'ENERGY' ? 'bg-gradient-to-r from-yellow-500 to-orange-600' :
+                                                                                    'bg-gradient-to-r from-purple-500 to-pink-600'
                                                                             }`}
                                                                         style={{ width: `${percentage}%` }}
                                                                     ></div>
