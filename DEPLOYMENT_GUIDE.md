@@ -248,9 +248,15 @@ Check Vercel deployment logs for any errors:
 
 ### ✅ 5. Set Up Custom Domain (Optional)
 
+For detailed step-by-step instructions, see **[CUSTOM_DOMAIN_SETUP.md](./CUSTOM_DOMAIN_SETUP.md)**
+
+Quick steps:
+
 1. Go to your Vercel project → **Settings** → **Domains**
 2. Add your custom domain
-3. Follow the DNS configuration instructions
+3. Configure DNS records at your domain registrar
+4. Update Clerk allowed frontend URLs to include your custom domain
+5. Wait for DNS propagation (24-48 hours)
 
 ---
 

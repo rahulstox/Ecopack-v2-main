@@ -1501,6 +1501,36 @@ export default function Home() {
 
       {/* Visitor Counter */}
       <VisitorCounter />
+
+      {/* Floating Quiz Button */}
+      <Link
+        href="/quiz"
+
+        className="fixed bottom-6 right-6 z-50 group animate-in fade-in slide-in-from-bottom-4 duration-500"
+      >
+        <div className={`relative flex items-center gap-3 px-6 py-4 rounded-full shadow-2xl transition-all duration-300 transform hover:scale-110 hover:shadow-3xl ${theme === 'dark'
+          ? 'bg-gradient-to-r from-green-600 via-emerald-600 to-teal-600 text-white'
+          : 'bg-gradient-to-r from-green-600 via-emerald-600 to-teal-600 text-white'
+          }`}>
+          {/* Pulse ring effect */}
+          <div className={`absolute inset-0 rounded-full ${theme === 'dark' ? 'bg-green-500' : 'bg-green-400'} opacity-75 animate-ping`}></div>
+
+          {/* Icon */}
+          <div className="relative z-10">
+            <svg className="w-6 h-6 group-hover:rotate-12 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+            </svg>
+          </div>
+
+          {/* Text */}
+          <span className="relative z-10 font-bold text-base sm:text-lg whitespace-nowrap">
+            Take Quiz
+          </span>
+
+          {/* Sparkle effect */}
+          <div className="absolute -top-1 -right-1 w-3 h-3 bg-yellow-400 rounded-full animate-pulse opacity-90"></div>
+        </div>
+      </Link>
     </div>
   );
 }

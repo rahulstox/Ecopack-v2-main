@@ -228,6 +228,7 @@ npm run build
 - **ABOUT.md** - Complete application description and features
 - **PRESENTATION_SUMMARY.md** - Concise client-ready summary
 - **DEPLOYMENT_GUIDE.md** - Detailed deployment instructions
+- **CUSTOM_DOMAIN_SETUP.md** - Complete guide for setting up custom domains
 - **SETUP.md** - Setup and configuration guide
 - **CLIMATEIQ_INTEGRATION.md** - ClimateIQ API integration details
 
