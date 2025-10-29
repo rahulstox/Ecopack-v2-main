@@ -30,7 +30,7 @@ export function VisitorCounter() {
     }, []);
 
     return (
-        <div className="fixed bottom-6 right-6 z-50">
+        <div className="fixed bottom-6 right-6 z-40">
             <div className="bg-gradient-to-r from-green-500 to-emerald-600 rounded-full px-6 py-3 shadow-2xl border-4 border-white flex items-center gap-3 hover:scale-110 transition-transform cursor-pointer">
                 <div className="w-4 h-4 bg-white rounded-full animate-ping"></div>
                 <div className="w-4 h-4 bg-white rounded-full absolute"></div>

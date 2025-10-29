@@ -5,6 +5,7 @@ import { useUser, SignedIn, SignedOut, SignInButton, UserButton } from '@clerk/n
 import Link from 'next/link';
 import { CheckCircle2, XCircle, Sparkles, Award, RefreshCw, Home, TrendingUp, Leaf, Lightbulb, Target, Zap, Trophy, ArrowLeft, Clock, Star, BarChart3 } from 'lucide-react';
 import { useTheme } from '@/contexts/ThemeContext';
+import { VisitorCounter } from '@/components/VisitorCounter';
 
 // Quiz questions database
 const quizQuestions = [
@@ -216,7 +217,7 @@ export default function QuizPage() {
             <div className={`min-h-screen transition-colors duration-300 ${theme === 'dark'
                 ? 'bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900'
                 : 'bg-gradient-to-br from-green-50 via-emerald-50 to-teal-50'
-                } pt-16 pb-6 animate-in fade-in duration-500 relative overflow-hidden`}>
+                } pt-16 pb-24 animate-in fade-in duration-500 relative overflow-hidden`}>
                 {/* Navbar */}
                 <nav className={`fixed top-0 left-0 right-0 z-50 ${theme === 'dark'
                     ? 'bg-gray-900/95 border-gray-600/30'
@@ -414,7 +415,7 @@ export default function QuizPage() {
         <div className={`min-h-screen transition-colors duration-300 ${theme === 'dark'
             ? 'bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900'
             : 'bg-gradient-to-br from-green-50 via-emerald-50 to-teal-50'
-            } pt-14 pb-4 relative overflow-hidden`}>
+            } pt-14 pb-24 relative overflow-hidden`}>
             {/* Navbar */}
             <nav className={`fixed top-0 left-0 right-0 z-50 ${theme === 'dark'
                 ? 'bg-gray-900/95 border-gray-600/30'
@@ -766,6 +767,9 @@ export default function QuizPage() {
                     </div>
                 )}
             </div>
+
+            {/* Visitor Counter */}
+            <VisitorCounter />
         </div>
     );
 }

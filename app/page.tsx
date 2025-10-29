@@ -1505,8 +1505,7 @@ export default function Home() {
       {/* Floating Quiz Button */}
       <Link
         href="/quiz"
-
-        className="fixed bottom-6 right-6 z-50 group animate-in fade-in slide-in-from-bottom-4 duration-500"
+        className="fixed bottom-24 right-6 z-50 group animate-in fade-in slide-in-from-bottom-4 duration-500"
       >
         <div className={`relative flex items-center gap-3 px-6 py-4 rounded-full shadow-2xl transition-all duration-300 transform hover:scale-110 hover:shadow-3xl ${theme === 'dark'
           ? 'bg-gradient-to-r from-green-600 via-emerald-600 to-teal-600 text-white'
