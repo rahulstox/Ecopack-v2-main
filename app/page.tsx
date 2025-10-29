@@ -84,159 +84,224 @@ export default function Home() {
           ? 'bg-gray-900/95 border-gray-600/30'
           : 'bg-white/70 border-white/20'
           }`}>
-          <div className="container mx-auto px-6 py-4 flex justify-between items-center">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-green-600 rounded-lg flex items-center justify-center">
-                <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
-                </svg>
+          <div className="container mx-auto px-4 lg:px-6">
+            <div className="flex items-center justify-between h-16">
+              {/* Logo */}
+              <div className="flex items-center gap-3 flex-shrink-0">
+                <div className="w-10 h-10 bg-gradient-to-br from-green-600 to-emerald-600 rounded-lg flex items-center justify-center shadow-lg">
+                  <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+                  </svg>
+                </div>
+                <span className={`text-xl lg:text-2xl font-bold ${theme === 'dark' ? 'text-white' : 'text-gray-800'}`}>
+                  EcoPack AI
+                </span>
               </div>
-              <span className={`text-2xl font-bold ${theme === 'dark' ? 'text-white' : 'text-gray-800'}`}>EcoPack AI</span>
-            </div>
 
-            {/* Navigation Links */}
-            <div className="hidden md:flex items-center gap-6">
-              <a href="#home" onClick={(e) => handleNavClick(e, 'home')} className={`font-medium transition-colors cursor-pointer ${theme === 'dark' ? 'text-gray-200 hover:text-green-400' : 'text-gray-700 hover:text-green-600'
-                }`}>Home</a>
-              <a href="#about" onClick={(e) => handleNavClick(e, 'about')} className={`font-medium transition-colors cursor-pointer ${theme === 'dark' ? 'text-gray-200 hover:text-green-400' : 'text-gray-700 hover:text-green-600'
-                }`}>About Us</a>
-              <a href="#how-it-works" onClick={(e) => handleNavClick(e, 'how-it-works')} className={`font-medium transition-colors cursor-pointer ${theme === 'dark' ? 'text-gray-200 hover:text-green-400' : 'text-gray-700 hover:text-green-600'
-                }`}>How It Works</a>
-              <a href="#pricing" onClick={(e) => handleNavClick(e, 'pricing')} className={`font-medium transition-colors cursor-pointer ${theme === 'dark' ? 'text-gray-200 hover:text-green-400' : 'text-gray-700 hover:text-green-600'
-                }`}>Pricing</a>
-              <a href="#team" onClick={(e) => handleNavClick(e, 'team')} className={`font-medium transition-colors cursor-pointer ${theme === 'dark' ? 'text-gray-200 hover:text-green-400' : 'text-gray-700 hover:text-green-600'
-                }`}>Team</a>
-              <a href="#contact" onClick={(e) => handleNavClick(e, 'contact')} className={`font-medium transition-colors cursor-pointer ${theme === 'dark' ? 'text-gray-200 hover:text-green-400' : 'text-gray-700 hover:text-green-600'
-                }`}>Contact Us</a>
-              <Link href="/quiz" className="relative text-white font-semibold transition-all duration-300 cursor-pointer bg-gradient-to-r from-green-600 via-emerald-600 to-teal-600 px-5 py-2.5 rounded-full shadow-xl hover:shadow-2xl hover:scale-105 group flex items-center gap-2 overflow-hidden border border-green-400/30">
-                <div className="absolute inset-0 bg-gradient-to-r from-green-400 to-emerald-400 opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
-                <div className="relative flex items-center gap-2">
-                  <div className="relative">
-                    <svg className="w-5 h-5 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+              {/* Center Navigation Links */}
+              <div className="hidden lg:flex items-center gap-1 xl:gap-2">
+                <a href="#home" onClick={(e) => handleNavClick(e, 'home')} className={`px-3 py-2 rounded-lg font-medium transition-all cursor-pointer ${theme === 'dark' ? 'text-gray-200 hover:text-green-400 hover:bg-gray-800' : 'text-gray-700 hover:text-green-600 hover:bg-green-50'
+                  }`}>Home</a>
+                <a href="#about" onClick={(e) => handleNavClick(e, 'about')} className={`px-3 py-2 rounded-lg font-medium transition-all cursor-pointer ${theme === 'dark' ? 'text-gray-200 hover:text-green-400 hover:bg-gray-800' : 'text-gray-700 hover:text-green-600 hover:bg-green-50'
+                  }`}>About</a>
+                <a href="#how-it-works" onClick={(e) => handleNavClick(e, 'how-it-works')} className={`px-3 py-2 rounded-lg font-medium transition-all cursor-pointer ${theme === 'dark' ? 'text-gray-200 hover:text-green-400 hover:bg-gray-800' : 'text-gray-700 hover:text-green-600 hover:bg-green-50'
+                  }`}>How It Works</a>
+                <a href="#pricing" onClick={(e) => handleNavClick(e, 'pricing')} className={`px-3 py-2 rounded-lg font-medium transition-all cursor-pointer ${theme === 'dark' ? 'text-gray-200 hover:text-green-400 hover:bg-gray-800' : 'text-gray-700 hover:text-green-600 hover:bg-green-50'
+                  }`}>Pricing</a>
+                <a href="#team" onClick={(e) => handleNavClick(e, 'team')} className={`px-3 py-2 rounded-lg font-medium transition-all cursor-pointer ${theme === 'dark' ? 'text-gray-200 hover:text-green-400 hover:bg-gray-800' : 'text-gray-700 hover:text-green-600 hover:bg-green-50'
+                  }`}>Team</a>
+                <a href="#contact" onClick={(e) => handleNavClick(e, 'contact')} className={`px-3 py-2 rounded-lg font-medium transition-all cursor-pointer ${theme === 'dark' ? 'text-gray-200 hover:text-green-400 hover:bg-gray-800' : 'text-gray-700 hover:text-green-600 hover:bg-green-50'
+                  }`}>Contact</a>
+              </div>
+
+              {/* Right Section: Quiz, Theme Switcher, Auth */}
+              <div className="flex items-center gap-2 lg:gap-3">
+                {/* Quiz Button - Desktop */}
+                <Link href="/quiz" className="hidden lg:flex relative items-center gap-2 bg-gradient-to-r from-green-600 via-emerald-600 to-teal-600 text-white font-semibold px-4 py-2 rounded-lg shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 group overflow-hidden border border-green-400/30">
+                  <div className="absolute inset-0 bg-gradient-to-r from-green-400 to-emerald-400 opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
+                  <svg className="relative w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+                  </svg>
+                  <span className="relative text-sm font-bold">Quiz</span>
+                </Link>
+
+                {/* Theme Switcher */}
+                <div className={`hidden lg:flex items-center gap-1 backdrop-blur-sm rounded-lg px-1.5 py-1.5 ${theme === 'dark' ? 'bg-gray-800/90' : 'bg-white/50'
+                  }`}>
+                  <button
+                    onClick={() => setTheme('green')}
+                    className={`p-1.5 rounded-md transition-all ${theme === 'green' ? 'bg-green-600 text-white shadow-md' : (theme === 'dark' ? 'text-gray-300 hover:bg-gray-700' : 'text-gray-600 hover:bg-green-100')
+                      }`}
+                    title="Green Theme"
+                  >
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
                     </svg>
-                    <span className="absolute top-0 right-0 w-2 h-2 bg-yellow-400 rounded-full animate-ping"></span>
-                  </div>
-                  <span className="font-bold">Quiz</span>
-                </div>
-              </Link>
-            </div>
-
-            {/* Right side with Auth and Mobile Button */}
-            <div className="flex items-center gap-4">
-              {/* Theme Switcher */}
-              <div className={`hidden md:flex items-center gap-2 backdrop-blur-sm rounded-full px-2 py-1 ${theme === 'dark' ? 'bg-gray-800/90' : 'bg-white/50'
-                }`}>
-                <button
-                  onClick={() => setTheme('green')}
-                  className={`p-2 rounded-full transition-all ${theme === 'green' ? 'bg-green-600 text-white' : (theme === 'dark' ? 'text-gray-300 hover:bg-gray-600' : 'text-gray-600 hover:bg-green-100')
-                    }`}
-                  title="Green Theme"
-                >
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
-                  </svg>
-                </button>
-                <button
-                  onClick={() => setTheme('dark')}
-                  className={`p-2 rounded-full transition-all ${theme === 'dark' ? 'bg-gray-600 text-white' : 'text-gray-600 hover:bg-gray-100'
-                    }`}
-                  title="Dark Theme"
-                >
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
-                  </svg>
-                </button>
-              </div>
-
-              <button
-                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                className={`md:hidden ${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'
-                  }`}
-              >
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  {isMobileMenuOpen ? (
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                  ) : (
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-                  )}
-                </svg>
-              </button>
-              <SignedOut>
-                <SignInButton mode="modal">
-                  <button className="bg-green-700 hover:bg-green-800 text-white px-5 py-2.5 rounded-lg font-semibold transition-colors shadow hover:shadow-md">
-                    Sign In
                   </button>
-                </SignInButton>
-              </SignedOut>
-              <SignedIn>
-                <div className="hidden md:flex items-center gap-3">
-                  <Link href="/dashboard" className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg font-semibold transition-colors text-sm">
-                    Dashboard
-                  </Link>
-                  <UserButton afterSignOutUrl="/" />
+                  <button
+                    onClick={() => setTheme('dark')}
+                    className={`p-1.5 rounded-md transition-all ${theme === 'dark' ? 'bg-gray-600 text-white shadow-md' : 'text-gray-600 hover:bg-gray-100'
+                      }`}
+                    title="Dark Theme"
+                  >
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                    </svg>
+                  </button>
                 </div>
-              </SignedIn>
+
+                {/* Mobile Menu Button */}
+                <button
+                  onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                  className={`lg:hidden p-2 rounded-lg transition-colors ${theme === 'dark' ? 'text-gray-300 hover:bg-gray-800' : 'text-gray-700 hover:bg-gray-100'
+                    }`}
+                  aria-label="Toggle menu"
+                >
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    {isMobileMenuOpen ? (
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                    ) : (
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                    )}
+                  </svg>
+                </button>
+
+                {/* Auth Buttons */}
+                <SignedOut>
+                  <SignInButton mode="modal">
+                    <button className="hidden lg:block bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg font-semibold transition-all shadow-md hover:shadow-lg text-sm">
+                      Sign In
+                    </button>
+                  </SignInButton>
+                </SignedOut>
+                <SignedIn>
+                  <div className="hidden lg:flex items-center gap-2">
+                    <Link href="/dashboard" className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg font-semibold transition-all shadow-md hover:shadow-lg text-sm">
+                      Dashboard
+                    </Link>
+                    <UserButton afterSignOutUrl="/" />
+                  </div>
+                </SignedIn>
+              </div>
             </div>
           </div>
 
           {/* Mobile Menu */}
           {isMobileMenuOpen && (
-            <div className={`md:hidden backdrop-blur-lg border-t py-4 ${theme === 'dark'
-              ? 'bg-gray-800/70 border-gray-700/20'
-              : 'bg-white/70 border-white/20'
+            <div className={`lg:hidden backdrop-blur-lg border-t ${theme === 'dark'
+              ? 'bg-gray-800/95 border-gray-700/30'
+              : 'bg-white/95 border-white/30'
               }`}>
-              <div className="container mx-auto px-6 space-y-3">
-                {/* Theme Switcher in Mobile */}
+              <div className="container mx-auto px-4 py-4">
+                {/* Navigation Links */}
+                <div className="space-y-1 mb-4">
+                  <a
+                    href="#home"
+                    onClick={(e) => { handleNavClick(e, 'home'); setIsMobileMenuOpen(false); }}
+                    className={`block px-4 py-3 rounded-lg font-medium transition-all ${theme === 'dark' ? 'text-gray-200 hover:text-green-400 hover:bg-gray-700' : 'text-gray-700 hover:text-green-600 hover:bg-green-50'
+                      }`}
+                  >
+                    Home
+                  </a>
+                  <a
+                    href="#about"
+                    onClick={(e) => { handleNavClick(e, 'about'); setIsMobileMenuOpen(false); }}
+                    className={`block px-4 py-3 rounded-lg font-medium transition-all ${theme === 'dark' ? 'text-gray-200 hover:text-green-400 hover:bg-gray-700' : 'text-gray-700 hover:text-green-600 hover:bg-green-50'
+                      }`}
+                  >
+                    About
+                  </a>
+                  <a
+                    href="#how-it-works"
+                    onClick={(e) => { handleNavClick(e, 'how-it-works'); setIsMobileMenuOpen(false); }}
+                    className={`block px-4 py-3 rounded-lg font-medium transition-all ${theme === 'dark' ? 'text-gray-200 hover:text-green-400 hover:bg-gray-700' : 'text-gray-700 hover:text-green-600 hover:bg-green-50'
+                      }`}
+                  >
+                    How It Works
+                  </a>
+                  <a
+                    href="#pricing"
+                    onClick={(e) => { handleNavClick(e, 'pricing'); setIsMobileMenuOpen(false); }}
+                    className={`block px-4 py-3 rounded-lg font-medium transition-all ${theme === 'dark' ? 'text-gray-200 hover:text-green-400 hover:bg-gray-700' : 'text-gray-700 hover:text-green-600 hover:bg-green-50'
+                      }`}
+                  >
+                    Pricing
+                  </a>
+                  <a
+                    href="#team"
+                    onClick={(e) => { handleNavClick(e, 'team'); setIsMobileMenuOpen(false); }}
+                    className={`block px-4 py-3 rounded-lg font-medium transition-all ${theme === 'dark' ? 'text-gray-200 hover:text-green-400 hover:bg-gray-700' : 'text-gray-700 hover:text-green-600 hover:bg-green-50'
+                      }`}
+                  >
+                    Team
+                  </a>
+                  <a
+                    href="#contact"
+                    onClick={(e) => { handleNavClick(e, 'contact'); setIsMobileMenuOpen(false); }}
+                    className={`block px-4 py-3 rounded-lg font-medium transition-all ${theme === 'dark' ? 'text-gray-200 hover:text-green-400 hover:bg-gray-700' : 'text-gray-700 hover:text-green-600 hover:bg-green-50'
+                      }`}
+                  >
+                    Contact
+                  </a>
+                </div>
+
+                {/* Quiz Button */}
+                <Link
+                  href="/quiz"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="flex items-center justify-center gap-2 w-full bg-gradient-to-r from-green-600 via-emerald-600 to-teal-600 text-white font-bold px-4 py-3 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 group overflow-hidden border border-green-400/30 mb-4"
+                >
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+                  </svg>
+                  <span>Take Quiz</span>
+                </Link>
+
+                {/* Theme Switcher */}
                 <div className={`backdrop-blur-sm rounded-lg p-3 ${theme === 'dark' ? 'bg-gray-700/50' : 'bg-white/50'
                   }`}>
-                  <p className={`text-xs mb-2 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'
+                  <p className={`text-xs font-semibold mb-2 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'
                     }`}>Theme</p>
-                  <div className="flex gap-2">
+                  <div className="grid grid-cols-2 gap-2">
                     <button
                       onClick={() => { setTheme('green'); setIsMobileMenuOpen(false); }}
-                      className={`flex-1 p-2 rounded-md transition-all ${theme === 'green' ? 'bg-green-600 text-white' : (theme === 'dark' ? 'bg-gray-800 text-gray-300' : 'bg-white/90 text-gray-600')
+                      className={`flex items-center justify-center gap-2 p-3 rounded-lg transition-all ${theme === 'green' ? 'bg-green-600 text-white shadow-md' : (theme === 'dark' ? 'bg-gray-800 text-gray-300 hover:bg-gray-700' : 'bg-white text-gray-600 hover:bg-green-50')
                         }`}
                     >
-                      <svg className="w-5 h-5 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
                       </svg>
+                      <span className="text-sm font-medium">Green</span>
                     </button>
                     <button
                       onClick={() => { setTheme('dark'); setIsMobileMenuOpen(false); }}
-                      className={`flex-1 p-2 rounded-md transition-all ${theme === 'dark' ? 'bg-gray-600 text-white' : 'bg-white/90 text-gray-600'
+                      className={`flex items-center justify-center gap-2 p-3 rounded-lg transition-all ${theme === 'dark' ? 'bg-gray-600 text-white shadow-md' : 'bg-white text-gray-600 hover:bg-gray-50'
                         }`}
                     >
-                      <svg className="w-5 h-5 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
                       </svg>
+                      <span className="text-sm font-medium">Dark</span>
                     </button>
                   </div>
                 </div>
-                <a href="#home" onClick={(e) => { handleNavClick(e, 'home'); setIsMobileMenuOpen(false); }} className={`block font-medium transition-colors ${theme === 'dark' ? 'text-gray-300 hover:text-green-400' : 'text-gray-700 hover:text-green-600'
-                  }`}>Home</a>
-                <a href="#about" onClick={(e) => { handleNavClick(e, 'about'); setIsMobileMenuOpen(false); }} className={`block font-medium transition-colors ${theme === 'dark' ? 'text-gray-300 hover:text-green-400' : 'text-gray-700 hover:text-green-600'
-                  }`}>About Us</a>
-                <a href="#how-it-works" onClick={(e) => { handleNavClick(e, 'how-it-works'); setIsMobileMenuOpen(false); }} className={`block font-medium transition-colors ${theme === 'dark' ? 'text-gray-300 hover:text-green-400' : 'text-gray-700 hover:text-green-600'
-                  }`}>How It Works</a>
-                <a href="#pricing" onClick={(e) => { handleNavClick(e, 'pricing'); setIsMobileMenuOpen(false); }} className={`block font-medium transition-colors ${theme === 'dark' ? 'text-gray-300 hover:text-green-400' : 'text-gray-700 hover:text-green-600'
-                  }`}>Pricing</a>
-                <a href="#team" onClick={(e) => { handleNavClick(e, 'team'); setIsMobileMenuOpen(false); }} className={`block font-medium transition-colors ${theme === 'dark' ? 'text-gray-300 hover:text-green-400' : 'text-gray-700 hover:text-green-600'
-                  }`}>Team</a>
-                <a href="#contact" onClick={(e) => { handleNavClick(e, 'contact'); setIsMobileMenuOpen(false); }} className={`block font-medium transition-colors ${theme === 'dark' ? 'text-gray-300 hover:text-green-400' : 'text-gray-700 hover:text-green-600'
-                  }`}>Contact Us</a>
-                <Link href="/quiz" onClick={() => setIsMobileMenuOpen(false)} className="relative text-white font-bold transition-all duration-300 bg-gradient-to-r from-green-600 via-emerald-600 to-teal-600 px-4 py-3 rounded-full shadow-xl flex items-center gap-2 justify-center group overflow-hidden border border-green-400/30">
-                  <div className="absolute inset-0 bg-gradient-to-r from-green-400 to-emerald-400 opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
-                  <div className="relative flex items-center gap-2">
-                    <svg className="w-5 h-5 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
-                    </svg>
-                    <span className="relative">
-                      <span className="absolute -top-1 -right-1 w-2 h-2 bg-yellow-400 rounded-full animate-ping"></span>
-                      Take Quiz
-                    </span>
-                  </div>
-                </Link>
+
+                {/* Auth Section */}
+                <SignedOut>
+                  <SignInButton mode="modal">
+                    <button className="w-full mt-4 bg-green-600 hover:bg-green-700 text-white px-4 py-3 rounded-lg font-semibold transition-all shadow-md">
+                      Sign In
+                    </button>
+                  </SignInButton>
+                </SignedOut>
+                <SignedIn>
+                  <Link
+                    href="/dashboard"
+                    className="block w-full mt-4 bg-green-600 hover:bg-green-700 text-white px-4 py-3 rounded-lg font-semibold transition-all shadow-md text-center"
+                  >
+                    Dashboard
+                  </Link>
+                </SignedIn>
               </div>
             </div>
           )}
@@ -282,7 +347,7 @@ export default function Home() {
                 <div className={`text-sm mt-1 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>Cost Savings</div>
               </div>
               <div>
-                <div className={`text-4xl font-bold ${theme === 'dark' ? 'text-green-400' : 'text-green-600'}`}>&lt;30s</div>
+                <div className={`text-4xl font-bold ${theme === 'dark' ? 'text-green-400' : 'text-green-600'}`}>&lt;20s</div>
                 <div className={`text-sm mt-1 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>Response Time</div>
               </div>
             </div>
@@ -418,10 +483,10 @@ export default function Home() {
                 <h3 className={`text-xl font-bold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>Cost Optimization</h3>
               </div>
               <p className={`${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'} mb-6`}>
-                Smart AI recommendations help you balance sustainability and cost, saving up to 25% while meeting product requirements
+                Smart AI recommendations help you balance sustainability and cost, saving up to 30% while meeting product requirements
               </p>
               <div className={`rounded-xl p-4 mt-6 ${theme === 'dark' ? 'bg-gray-600' : 'bg-blue-100'}`}>
-                <div className={`text-4xl font-bold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>25%</div>
+                <div className={`text-4xl font-bold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>30%</div>
                 <div className={`text-sm font-medium ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}`}>Cost Savings</div>
               </div>
             </div>
@@ -439,10 +504,10 @@ export default function Home() {
                 <h3 className={`text-xl font-bold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>Lightning Fast</h3>
               </div>
               <p className={`${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'} mb-6`}>
-                Get instant AI-powered packaging recommendations in under 30 seconds with detailed PDF reports and comparisons
+                Get instant AI-powered packaging recommendations in under 20 seconds with detailed PDF reports and comparisons
               </p>
               <div className={`rounded-xl p-4 mt-6 ${theme === 'dark' ? 'bg-gray-600' : 'bg-purple-100'}`}>
-                <div className={`text-4xl font-bold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>&lt;30s</div>
+                <div className={`text-4xl font-bold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>&lt;20s</div>
                 <div className={`text-sm font-medium ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}`}>Processing Time</div>
               </div>
             </div>
@@ -661,59 +726,219 @@ export default function Home() {
               }`}>
               <h3 className={`text-2xl font-bold mb-4 ${theme === 'dark' ? 'text-white' : 'text-gray-900'
                 }`}>Free</h3>
-              <div className={`text-4xl font-bold mb-6 ${theme === 'dark' ? 'text-white' : 'text-gray-900'
+              <div className={`text-4xl font-bold mb-2 ${theme === 'dark' ? 'text-white' : 'text-gray-900'
                 }`}>$0<span className={`text-lg ${theme === 'dark' ? 'text-gray-400' : 'text-gray-500'
                   }`}>/month</span></div>
+              <p className={`text-sm mb-6 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-500'
+                }`}>Perfect to get started</p>
               <ul className="space-y-3 mb-8">
+                {/* Included Features */}
                 <li className={`flex items-center gap-2 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'
-                  }`}>✓ 10 recommendations/month</li>
+                  }`}>
+                  <svg className="w-5 h-5 text-green-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                  <span>10 recommendations/month</span>
+                </li>
                 <li className={`flex items-center gap-2 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'
-                  }`}>✓ Basic carbon footprint tracking</li>
+                  }`}>
+                  <svg className="w-5 h-5 text-green-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                  <span>Basic carbon tracking</span>
+                </li>
                 <li className={`flex items-center gap-2 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'
-                  }`}>✓ Standard support</li>
+                  }`}>
+                  <svg className="w-5 h-5 text-green-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                  <span>Standard support</span>
+                </li>
+                <li className={`flex items-center gap-2 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'
+                  }`}>
+                  <svg className="w-5 h-5 text-green-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                  <span>PDF export</span>
+                </li>
+                <li className={`flex items-center gap-2 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'
+                  }`}>
+                  <svg className="w-5 h-5 text-green-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                  <span>7-day history</span>
+                </li>
+
+                {/* Not Included Features - Pro Features Preview */}
+                <li className={`flex items-center gap-2 opacity-50 ${theme === 'dark' ? 'text-gray-500' : 'text-gray-400'
+                  }`}>
+                  <svg className="w-5 h-5 text-gray-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                  <span className="line-through">Unlimited recommendations</span>
+                </li>
+                <li className={`flex items-center gap-2 opacity-50 ${theme === 'dark' ? 'text-gray-500' : 'text-gray-400'
+                  }`}>
+                  <svg className="w-5 h-5 text-gray-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                  <span className="line-through">Advanced analytics</span>
+                </li>
+                <li className={`flex items-center gap-2 opacity-50 ${theme === 'dark' ? 'text-gray-500' : 'text-gray-400'
+                  }`}>
+                  <svg className="w-5 h-5 text-gray-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                  <span className="line-through">Priority support (24/7)</span>
+                </li>
+                <li className={`flex items-center gap-2 opacity-50 ${theme === 'dark' ? 'text-gray-500' : 'text-gray-400'
+                  }`}>
+                  <svg className="w-5 h-5 text-gray-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                  <span className="line-through">Unlimited historical tracking</span>
+                </li>
+                <li className={`flex items-center gap-2 opacity-50 ${theme === 'dark' ? 'text-gray-500' : 'text-gray-400'
+                  }`}>
+                  <svg className="w-5 h-5 text-gray-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                  <span className="line-through">Team collaboration</span>
+                </li>
               </ul>
-              <button className={`w-full py-3 rounded-xl font-semibold transition-colors ${theme === 'dark'
+              <button className={`w-full py-3 rounded-xl font-semibold transition-all ${theme === 'dark'
                 ? 'bg-gray-700 text-white hover:bg-gray-600'
                 : 'bg-gray-200 text-gray-800 hover:bg-gray-300'
                 }`}>
                 Get Started
               </button>
             </div>
-            <div className="bg-green-600 rounded-3xl p-8 shadow-2xl border-4 border-green-500 transform scale-105">
-              <div className="bg-green-700 text-white px-3 py-1 rounded-full text-sm font-semibold inline-block mb-4">
-                Popular
+            <div className="bg-gradient-to-br from-green-600 to-emerald-600 rounded-3xl p-8 shadow-2xl border-4 border-green-500 transform scale-105 relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -mr-16 -mt-16"></div>
+              <div className="absolute bottom-0 left-0 w-24 h-24 bg-white/10 rounded-full -ml-12 -mb-12"></div>
+              <div className="relative">
+                <div className="bg-green-700 text-white px-4 py-1.5 rounded-full text-sm font-bold inline-block mb-4 shadow-lg">
+                  🌟 Most Popular
+                </div>
+                <h3 className="text-2xl font-bold text-white mb-4">Pro</h3>
+                <div className="text-4xl font-bold text-white mb-2">$29<span className="text-lg text-green-100">/month</span></div>
+                <p className="text-green-100 text-sm mb-6">Everything you need to scale</p>
+                <ul className="space-y-3 mb-8">
+                  <li className="flex items-center gap-3 text-white">
+                    <svg className="w-5 h-5 flex-shrink-0 text-green-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
+                    </svg>
+                    <span className="font-medium">✨ Unlimited recommendations</span>
+                  </li>
+                  <li className="flex items-center gap-3 text-white">
+                    <svg className="w-5 h-5 flex-shrink-0 text-green-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
+                    </svg>
+                    <span className="font-medium">📊 Advanced analytics dashboard</span>
+                  </li>
+                  <li className="flex items-center gap-3 text-white">
+                    <svg className="w-5 h-5 flex-shrink-0 text-green-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
+                    </svg>
+                    <span className="font-medium">🚀 Priority support (24/7)</span>
+                  </li>
+                  <li className="flex items-center gap-3 text-white">
+                    <svg className="w-5 h-5 flex-shrink-0 text-green-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
+                    </svg>
+                    <span className="font-medium">📈 Historical tracking (unlimited)</span>
+                  </li>
+                  <li className="flex items-center gap-3 text-white">
+                    <svg className="w-5 h-5 flex-shrink-0 text-green-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
+                    </svg>
+                    <span className="font-medium">📄 Custom branded reports</span>
+                  </li>
+                  <li className="flex items-center gap-3 text-white">
+                    <svg className="w-5 h-5 flex-shrink-0 text-green-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
+                    </svg>
+                    <span className="font-medium">👥 Team collaboration tools</span>
+                  </li>
+                  <li className="flex items-center gap-3 text-white">
+                    <svg className="w-5 h-5 flex-shrink-0 text-green-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
+                    </svg>
+                    <span className="font-medium">🔔 Real-time alerts & notifications</span>
+                  </li>
+                  <li className="flex items-center gap-3 text-white">
+                    <svg className="w-5 h-5 flex-shrink-0 text-green-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
+                    </svg>
+                    <span className="font-medium">📱 Multi-device sync</span>
+                  </li>
+                  <li className="flex items-center gap-3 text-white">
+                    <svg className="w-5 h-5 flex-shrink-0 text-green-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
+                    </svg>
+                    <span className="font-medium">🎯 Goal tracking & milestones</span>
+                  </li>
+                </ul>
+                <button className="w-full bg-white text-green-600 py-3.5 rounded-xl font-bold hover:bg-gray-50 transition-all shadow-xl hover:shadow-2xl hover:scale-105">
+                  Get Started Now
+                </button>
               </div>
-              <h3 className="text-2xl font-bold text-white mb-4">Pro</h3>
-              <div className="text-4xl font-bold text-white mb-6">$29<span className="text-lg text-green-100">/month</span></div>
-              <ul className="space-y-3 mb-8">
-                <li className="flex items-center gap-2 text-white">✓ Unlimited recommendations</li>
-                <li className="flex items-center gap-2 text-white">✓ Advanced analytics</li>
-                <li className="flex items-center gap-2 text-white">✓ Priority support</li>
-                <li className="flex items-center gap-2 text-white">✓ Historical tracking</li>
-              </ul>
-              <button className="w-full bg-white text-green-600 py-3 rounded-xl font-semibold hover:bg-gray-100 transition-colors">
-                Get Started
-              </button>
             </div>
             <div className={`rounded-3xl p-8 shadow-xl border-2 ${theme === 'dark' ? 'bg-gray-800 border-gray-600' : 'bg-white border-gray-200'
               }`}>
               <h3 className={`text-2xl font-bold mb-4 ${theme === 'dark' ? 'text-white' : 'text-gray-900'
                 }`}>Enterprise</h3>
-              <div className={`text-4xl font-bold mb-6 ${theme === 'dark' ? 'text-white' : 'text-gray-900'
+              <div className={`text-4xl font-bold mb-2 ${theme === 'dark' ? 'text-white' : 'text-gray-900'
                 }`}>Custom</div>
+              <p className={`text-sm mb-6 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-500'
+                }`}>Tailored for large organizations</p>
               <ul className="space-y-3 mb-8">
                 <li className={`flex items-center gap-2 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'
-                  }`}>✓ Everything in Pro</li>
+                  }`}>
+                  <svg className="w-5 h-5 text-green-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                  <span>Everything in Pro</span>
+                </li>
                 <li className={`flex items-center gap-2 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'
-                  }`}>✓ API access</li>
+                  }`}>
+                  <svg className="w-5 h-5 text-green-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                  <span>Full API access</span>
+                </li>
                 <li className={`flex items-center gap-2 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'
-                  }`}>✓ Custom integrations</li>
+                  }`}>
+                  <svg className="w-5 h-5 text-green-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                  <span>Custom integrations</span>
+                </li>
                 <li className={`flex items-center gap-2 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'
-                  }`}>✓ Dedicated support</li>
+                  }`}>
+                  <svg className="w-5 h-5 text-green-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                  <span>Dedicated account manager</span>
+                </li>
+                <li className={`flex items-center gap-2 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'
+                  }`}>
+                  <svg className="w-5 h-5 text-green-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                  <span>SLA guarantee</span>
+                </li>
+                <li className={`flex items-center gap-2 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'
+                  }`}>
+                  <svg className="w-5 h-5 text-green-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                  <span>White-label options</span>
+                </li>
               </ul>
-              <button className={`w-full py-3 rounded-xl font-semibold transition-colors ${theme === 'dark'
+              <button className={`w-full py-3 rounded-xl font-semibold transition-all shadow-md hover:shadow-lg ${theme === 'dark'
                 ? 'bg-gray-700 text-white hover:bg-gray-600'
-                : 'bg-gray-200 text-gray-800 hover:bg-gray-300'
+                : 'bg-gray-800 text-white hover:bg-gray-700'
                 }`}>
                 Contact Sales
               </button>
