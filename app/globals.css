@@ -6,6 +6,29 @@ html {
   scroll-behavior: smooth;
 }
 
+/* Scroll margin for sections with IDs to account for fixed navbar */
+section[id] {
+  scroll-margin-top: 5rem; /* 80px - accounts for navbar + spacing */
+}
+
+@media (min-width: 640px) {
+  section[id] {
+    scroll-margin-top: 6rem; /* 96px */
+  }
+}
+
+@media (min-width: 768px) {
+  section[id] {
+    scroll-margin-top: 7rem; /* 112px for small laptops */
+  }
+}
+
+@media (min-width: 1024px) {
+  section[id] {
+    scroll-margin-top: 8rem; /* 128px for larger screens */
+  }
+}
+
 @layer utilities {
   .delay-150 {
     animation-delay: 150ms;

@@ -309,7 +309,7 @@ export default function Home() {
       </nav>
 
       {/* Home Section */}
-      <section id="home" className={`container mx-auto px-4 sm:px-6 pb-12 pt-8 ${theme === 'dark' ? 'text-white' : ''}`}>
+      <section id="home" className={`container mx-auto px-4 sm:px-6 pb-12 pt-20 sm:pt-24 md:pt-28 lg:pt-32 ${theme === 'dark' ? 'text-white' : ''}`}>
         <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center min-h-[80vh]">
           {/* Left Section - Content */}
           <div className="space-y-6 sm:space-y-8">
@@ -445,7 +445,7 @@ export default function Home() {
       </section>
 
       {/* Why Choose Section */}
-      <section className={`py-20 ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'}`}>
+      <section className={`py-16 sm:py-20 md:py-24 lg:py-28 ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'}`}>
         <div className="container mx-auto px-6">
           <div className="text-center mb-16">
             <h2 className={`text-3xl sm:text-4xl md:text-5xl font-bold mb-4 ${theme === 'dark' ? 'text-white' : 'text-gray-900'
@@ -528,7 +528,7 @@ export default function Home() {
       </section>
 
       {/* About Us Section */}
-      <section id="about" className={`py-20 ${theme === 'dark'
+      <section id="about" className={`py-16 sm:py-20 md:py-24 lg:py-28 ${theme === 'dark'
         ? 'bg-gradient-to-br from-gray-800 to-gray-900'
         : 'bg-gradient-to-br from-green-50 to-emerald-50'
         }`}>
@@ -563,7 +563,7 @@ export default function Home() {
       </section>
 
       {/* How It Works Section */}
-      <section id="how-it-works" className={`py-20 ${theme === 'dark'
+      <section id="how-it-works" className={`py-16 sm:py-20 md:py-24 lg:py-28 ${theme === 'dark'
         ? 'bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900'
         : 'bg-gradient-to-br from-green-50 via-emerald-50 to-teal-50'
         }`}>
@@ -736,7 +736,7 @@ export default function Home() {
       </section>
 
       {/* Pricing Section */}
-      <section id="pricing" className={`py-20 ${theme === 'dark'
+      <section id="pricing" className={`py-16 sm:py-20 md:py-24 lg:py-28 ${theme === 'dark'
         ? 'bg-gradient-to-br from-gray-800 to-gray-900'
         : 'bg-gradient-to-br from-blue-50 to-cyan-50'
         }`}>
@@ -993,7 +993,7 @@ export default function Home() {
       </section>
 
       {/* Team Section */}
-      <section id="team" className={`py-16 sm:py-20 ${theme === 'dark'
+      <section id="team" className={`py-16 sm:py-20 md:py-24 lg:py-28 ${theme === 'dark'
         ? 'bg-gradient-to-br from-gray-800 to-gray-900'
         : 'bg-gradient-to-br from-green-50 to-emerald-50'
         }`}>
@@ -1092,7 +1092,7 @@ export default function Home() {
       </section>
 
       {/* Contact Section */}
-      <section id="contact" className={`py-16 sm:py-20 ${theme === 'dark' ? 'bg-gray-900' : 'bg-white'
+      <section id="contact" className={`py-16 sm:py-20 md:py-24 lg:py-28 ${theme === 'dark' ? 'bg-gray-900' : 'bg-white'
         }`}>
         <div className="container mx-auto px-4 sm:px-6 max-w-7xl">
           <div className="text-center mb-12 sm:mb-16">
