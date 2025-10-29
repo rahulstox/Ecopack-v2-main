@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import './globals.css';
 import { ClerkProvider } from '@clerk/nextjs';
 import { ThemeProvider } from '@/contexts/ThemeContext';
+import { SpeedInsights } from '@vercel/speed-insights/next';
 
 export const metadata: Metadata = {
   title: 'EcoPack AI – Greener Packaging, Smarter Choices',
@@ -26,6 +27,7 @@ export default function RootLayout({
             {children}
           </ThemeProvider>
         </ClerkProvider>
+        <SpeedInsights />
       </body>
     </html>
   );
