@@ -144,7 +144,6 @@ Reply to this email or contact ${email} directly.
         success: true,
         message:
           "Your message has been sent successfully! We'll get back to you soon.",
-        emailId: data.id,
       });
     } catch (emailError: any) {
       console.error("Resend API error:", emailError);
