@@ -14,6 +14,8 @@ export default function Home() {
   const [contactForm, setContactForm] = useState({ name: '', email: '', company: '', message: '' });
   const [contactStatus, setContactStatus] = useState<{ type: 'success' | 'error' | null; message: string }>({ type: null, message: '' });
   const [loading, setLoading] = useState(false);
+  const [responseTime, setResponseTime] = useState<string>('<20s');
+  const [processingTime, setProcessingTime] = useState<string>('~3s');
 
   useEffect(() => {
     const handleScroll = () => {
@@ -32,6 +34,163 @@ export default function Home() {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, [lastScrollY]);
+
+  // Measure actual API response time and processing time
+  useEffect(() => {
+    const measureTimes = async () => {
+      try {
+        // Measure API response time
+        const startTime = performance.now();
+
+        // Create abort controller for timeout
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 5000);
+
+        try {
+          // Try lightweight init endpoint first
+          const response = await fetch('/api/init', {
+            method: 'GET',
+            cache: 'no-cache',
+            signal: controller.signal
+          });
+
+          clearTimeout(timeoutId);
+
+          if (response.ok) {
+            const endTime = performance.now();
+            const actualTimeMs = endTime - startTime;
+            const actualTimeSeconds = (actualTimeMs / 1000).toFixed(1);
+            const timeValue = parseFloat(actualTimeSeconds);
+
+            if (timeValue < 1) {
+              setResponseTime(`<1s`);
+            } else if (timeValue < 10) {
+              setResponseTime(`<${actualTimeSeconds}s`);
+            } else {
+              setResponseTime(`<${Math.ceil(timeValue)}s`);
+            }
+          } else {
+            setResponseTime('<20s');
+          }
+        } catch (error) {
+          clearTimeout(timeoutId);
+          // If init fails, fallback to dashboard-stats
+          try {
+            const controller2 = new AbortController();
+            const timeoutId2 = setTimeout(() => controller2.abort(), 5000);
+            const startTime2 = performance.now();
+
+            const response = await fetch('/api/dashboard-stats', {
+              method: 'GET',
+              cache: 'no-cache',
+              signal: controller2.signal
+            });
+
+            clearTimeout(timeoutId2);
+
+            if (response.ok) {
+              const endTime = performance.now();
+              const actualTimeMs = endTime - startTime2;
+              const actualTimeSeconds = (actualTimeMs / 1000).toFixed(1);
+              const timeValue = parseFloat(actualTimeSeconds);
+
+              if (timeValue < 10) {
+                setResponseTime(`<${actualTimeSeconds}s`);
+              } else {
+                setResponseTime(`<${Math.ceil(timeValue)}s`);
+              }
+            } else {
+              setResponseTime('<20s');
+            }
+          } catch {
+            setResponseTime('<20s');
+          }
+        }
+
+        // Measure actual AI processing time from recommendations API
+        try {
+          // Check if user has recent recommendations to get average processing time
+          const recResponse = await fetch('/api/recommendations/user', {
+            method: 'GET',
+            cache: 'no-cache'
+          });
+
+          if (recResponse.ok) {
+            const recData = await recResponse.json();
+            const recommendations = recData.data || [];
+
+            if (recommendations.length > 0) {
+              // Check if any recommendations have processing_time data
+              const timesWithData = recommendations
+                .map((rec: any) => {
+                  // Check if processing_time is stored in ai_output or metadata
+                  return rec.ai_output?.processing_time?.ai_processing ||
+                    rec.ai_output?.processing_time?.total_processing ||
+                    rec.processing_time?.ai_processing ||
+                    rec.processing_time?.total_processing;
+                })
+                .filter((time: any) => time != null && !isNaN(time));
+
+              if (timesWithData.length > 0) {
+                // Calculate average processing time
+                const avgTime = timesWithData.reduce((sum: number, time: number) => sum + time, 0) / timesWithData.length;
+                const formattedTime = avgTime < 1 ? '<1s' : avgTime < 10 ? `~${avgTime.toFixed(1)}s` : `~${Math.ceil(avgTime)}s`;
+                setProcessingTime(formattedTime);
+              } else {
+                // No processing time data yet, use typical Gemini AI processing time (2-4 seconds)
+                setProcessingTime('~3s');
+              }
+            } else {
+              // No recommendations yet, use typical estimate
+              setProcessingTime('~3s');
+            }
+          } else {
+            setProcessingTime('~3s');
+          }
+        } catch {
+          // Fallback to default estimate
+          setProcessingTime('~3s');
+        }
+
+        // Alternative: Measure processing time with a test request (commented out to avoid costs)
+        // Uncomment if you want to measure actual processing time:
+        /*
+        try {
+          const processingStartTime = performance.now();
+          // Note: This would make an actual API call and cost credits
+          // For production, you'd want to track processing times in the database
+          const testResponse = await fetch('/api/recommend', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              product_category: 'Electronics',
+              product_weight: '1',
+              fragility_level: 'Medium',
+              shipping_distance: 'national'
+            })
+          });
+          const processingEndTime = performance.now();
+          const processingTimeMs = processingEndTime - processingStartTime;
+          const processingTimeSeconds = (processingTimeMs / 1000).toFixed(1);
+          setProcessingTime(`~${processingTimeSeconds}s`);
+        } catch {
+          setProcessingTime('~3s');
+        }
+        */
+      } catch (error) {
+        // Fallback to defaults if measurement fails
+        setResponseTime('<20s');
+        setProcessingTime('~3s');
+      }
+    };
+
+    // Delay measurement slightly to not block initial render
+    const timer = setTimeout(() => {
+      measureTimes();
+    }, 500);
+
+    return () => clearTimeout(timer);
+  }, []);
 
   const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, targetId: string) => {
     e.preventDefault();
@@ -337,7 +496,7 @@ export default function Home() {
               </p>
             </div>
 
-            <div className="grid grid-cols-3 gap-3 sm:gap-4 md:gap-6 pt-4 sm:pt-6">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 md:gap-6 pt-4 sm:pt-6">
               <div>
                 <div className={`text-2xl sm:text-3xl md:text-4xl font-bold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>85%</div>
                 <div className={`text-xs sm:text-sm mt-1 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>Plastic Reduction</div>
@@ -347,8 +506,16 @@ export default function Home() {
                 <div className={`text-xs sm:text-sm mt-1 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>Cost Savings</div>
               </div>
               <div>
-                <div className={`text-2xl sm:text-3xl md:text-4xl font-bold ${theme === 'dark' ? 'text-green-400' : 'text-green-600'}`}>&lt;20s</div>
+                <div className={`text-2xl sm:text-3xl md:text-4xl font-bold ${theme === 'dark' ? 'text-green-400' : 'text-green-600'}`}>
+                  {responseTime}
+                </div>
                 <div className={`text-xs sm:text-sm mt-1 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>Response Time</div>
+              </div>
+              <div>
+                <div className={`text-2xl sm:text-3xl md:text-4xl font-bold ${theme === 'dark' ? 'text-blue-400' : 'text-blue-600'}`}>
+                  {processingTime}
+                </div>
+                <div className={`text-xs sm:text-sm mt-1 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>AI Processing</div>
               </div>
             </div>
 
