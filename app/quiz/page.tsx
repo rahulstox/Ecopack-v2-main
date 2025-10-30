@@ -130,6 +130,7 @@ export default function QuizPage() {
     const [questionAnimating, setQuestionAnimating] = useState(false);
     const [celebration, setCelebration] = useState(false);
     const [confettiActive, setConfettiActive] = useState(false);
+    const [rewardEligible, setRewardEligible] = useState(false);
 
     // Select random 8 questions when quiz starts
     useEffect(() => {
@@ -153,10 +154,38 @@ export default function QuizPage() {
             setScore(score + 1);
             setCelebration(true);
             setConfettiActive(true);
+            
+            // Play celebration sound
+            try {
+                const audio = new Audio('/sounds/celebration.mp3');
+                audio.volume = 0.5;
+                audio.play().catch(e => {
+                    // Fallback: Use Web Audio API to create a simple celebration sound
+                    const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
+                    const oscillator = audioContext.createOscillator();
+                    const gainNode = audioContext.createGain();
+                    
+                    oscillator.connect(gainNode);
+                    gainNode.connect(audioContext.destination);
+                    
+                    oscillator.frequency.setValueAtTime(523.25, audioContext.currentTime); // C note
+                    oscillator.frequency.setValueAtTime(659.25, audioContext.currentTime + 0.1); // E note
+                    oscillator.frequency.setValueAtTime(783.99, audioContext.currentTime + 0.2); // G note
+                    
+                    gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
+                    
+                    oscillator.start(audioContext.currentTime);
+                    oscillator.stop(audioContext.currentTime + 0.3);
+                });
+            } catch (error) {
+                console.log('Sound effect disabled');
+            }
+            
             setTimeout(() => {
                 setCelebration(false);
                 setConfettiActive(false);
-            }, 2500);
+            }, 3000);
         }
 
         setShowExplanation(true);
@@ -181,20 +210,23 @@ export default function QuizPage() {
         setLoading(true);
         const finalScore = selectedAnswer === userQuestions[currentQuestionIndex]?.correct ? score + 1 : score;
         const percentage = (finalScore / userQuestions.length) * 100;
+        const isRewardEligible = finalScore >= 5;
+
         const result = {
             score: finalScore,
             total: userQuestions.length,
             percentage,
             passed: finalScore >= 5,
+            rewardEligible: isRewardEligible,
             timestamp: new Date().toISOString()
         };
         setResults(result);
-        setShowResult(true);
+        setRewardEligible(isRewardEligible);
 
         // Save quiz result to database if user is signed in
         if (user) {
             try {
-                await fetch('/api/quiz/save-result', {
+                const response = await fetch('/api/quiz/save-result', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
@@ -204,11 +236,18 @@ export default function QuizPage() {
                         percentage
                     })
                 });
+
+                const data = await response.json();
+                if (data.success) {
+                    setRewardEligible(data.rewardEligible);
+                    result.rewardEligible = data.rewardEligible;
+                }
             } catch (error) {
                 console.error('Failed to save quiz result:', error);
             }
         }
 
+        setShowResult(true);
         setLoading(false);
     };
 
@@ -262,33 +301,43 @@ export default function QuizPage() {
                 </div>
 
                 <div className="relative container mx-auto px-4 max-w-3xl">
-                    <div className={`bg-white ${theme === 'dark' ? 'bg-gray-800' : ''} rounded-2xl shadow-2xl p-6 md:p-8 transform transition-all animate-in zoom-in-95 duration-500 relative overflow-hidden border-2 ${theme === 'dark' ? 'border-gray-700' : 'border-green-100'}`}>
+                    <div className={`${theme === 'dark' ? 'bg-gray-800' : 'bg-white'} rounded-2xl shadow-2xl p-6 md:p-8 transform transition-all animate-in zoom-in-95 duration-500 relative overflow-hidden border-2 ${theme === 'dark' ? 'border-gray-700' : 'border-green-100'}`}>
                         {/* Decorative gradient overlay */}
                         <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-green-500 via-emerald-500 to-teal-500"></div>
                         <div className="text-center mb-6">
                             {/* Animated Icon */}
                             <div className={`w-28 h-28 mx-auto rounded-full flex items-center justify-center mb-6 transition-all duration-500 transform scale-100 animate-in zoom-in-95 ${results.passed
-                                ? 'bg-gradient-to-br from-green-100 to-emerald-100 shadow-lg shadow-green-200'
-                                : 'bg-gradient-to-br from-orange-100 to-amber-100 shadow-lg shadow-orange-200'
+                                ? theme === 'dark'
+                                    ? 'bg-gradient-to-br from-green-900/50 to-emerald-900/50 shadow-lg shadow-green-900/30'
+                                    : 'bg-gradient-to-br from-green-100 to-emerald-100 shadow-lg shadow-green-200'
+                                : theme === 'dark'
+                                    ? 'bg-gradient-to-br from-orange-900/50 to-amber-900/50 shadow-lg shadow-orange-900/30'
+                                    : 'bg-gradient-to-br from-orange-100 to-amber-100 shadow-lg shadow-orange-200'
                                 }`}>
                                 {results.passed ? (
-                                    <Award className="w-16 h-16 text-green-600 animate-in zoom-in-95 delay-300" />
+                                    <Award className={`w-16 h-16 ${theme === 'dark' ? 'text-green-400' : 'text-green-600'} animate-in zoom-in-95 delay-300`} />
                                 ) : (
-                                    <Target className="w-16 h-16 text-orange-600 animate-in zoom-in-95 delay-300" />
+                                    <Target className={`w-16 h-16 ${theme === 'dark' ? 'text-orange-400' : 'text-orange-600'} animate-in zoom-in-95 delay-300`} />
                                 )}
                                 {results.passed && (
                                     <Sparkles className="absolute w-6 h-6 text-yellow-400 animate-pulse -top-2 -right-2" />
                                 )}
                             </div>
 
-                            <h2 className={`text-4xl md:text-5xl font-bold mb-4 animate-in slide-in-from-bottom-4 duration-700 ${results.passed ? 'text-green-700' : 'text-orange-700'}`}>
+                            <h2 className={`text-4xl md:text-5xl font-bold mb-4 animate-in slide-in-from-bottom-4 duration-700 ${results.passed
+                                ? theme === 'dark' ? 'text-green-400' : 'text-green-700'
+                                : theme === 'dark' ? 'text-orange-400' : 'text-orange-700'
+                                }`}>
                                 {results.passed ? '🎉 Congratulations! 🎉' : '📚 Keep Learning!'}
                             </h2>
 
                             {/* Score Display */}
                             <div className="my-6 animate-in zoom-in-95 delay-500 duration-500">
-                                <div className="inline-flex items-center gap-4 bg-gradient-to-r from-green-50 to-emerald-50 rounded-2xl px-8 py-6 shadow-lg">
-                                    <div className="text-7xl md:text-8xl font-black bg-gradient-to-br from-green-600 to-emerald-600 bg-clip-text text-transparent">
+                                <div className={`inline-flex items-center gap-4 rounded-2xl px-8 py-6 shadow-lg ${theme === 'dark'
+                                    ? 'bg-gradient-to-r from-green-900/30 to-emerald-900/30'
+                                    : 'bg-gradient-to-r from-green-50 to-emerald-50'
+                                    }`}>
+                                    <div className={`text-7xl md:text-8xl font-black bg-gradient-to-br from-green-600 to-emerald-600 bg-clip-text text-transparent ${theme === 'dark' ? 'from-green-400 to-emerald-400' : ''}`}>
                                         {results.score}/{results.total}
                                     </div>
                                 </div>
@@ -304,7 +353,7 @@ export default function QuizPage() {
                                         stroke="currentColor"
                                         strokeWidth="12"
                                         fill="none"
-                                        className="text-gray-200"
+                                        className={theme === 'dark' ? 'text-gray-700' : 'text-gray-200'}
                                     />
                                     <circle
                                         cx="64"
@@ -320,7 +369,10 @@ export default function QuizPage() {
                                     />
                                 </svg>
                                 <div className="absolute inset-0 flex items-center justify-center">
-                                    <span className={`text-3xl font-bold ${results.passed ? 'text-green-600' : 'text-orange-600'}`}>
+                                    <span className={`text-3xl font-bold ${results.passed
+                                        ? theme === 'dark' ? 'text-green-400' : 'text-green-600'
+                                        : theme === 'dark' ? 'text-orange-400' : 'text-orange-600'
+                                        }`}>
                                         {results.percentage.toFixed(0)}%
                                     </span>
                                 </div>
@@ -329,35 +381,68 @@ export default function QuizPage() {
                             {results.passed ? (
                                 <div className="space-y-4">
                                     <div className="flex items-center justify-center gap-3">
-                                        <p className="text-2xl text-green-700 font-bold flex items-center gap-2">
+                                        <p className={`text-2xl font-bold flex items-center gap-2 ${theme === 'dark' ? 'text-green-400' : 'text-green-700'}`}>
                                             <Leaf className="w-7 h-7" />
                                             You're an Eco Champion! 🌱
                                         </p>
                                     </div>
-                                    <div className="bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl p-4 border border-green-200">
-                                        <p className="text-gray-700 font-medium">Great job! You're well-versed in sustainable packaging and environmental impact.</p>
+                                    <div className={`rounded-xl p-4 border ${theme === 'dark'
+                                        ? 'bg-gradient-to-r from-green-900/30 to-emerald-900/30 border-green-700'
+                                        : 'bg-gradient-to-r from-green-50 to-emerald-50 border-green-200'
+                                        }`}>
+                                        <p className={`font-medium ${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'}`}>Great job! You're well-versed in sustainable packaging and environmental impact.</p>
                                     </div>
                                     {/* Achievement badges */}
                                     <div className="flex justify-center gap-3 mt-4">
-                                        <div className="flex items-center gap-2 bg-yellow-50 px-4 py-2 rounded-full border border-yellow-200">
-                                            <Star className="w-5 h-5 text-yellow-500 fill-yellow-500" />
-                                            <span className="text-sm font-semibold text-yellow-700">Achievement Unlocked</span>
+                                        <div className={`flex items-center gap-2 px-4 py-2 rounded-full border ${theme === 'dark'
+                                            ? 'bg-yellow-900/30 border-yellow-700'
+                                            : 'bg-yellow-50 border-yellow-200'
+                                            }`}>
+                                            <Star className={`w-5 h-5 fill-yellow-500 ${theme === 'dark' ? 'text-yellow-400' : 'text-yellow-500'}`} />
+                                            <span className={`text-sm font-semibold ${theme === 'dark' ? 'text-yellow-300' : 'text-yellow-700'}`}>Achievement Unlocked</span>
                                         </div>
                                     </div>
+                                    {/* Reward Eligibility Banner */}
+                                    {rewardEligible && (
+                                        <div className={`mt-6 rounded-xl p-5 border-2 shadow-xl animate-in zoom-in-95 delay-700 ${theme === 'dark'
+                                            ? 'bg-gradient-to-r from-yellow-600 via-amber-600 to-orange-600 border-yellow-500'
+                                            : 'bg-gradient-to-r from-yellow-400 via-amber-400 to-orange-400 border-yellow-500'
+                                            }`}>
+                                            <div className="flex items-start gap-4">
+                                                <div className={`flex-shrink-0 w-14 h-14 rounded-full flex items-center justify-center shadow-lg ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'}`}>
+                                                    <Trophy className={`w-8 h-8 ${theme === 'dark' ? 'text-yellow-300' : 'text-yellow-600'}`} />
+                                                </div>
+                                                <div className="flex-1">
+                                                    <h3 className="text-xl font-bold text-white mb-2 flex items-center gap-2">
+                                                        <span>🎁 Reward Eligible!</span>
+                                                    </h3>
+                                                    <p className="text-white font-semibold mb-2">
+                                                        Congratulations! You scored {results.score} out of {results.total}, making you eligible for a reward!
+                                                    </p>
+                                                    <p className={`text-white text-sm rounded-lg px-4 py-2 inline-block ${theme === 'dark' ? 'bg-gray-800/50' : 'bg-white/20'}`}>
+                                                        🏪 Visit our stall to claim your reward. Show this screen to the staff to claim your prize!
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    )}
                                 </div>
                             ) : (
                                 <div className="space-y-4">
                                     <div className="flex items-center justify-center gap-3">
-                                        <p className="text-2xl text-orange-700 font-bold flex items-center gap-2">
+                                        <p className={`text-2xl font-bold flex items-center gap-2 ${theme === 'dark' ? 'text-orange-400' : 'text-orange-700'}`}>
                                             <TrendingUp className="w-7 h-7" />
                                             Practice More to Become an Eco Expert!
                                         </p>
                                     </div>
-                                    <div className="bg-gradient-to-r from-orange-50 to-amber-50 rounded-xl p-4 border border-orange-200">
-                                        <p className="text-gray-700 font-medium">Keep learning about sustainable packaging and try again! Every attempt helps you grow.</p>
+                                    <div className={`rounded-xl p-4 border ${theme === 'dark'
+                                        ? 'bg-gradient-to-r from-orange-900/30 to-amber-900/30 border-orange-700'
+                                        : 'bg-gradient-to-r from-orange-50 to-amber-50 border-orange-200'
+                                        }`}>
+                                        <p className={`font-medium ${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'}`}>Keep learning about sustainable packaging and try again! Every attempt helps you grow.</p>
                                     </div>
                                     {/* Encouragement */}
-                                    <div className="text-center text-gray-600 text-sm">
+                                    <div className={`text-center text-sm ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
                                         💡 Tip: Review the explanations carefully to improve your score!
                                     </div>
                                 </div>
@@ -366,22 +451,31 @@ export default function QuizPage() {
                             {/* Stats Grid */}
                             <div className={`grid grid-cols-3 gap-4 mt-6 pt-6 border-t ${theme === 'dark' ? 'border-gray-700' : 'border-gray-200'}`}>
                                 <div className="text-center">
-                                    <div className={`text-3xl font-black mb-1 ${results.passed ? 'text-green-600' : 'text-orange-600'}`}>
+                                    <div className={`text-3xl font-black mb-1 ${results.passed
+                                        ? theme === 'dark' ? 'text-green-400' : 'text-green-600'
+                                        : theme === 'dark' ? 'text-orange-400' : 'text-orange-600'
+                                        }`}>
                                         {results.score}
                                     </div>
-                                    <div className="text-xs text-gray-500 uppercase tracking-wide">Correct</div>
+                                    <div className={`text-xs uppercase tracking-wide ${theme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>Correct</div>
                                 </div>
                                 <div className="text-center">
-                                    <div className={`text-3xl font-black mb-1 ${results.passed ? 'text-emerald-600' : 'text-amber-600'}`}>
+                                    <div className={`text-3xl font-black mb-1 ${results.passed
+                                        ? theme === 'dark' ? 'text-emerald-400' : 'text-emerald-600'
+                                        : theme === 'dark' ? 'text-amber-400' : 'text-amber-600'
+                                        }`}>
                                         {results.percentage.toFixed(0)}%
                                     </div>
-                                    <div className="text-xs text-gray-500 uppercase tracking-wide">Score</div>
+                                    <div className={`text-xs uppercase tracking-wide ${theme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>Score</div>
                                 </div>
                                 <div className="text-center">
-                                    <div className={`text-3xl font-black mb-1 ${results.passed ? 'text-teal-600' : 'text-red-600'}`}>
+                                    <div className={`text-3xl font-black mb-1 ${results.passed
+                                        ? theme === 'dark' ? 'text-teal-400' : 'text-teal-600'
+                                        : theme === 'dark' ? 'text-red-400' : 'text-red-600'
+                                        }`}>
                                         {results.total - results.score}
                                     </div>
-                                    <div className="text-xs text-gray-500 uppercase tracking-wide">Incorrect</div>
+                                    <div className={`text-xs uppercase tracking-wide ${theme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>Incorrect</div>
                                 </div>
                             </div>
                         </div>
@@ -399,7 +493,10 @@ export default function QuizPage() {
                             <Link
                                 href="/quiz"
                                 onClick={() => window.location.reload()}
-                                className="group flex items-center justify-center gap-2 w-full bg-gray-100 hover:bg-gray-200 text-gray-800 py-4 rounded-xl font-bold text-lg transition-all shadow-lg hover:shadow-xl transform hover:scale-[1.02]"
+                                className={`group flex items-center justify-center gap-2 w-full py-4 rounded-xl font-bold text-lg transition-all shadow-lg hover:shadow-xl transform hover:scale-[1.02] ${theme === 'dark'
+                                    ? 'bg-gray-700 hover:bg-gray-600 text-gray-200'
+                                    : 'bg-gray-100 hover:bg-gray-200 text-gray-800'
+                                    }`}
                             >
                                 <RefreshCw className="w-5 h-5 group-hover:rotate-180 transition-transform duration-500" />
                                 Retake Quiz
@@ -519,16 +616,16 @@ export default function QuizPage() {
                             {/* Feature highlights */}
                             <div className="mt-6 grid grid-cols-3 gap-4 max-w-md mx-auto">
                                 <div className="text-center">
-                                    <div className="text-2xl font-bold text-green-600">8</div>
-                                    <div className="text-xs text-gray-600 mt-1">Questions</div>
+                                    <div className={`text-2xl font-bold ${theme === 'dark' ? 'text-green-400' : 'text-green-600'}`}>8</div>
+                                    <div className={`text-xs mt-1 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>Questions</div>
                                 </div>
                                 <div className="text-center">
-                                    <div className="text-2xl font-bold text-emerald-600">~5</div>
-                                    <div className="text-xs text-gray-600 mt-1">Minutes</div>
+                                    <div className={`text-2xl font-bold ${theme === 'dark' ? 'text-emerald-400' : 'text-emerald-600'}`}>~5</div>
+                                    <div className={`text-xs mt-1 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>Minutes</div>
                                 </div>
                                 <div className="text-center">
-                                    <div className="text-2xl font-bold text-teal-600">70%</div>
-                                    <div className="text-xs text-gray-600 mt-1">Pass Rate</div>
+                                    <div className={`text-2xl font-bold ${theme === 'dark' ? 'text-teal-400' : 'text-teal-600'}`}>70%</div>
+                                    <div className={`text-xs mt-1 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>Pass Rate</div>
                                 </div>
                             </div>
                         </div>
@@ -551,24 +648,27 @@ export default function QuizPage() {
                                             <div className="absolute inset-0 rounded-full bg-green-400 opacity-50 animate-ping"></div>
                                         </div>
                                         <div>
-                                            <div className="text-gray-700 font-bold text-lg">
+                                            <div className={`font-bold text-lg ${theme === 'dark' ? 'text-gray-200' : 'text-gray-700'}`}>
                                                 Question {currentQuestionIndex + 1} of {userQuestions.length}
                                             </div>
-                                            <div className="text-xs text-gray-500 mt-0.5 flex items-center gap-1">
+                                            <div className={`text-xs mt-0.5 flex items-center gap-1 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>
                                                 <Clock className="w-3 h-3" />
                                                 <span>~{Math.max(1, userQuestions.length - currentQuestionIndex)} min remaining</span>
                                             </div>
                                         </div>
                                     </div>
-                                    <div className="flex items-center gap-2 bg-gradient-to-r from-green-100 via-emerald-100 to-teal-100 px-5 py-3 rounded-full shadow-lg border-2 border-green-200">
+                                    <div className={`flex items-center gap-2 px-5 py-3 rounded-full shadow-lg border-2 ${theme === 'dark'
+                                        ? 'bg-gradient-to-r from-green-900/30 via-emerald-900/30 to-teal-900/30 border-green-700'
+                                        : 'bg-gradient-to-r from-green-100 via-emerald-100 to-teal-100 border-green-200'
+                                        }`}>
                                         <Trophy className="w-6 h-6 text-yellow-500" />
                                         <div>
-                                            <div className="text-xs text-gray-600">Score</div>
-                                            <div className="text-green-700 font-bold text-xl">{score}/{userQuestions.length}</div>
+                                            <div className={`text-xs ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>Score</div>
+                                            <div className={`font-bold text-xl ${theme === 'dark' ? 'text-green-400' : 'text-green-700'}`}>{score}/{userQuestions.length}</div>
                                         </div>
                                     </div>
                                 </div>
-                                <div className="relative w-full bg-gray-200 rounded-full h-4 overflow-hidden shadow-inner">
+                                <div className={`relative w-full rounded-full h-4 overflow-hidden shadow-inner ${theme === 'dark' ? 'bg-gray-700' : 'bg-gray-200'}`}>
                                     <div
                                         className="bg-gradient-to-r from-green-500 via-emerald-500 to-teal-500 h-4 rounded-full transition-all duration-700 ease-out shadow-lg relative overflow-hidden"
                                         style={{ width: `${((currentQuestionIndex + 1) / userQuestions.length) * 100}%` }}
@@ -588,7 +688,7 @@ export default function QuizPage() {
                                     </div>
                                 </div>
                                 {/* Percent indicator */}
-                                <div className="text-right mt-2 text-xs text-gray-500 font-medium">
+                                <div className={`text-right mt-2 text-xs font-medium ${theme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>
                                     {Math.round(((currentQuestionIndex + 1) / userQuestions.length) * 100)}% Complete
                                 </div>
                             </div>
@@ -614,20 +714,29 @@ export default function QuizPage() {
 
                             {/* Question Header */}
                             <div className="flex items-start gap-4 mb-6 mt-2">
-                                <div className="flex-shrink-0 w-14 h-14 rounded-xl bg-gradient-to-br from-green-100 via-emerald-100 to-teal-100 flex items-center justify-center shadow-lg border-2 border-green-200">
-                                    <Lightbulb className="w-7 h-7 text-green-600" />
+                                <div className={`flex-shrink-0 w-14 h-14 rounded-xl flex items-center justify-center shadow-lg border-2 ${theme === 'dark'
+                                    ? 'bg-gradient-to-br from-green-900/50 via-emerald-900/50 to-teal-900/50 border-green-700'
+                                    : 'bg-gradient-to-br from-green-100 via-emerald-100 to-teal-100 border-green-200'
+                                    }`}>
+                                    <Lightbulb className={`w-7 h-7 ${theme === 'dark' ? 'text-green-400' : 'text-green-600'}`} />
                                 </div>
                                 <div className="flex-1">
                                     <div className="flex items-center gap-2 mb-2">
-                                        <span className="text-xs font-semibold text-green-600 bg-green-50 px-3 py-1 rounded-full">
+                                        <span className={`text-xs font-semibold px-3 py-1 rounded-full ${theme === 'dark'
+                                            ? 'text-green-400 bg-green-900/30'
+                                            : 'text-green-600 bg-green-50'
+                                            }`}>
                                             Question {currentQuestionIndex + 1}
                                         </span>
-                                        <span className="text-xs text-gray-400 flex items-center gap-1">
+                                        <span className={`text-xs flex items-center gap-1 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-400'}`}>
                                             <BarChart3 className="w-3 h-3" />
                                             Multiple Choice
                                         </span>
                                     </div>
-                                    <h2 className={`text-xl md:text-2xl font-bold ${theme === 'dark' ? 'text-white' : 'text-gray-900'} leading-tight`}>
+                                    <h2 className={`text-xl md:text-2xl lg:text-3xl font-extrabold ${theme === 'dark'
+                                        ? 'text-white bg-gray-900/50 px-4 py-3 rounded-lg'
+                                        : 'text-gray-900 bg-gray-50 px-4 py-3 rounded-lg'
+                                        } leading-tight shadow-md`}>
                                         {userQuestions[currentQuestionIndex]?.question}
                                     </h2>
                                 </div>
@@ -642,9 +751,13 @@ export default function QuizPage() {
                                             <button
                                                 key={index}
                                                 onClick={() => handleAnswerSelect(index)}
-                                                className={`group relative w-full text-left p-5 rounded-xl border-2 transition-all duration-300 transform hover:scale-[1.02] overflow-hidden ${isSelected
-                                                    ? 'border-green-600 bg-gradient-to-r from-green-50 via-emerald-50 to-teal-50 shadow-xl scale-[1.02] ring-2 ring-green-200'
-                                                    : 'border-gray-200 hover:border-green-300 hover:bg-green-50 hover:shadow-md'
+                                                className={`group relative w-full text-left p-5 md:p-6 rounded-xl border-2 transition-all duration-300 transform hover:scale-[1.02] overflow-hidden ${isSelected
+                                                    ? theme === 'dark'
+                                                        ? 'border-green-400 bg-gradient-to-r from-green-900/60 via-emerald-900/60 to-teal-900/60 shadow-2xl scale-[1.02] ring-4 ring-green-500/50'
+                                                        : 'border-green-600 bg-gradient-to-r from-green-50 via-emerald-50 to-teal-50 shadow-xl scale-[1.02] ring-2 ring-green-200'
+                                                    : theme === 'dark'
+                                                        ? 'border-gray-600 hover:border-green-500 hover:bg-gray-700/50 hover:shadow-md'
+                                                        : 'border-gray-200 hover:border-green-300 hover:bg-green-50 hover:shadow-md'
                                                     }`}
                                             >
                                                 {/* Selection indicator line */}
@@ -655,14 +768,18 @@ export default function QuizPage() {
                                                 <div className="flex items-center gap-4">
                                                     <div className={`relative flex-shrink-0 w-12 h-12 rounded-xl flex items-center justify-center font-bold transition-all ${isSelected
                                                         ? 'bg-gradient-to-br from-green-600 via-emerald-600 to-teal-600 text-white shadow-xl'
-                                                        : 'bg-gray-100 text-gray-600 group-hover:bg-green-100 group-hover:text-green-700'
+                                                        : theme === 'dark'
+                                                            ? 'bg-gray-700 text-gray-300 group-hover:bg-green-800 group-hover:text-green-300'
+                                                            : 'bg-gray-100 text-gray-600 group-hover:bg-green-100 group-hover:text-green-700'
                                                         }`}>
                                                         {optionLetters[index]}
                                                         {isSelected && (
                                                             <div className="absolute inset-0 bg-white opacity-20 rounded-xl animate-pulse"></div>
                                                         )}
                                                     </div>
-                                                    <span className={`font-semibold text-base md:text-lg flex-1 ${isSelected ? 'text-green-900' : 'text-gray-700'
+                                                    <span className={`font-semibold text-base md:text-lg flex-1 ${isSelected
+                                                        ? theme === 'dark' ? 'text-green-100' : 'text-green-900'
+                                                        : theme === 'dark' ? 'text-gray-300' : 'text-gray-700'
                                                         }`}>
                                                         {option}
                                                     </span>
@@ -689,15 +806,23 @@ export default function QuizPage() {
 
                             {showExplanation && (
                                 <div className="space-y-4 animate-in fade-in slide-in-from-bottom-4 duration-500">
-                                    <div className={`relative p-6 rounded-xl border-2 transition-all overflow-hidden ${userQuestions[currentQuestionIndex]?.correct === selectedAnswer
-                                        ? 'bg-gradient-to-br from-green-50 via-emerald-50 to-teal-50 border-green-500 shadow-xl'
-                                        : 'bg-gradient-to-br from-orange-50 via-amber-50 to-red-50 border-orange-500 shadow-xl'
+                                    <div className={`relative p-6 md:p-8 rounded-xl border-2 transition-all overflow-hidden shadow-2xl ${userQuestions[currentQuestionIndex]?.correct === selectedAnswer
+                                        ? theme === 'dark'
+                                            ? 'bg-gradient-to-br from-green-900/50 via-emerald-900/50 to-teal-900/50 border-green-400'
+                                            : 'bg-gradient-to-br from-green-50 via-emerald-50 to-teal-50 border-green-500'
+                                        : theme === 'dark'
+                                            ? 'bg-gradient-to-br from-orange-900/50 via-amber-900/50 to-red-900/50 border-orange-400'
+                                            : 'bg-gradient-to-br from-orange-50 via-amber-50 to-red-50 border-orange-500'
                                         }`}>
                                         {/* Decorative corner */}
-                                        <div className={`absolute top-0 right-0 w-24 h-24 opacity-10 ${userQuestions[currentQuestionIndex]?.correct === selectedAnswer
-                                            ? 'bg-green-200'
-                                            : 'bg-orange-200'
+                                        <div className={`absolute top-0 right-0 w-32 h-32 opacity-20 ${userQuestions[currentQuestionIndex]?.correct === selectedAnswer
+                                            ? theme === 'dark' ? 'bg-green-400' : 'bg-green-300'
+                                            : theme === 'dark' ? 'bg-orange-400' : 'bg-orange-300'
                                             } rounded-bl-full`}></div>
+                                        {/* Pulse effect for correct answers */}
+                                        {userQuestions[currentQuestionIndex]?.correct === selectedAnswer && (
+                                            <div className="absolute inset-0 border-2 border-green-400 rounded-xl animate-pulse opacity-50"></div>
+                                        )}
 
                                         <div className="relative flex items-start gap-4">
                                             <div className={`flex-shrink-0 w-14 h-14 rounded-xl flex items-center justify-center shadow-lg ${userQuestions[currentQuestionIndex]?.correct === selectedAnswer
@@ -711,24 +836,39 @@ export default function QuizPage() {
                                                 )}
                                             </div>
                                             <div className="flex-1">
-                                                <div className="flex items-center gap-2 mb-3">
-                                                    <p className={`font-bold text-xl ${userQuestions[currentQuestionIndex]?.correct === selectedAnswer
-                                                        ? 'text-green-700'
-                                                        : 'text-orange-700'
+                                                <div className="flex items-center gap-2 mb-4">
+                                                    <p className={`font-extrabold text-2xl md:text-3xl ${userQuestions[currentQuestionIndex]?.correct === selectedAnswer
+                                                        ? theme === 'dark'
+                                                            ? 'text-green-300 bg-green-900/40 px-4 py-2 rounded-lg shadow-lg'
+                                                            : 'text-green-700 bg-green-100 px-4 py-2 rounded-lg shadow-md'
+                                                        : theme === 'dark'
+                                                            ? 'text-orange-300 bg-orange-900/40 px-4 py-2 rounded-lg shadow-lg'
+                                                            : 'text-orange-700 bg-orange-100 px-4 py-2 rounded-lg shadow-md'
                                                         }`}>
                                                         {userQuestions[currentQuestionIndex]?.correct === selectedAnswer
                                                             ? '✨ Correct Answer!'
                                                             : '❌ Wrong Answer'}
                                                     </p>
                                                     {userQuestions[currentQuestionIndex]?.correct === selectedAnswer && (
-                                                        <Star className="w-5 h-5 text-yellow-500 fill-yellow-500 animate-pulse" />
+                                                        <Star className="w-6 h-6 text-yellow-400 fill-yellow-400 animate-pulse" />
                                                     )}
                                                 </div>
-                                                <div className={`p-4 rounded-lg ${userQuestions[currentQuestionIndex]?.correct === selectedAnswer
-                                                    ? 'bg-green-100 border border-green-200'
-                                                    : 'bg-orange-100 border border-orange-200'
+                                                <div className={`p-5 rounded-xl shadow-lg border-2 ${userQuestions[currentQuestionIndex]?.correct === selectedAnswer
+                                                    ? theme === 'dark'
+                                                        ? 'bg-green-900/40 border-green-600'
+                                                        : 'bg-green-50 border-green-300'
+                                                    : theme === 'dark'
+                                                        ? 'bg-orange-900/40 border-orange-600'
+                                                        : 'bg-orange-50 border-orange-300'
                                                     }`}>
-                                                    <p className="text-gray-800 leading-relaxed font-medium">
+                                                    <p className={`leading-relaxed font-semibold text-base md:text-lg ${theme === 'dark'
+                                                        ? userQuestions[currentQuestionIndex]?.correct === selectedAnswer
+                                                            ? 'text-green-100'
+                                                            : 'text-orange-100'
+                                                        : userQuestions[currentQuestionIndex]?.correct === selectedAnswer
+                                                            ? 'text-green-900'
+                                                            : 'text-orange-900'
+                                                        }`}>
                                                         {userQuestions[currentQuestionIndex]?.explanation}
                                                     </p>
                                                 </div>
@@ -760,7 +900,7 @@ export default function QuizPage() {
                             <div className="mt-8 text-center">
                                 <div className="inline-flex items-center gap-3">
                                     <div className="animate-spin rounded-full h-8 w-8 border-4 border-green-200 border-t-green-600"></div>
-                                    <span className="text-gray-600 font-medium">Calculating your results...</span>
+                                    <span className={`font-medium ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>Calculating your results...</span>
                                 </div>
                             </div>
                         )}
@@ -773,4 +913,6 @@ export default function QuizPage() {
         </div>
     );
 }
+
+
 

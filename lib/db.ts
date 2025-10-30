@@ -82,10 +82,24 @@ async function initializeDatabaseTables() {
         score INTEGER NOT NULL,
         total INTEGER NOT NULL,
         percentage NUMERIC NOT NULL,
+        reward_eligible BOOLEAN DEFAULT FALSE,
         completedat TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       );
     `;
     console.log('Checked/created "quiz_results" table.');
+
+    // Add reward_eligible column if it doesn't exist (for existing tables)
+    try {
+      await sql`ALTER TABLE quiz_results ADD COLUMN IF NOT EXISTS reward_eligible BOOLEAN DEFAULT FALSE`;
+      console.log("Added reward_eligible column to quiz_results table.");
+    } catch (alterError: any) {
+      if (!alterError.message.includes("already exists")) {
+        console.log(
+          "Note: Could not add reward_eligible column:",
+          alterError.message
+        );
+      }
+    }
 
     // Table for site statistics
     await sql`

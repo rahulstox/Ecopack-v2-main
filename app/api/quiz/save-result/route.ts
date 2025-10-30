@@ -18,13 +18,19 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
     const { score, total, percentage } = body;
 
+    // Determine reward eligibility (score >= 5)
+    const rewardEligible = score >= 5;
+
     // Save quiz result
     await sql`
-      INSERT INTO quiz_results (userid, score, total, percentage, completedat)
-      VALUES (${userId}, ${score}, ${total}, ${percentage}, CURRENT_TIMESTAMP)
+      INSERT INTO quiz_results (userid, score, total, percentage, reward_eligible, completedat)
+      VALUES (${userId}, ${score}, ${total}, ${percentage}, ${rewardEligible}, CURRENT_TIMESTAMP)
     `;
 
-    return NextResponse.json({ success: true });
+    return NextResponse.json({
+      success: true,
+      rewardEligible,
+    });
   } catch (error: any) {
     console.error("Error saving quiz result:", error);
     return NextResponse.json(

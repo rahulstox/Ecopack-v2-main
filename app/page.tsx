@@ -11,6 +11,7 @@ export default function Home() {
   const [isScrolledUp, setIsScrolledUp] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isDemoOpen, setIsDemoOpen] = useState(false);
   const [contactForm, setContactForm] = useState({ name: '', email: '', company: '', message: '' });
   const [contactStatus, setContactStatus] = useState<{ type: 'success' | 'error' | null; message: string }>({ type: null, message: '' });
   const [loading, setLoading] = useState(false);
@@ -541,12 +542,12 @@ export default function Home() {
                   </button>
                 </SignInButton>
               </SignedOut>
-              <Link
-                href="/history"
+              <button
+                onClick={() => setIsDemoOpen(true)}
                 className="inline-flex items-center justify-center gap-2 bg-white hover:bg-gray-50 text-gray-800 border-2 border-gray-300 px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-semibold text-base sm:text-lg transition-all shadow-lg hover:shadow-xl"
               >
                 View Demo
-              </Link>
+              </button>
             </div>
           </div>
 
@@ -1205,7 +1206,7 @@ export default function Home() {
                   Full-stack developer passionate about building scalable applications and innovative solutions for sustainability.
                 </p>
                 <div className="flex items-center gap-3">
-                  <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="w-10 h-10 bg-green-100 hover:bg-green-200 rounded-xl flex items-center justify-center transition-colors group">
+                  <a href="https://www.linkedin.com/in/rahulgupta86/" target="_blank" rel="noopener noreferrer" className="w-10 h-10 bg-green-100 hover:bg-green-200 rounded-xl flex items-center justify-center transition-colors group">
                     <svg className="w-5 h-5 text-green-600 group-hover:scale-110 transition-transform" fill="currentColor" viewBox="0 0 24 24">
                       <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
                     </svg>
@@ -1241,7 +1242,7 @@ export default function Home() {
                   Full-stack developer passionate about building sustainable applications and innovative solutions for environmental impact.
                 </p>
                 <div className="flex items-center gap-3">
-                  <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="w-10 h-10 bg-green-100 hover:bg-green-200 rounded-xl flex items-center justify-center transition-colors group">
+                  <a href="https://www.linkedin.com/in/pratishtha-gupta-8a8b29250/" target="_blank" rel="noopener noreferrer" className="w-10 h-10 bg-green-100 hover:bg-green-200 rounded-xl flex items-center justify-center transition-colors group">
                     <svg className="w-5 h-5 text-green-600 group-hover:scale-110 transition-transform" fill="currentColor" viewBox="0 0 24 24">
                       <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
                     </svg>
@@ -1530,6 +1531,77 @@ export default function Home() {
           <div className="absolute -top-1 -right-1 w-3 h-3 bg-yellow-400 rounded-full animate-pulse opacity-90"></div>
         </div>
       </Link>
+      {/* Demo Video Modal */}
+      {isDemoOpen && (
+        <div
+          className="fixed inset-0 z-[100] flex items-center justify-center min-h-screen"
+          style={{
+            background: 'radial-gradient(ellipse at center, rgba(25,44,17,0.90) 0%, rgba(2,53,20,0.70) 100%)',
+            backdropFilter: 'blur(7px)',
+          }}
+          role="dialog"
+          aria-modal="true"
+        >
+          <div
+            className="relative w-[90vw] max-w-[1100px] max-h-[80vh] mx-auto bg-white dark:bg-gray-900 rounded-3xl shadow-2xl border-2 border-green-400 dark:border-green-700 overflow-hidden flex flex-col animate-popin"
+            style={{
+              boxShadow: '0 10px 48px 8px rgba(0,64,32,0.13), 0 1.5px 8px 0 rgba(0,0,0,0.10)',
+              borderTop: '5px solid #10b981', // Tailwind's emerald-500
+            }}
+          >
+            {/* Header */}
+            <div className="flex items-center justify-between px-6 py-4 border-b-2 border-green-100 dark:border-green-950 bg-gradient-to-r from-emerald-50/70 via-white/50 to-emerald-100/70 dark:from-emerald-900/50">
+              <div className="flex items-center gap-2">
+                <span className="w-3 h-8 bg-emerald-400 dark:bg-emerald-700 rounded-r-full mr-2"></span>
+                <h3 className="text-xl font-bold text-gray-900 dark:text-white tracking-tight">Product Demo</h3>
+              </div>
+              <button
+                onClick={() => setIsDemoOpen(false)}
+                className="rounded-full p-2 ml-2 hover:bg-green-200 dark:hover:bg-green-800 focus:outline-none transition-colors shadow text-gray-800 dark:text-gray-100"
+                aria-label="Close"
+              >
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+
+            {/* Video */}
+            <div className="flex-1 flex items-center justify-center bg-gradient-to-tr from-emerald-50 to-white dark:from-gray-900 dark:to-gray-800 p-3 md:p-5"
+              style={{ minHeight: 0 }}> {/* minHeight: 0 for proper flex shrink */}
+              <div className="w-full h-full flex items-center justify-center">
+                <video
+                  src="/team/WhatsApp%20Video%202025-10-30%20at%2000.06.22_4262131c.mp4"
+                  style={{
+                    maxWidth: '100%',
+                    maxHeight: '64vh',
+                    width: '100%',
+                    height: '100%',
+                    borderRadius: '2rem',
+                    objectFit: 'contain',
+                    border: '3px solid #10b981',
+                    boxShadow: '0 2px 20px 0 rgba(16,185,129,0.18)',
+                  }}
+                  controls
+                  controlsList="nodownload"
+                  playsInline
+                />
+              </div>
+            </div>
+
+            {/* Footer */}
+            <div className="flex items-center justify-end gap-2 px-6 py-3 border-t border-gray-100 dark:border-gray-800 bg-gradient-to-r from-emerald-50/80 to-white/60 dark:from-emerald-900/30">
+              <button
+                onClick={() => setIsDemoOpen(false)}
+                className="px-6 py-2 rounded-full font-semibold bg-green-100 hover:bg-emerald-200 text-emerald-900 dark:bg-green-900 dark:text-green-100 dark:hover:bg-green-800 shadow transition-colors"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
     </div>
   );
 }

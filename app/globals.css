@@ -215,3 +215,18 @@ section[id] {
     @apply bg-background text-foreground;
   }
 }
+
+/* Pop-in animation for modal */
+.animate-popin {
+  animation: pop-modal 0.33s cubic-bezier(0.56, 2, 0.55, 0.94);
+}
+@keyframes pop-modal {
+  0% {
+    opacity: 0;
+    transform: scale(0.85);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
