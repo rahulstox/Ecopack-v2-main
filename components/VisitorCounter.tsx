@@ -31,11 +31,13 @@ export function VisitorCounter() {
 
     return (
         <div className="fixed bottom-6 right-6 z-40">
-            <div className="bg-gradient-to-r from-green-500 to-emerald-600 rounded-full px-6 py-3 shadow-2xl border-4 border-white flex items-center gap-3 hover:scale-110 transition-transform cursor-pointer">
-                <div className="w-4 h-4 bg-white rounded-full animate-ping"></div>
-                <div className="w-4 h-4 bg-white rounded-full absolute"></div>
-                <span className="text-white font-bold text-lg">
-                    <span>{count.toLocaleString()}+</span> <span className="text-sm">Visitors</span>
+            <div className="bg-gradient-to-r from-green-500 to-emerald-600 rounded-full px-6 py-3 shadow-xl flex items-center gap-3 hover:scale-110 transition-transform cursor-pointer">
+                <div className="relative w-3.5 h-3.5">
+                    <div className="absolute inset-0 bg-white rounded-full animate-ping opacity-80"></div>
+                    <div className="absolute inset-0 bg-white rounded-full"></div>
+                </div>
+                <span className="text-white font-bold text-base sm:text-lg">
+                    <span>{count.toLocaleString()}+</span> <span className="text-xs sm:text-sm">Visitors</span>
                 </span>
             </div>
         </div>

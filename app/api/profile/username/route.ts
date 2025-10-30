@@ -4,7 +4,7 @@ import { sql } from "@/lib/db";
 
 export async function GET() {
   try {
-    const { userId } = auth();
+    const { userId } = await auth();
     if (!userId)
       return NextResponse.json(
         { success: false, error: "Unauthorized" },
@@ -26,7 +26,7 @@ export async function GET() {
 
 export async function POST(req: Request) {
   try {
-    const { userId } = auth();
+    const { userId } = await auth();
     if (!userId)
       return NextResponse.json(
         { success: false, error: "Unauthorized" },

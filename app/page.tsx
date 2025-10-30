@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
+import { SignedIn, SignedOut, SignInButton, SignOutButton, UserButton } from "@clerk/nextjs";
 import { VisitorCounter } from '@/components/VisitorCounter';
 import { useTheme } from '@/contexts/ThemeContext';
 import { Leaderboard } from '@/components/Leaderboard';
@@ -14,6 +14,7 @@ export default function Home() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isDemoOpen, setIsDemoOpen] = useState(false);
   const [isLeaderboardOpen, setIsLeaderboardOpen] = useState(false);
+  const [showSignInPrompt, setShowSignInPrompt] = useState(false);
   const [contactForm, setContactForm] = useState({ name: '', email: '', company: '', message: '' });
   const [contactStatus, setContactStatus] = useState<{ type: 'success' | 'error' | null; message: string }>({ type: null, message: '' });
   const [loading, setLoading] = useState(false);
@@ -37,6 +38,23 @@ export default function Home() {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, [lastScrollY]);
+
+  // Timed sign-in prompt after 15s for signed-out visitors; shown once per session
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    try {
+      const seen = sessionStorage.getItem('signInPromptShown');
+      if (seen === '1') return;
+      const t = setTimeout(() => {
+        setShowSignInPrompt(true);
+        sessionStorage.setItem('signInPromptShown', '1');
+      }, 15000);
+      return () => clearTimeout(t);
+    } catch {
+      const t = setTimeout(() => setShowSignInPrompt(true), 15000);
+      return () => clearTimeout(t);
+    }
+  }, []);
 
   const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, targetId: string) => {
     e.preventDefault();
@@ -308,12 +326,19 @@ export default function Home() {
                   </SignInButton>
                 </SignedOut>
                 <SignedIn>
-                  <Link
-                    href="/dashboard"
-                    className="block w-full mt-4 bg-green-600 hover:bg-green-700 text-white px-4 py-3 rounded-lg font-semibold transition-all shadow-md text-center"
-                  >
-                    Dashboard
-                  </Link>
+                  <div className="grid grid-cols-1 gap-2 mt-4">
+                    <Link
+                      href="/dashboard"
+                      className="block w-full bg-green-600 hover:bg-green-700 text-white px-4 py-3 rounded-lg font-semibold transition-all shadow-md text-center"
+                    >
+                      Dashboard
+                    </Link>
+                    <SignOutButton>
+                      <button className="w-full bg-gray-800 hover:bg-gray-900 text-white px-4 py-3 rounded-lg font-semibold transition-all shadow-md text-center">
+                        Log Out
+                      </button>
+                    </SignOutButton>
+                  </div>
                 </SignedIn>
               </div>
             </div>
@@ -1470,6 +1495,35 @@ export default function Home() {
           </div>
         </div>
       )}
+
+      {/* Timed Sign-in Prompt (SignedOut users) */}
+      <SignedOut>
+        {showSignInPrompt && (
+          <div
+            className="fixed inset-0 z-[110] flex items-center justify-center bg-black/60 backdrop-blur-sm"
+            role="dialog"
+            aria-modal="true"
+          >
+            <div className="relative w-[92vw] max-w-md mx-auto bg-white dark:bg-gray-900 rounded-2xl shadow-2xl border border-gray-200 dark:border-gray-700 overflow-hidden animate-popin">
+              <div className="flex items-center justify-between px-5 py-3 border-b border-gray-200 dark:border-gray-800">
+                <h3 className="text-lg font-bold text-gray-900 dark:text-white">Join EcoPack AI</h3>
+                <button onClick={() => setShowSignInPrompt(false)} className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800" aria-label="Close">
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+                </button>
+              </div>
+              <div className="p-5">
+                <p className="text-sm text-gray-600 dark:text-gray-300 mb-4">Sign in to save your progress, view personalized recommendations, and access your dashboard.</p>
+                <div className="flex flex-col sm:flex-row gap-2">
+                  <Link href="/sign-in" className="flex-1 inline-flex items-center justify-center px-4 py-2.5 rounded-xl font-semibold text-white bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 shadow-lg">
+                    Sign In Now
+                  </Link>
+                  <button onClick={() => setShowSignInPrompt(false)} className="flex-1 px-4 py-2.5 rounded-xl font-semibold bg-gray-100 hover:bg-gray-200 text-gray-800 dark:bg-gray-800 dark:text-gray-100 dark:hover:bg-gray-700">Maybe Later</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+      </SignedOut>
 
       {/* Leaderboard Modal */}
       {isLeaderboardOpen && (
