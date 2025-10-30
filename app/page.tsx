@@ -368,9 +368,9 @@ export default function Home() {
               </h1>
               <p className={`text-base sm:text-lg md:text-xl lg:text-2xl leading-relaxed ${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'
                 }`}>
-                Instant, eco-smart packaging picks for every SKU.{' '}
+                AI that recommends sustainable packaging and helps you track & reduce daily carbon footprint.{' '}
                 <span className={`font-bold ${theme === 'dark' ? 'text-green-400' : 'text-green-600'}`}>
-                  Reduce costs, save the planet.
+                  Reduce costs, Save the planet.
                 </span>
               </p>
             </div>

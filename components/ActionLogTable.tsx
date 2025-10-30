@@ -19,12 +19,9 @@ interface ActionLogTableProps {
 
 export function ActionLogTable({ logs, onDelete }: ActionLogTableProps) {
     const [deletingId, setDeletingId] = useState<number | null>(null);
+    const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
     const handleDelete = async (id: number) => {
-        if (!confirm('Are you sure you want to delete this action?')) {
-            return;
-        }
-
         setDeletingId(id);
         try {
             const response = await fetch(`/api/action-logs/${id}`, {
@@ -36,11 +33,13 @@ export function ActionLogTable({ logs, onDelete }: ActionLogTableProps) {
             if (result.success && onDelete) {
                 onDelete(id);
             } else {
-                alert(result.error || 'Failed to delete action');
+                setErrorMessage(result.error || 'Failed to delete action');
+                setTimeout(() => setErrorMessage(null), 3000);
             }
         } catch (error) {
             console.error('Error deleting action:', error);
-            alert('An error occurred while deleting the action.');
+            setErrorMessage('An error occurred while deleting the action.');
+            setTimeout(() => setErrorMessage(null), 3000);
         } finally {
             setDeletingId(null);
         }
@@ -91,6 +90,11 @@ export function ActionLogTable({ logs, onDelete }: ActionLogTableProps) {
 
     return (
         <div className="overflow-x-auto -mx-4 sm:mx-0">
+            {errorMessage && (
+                <div className="mx-4 sm:mx-0 mb-3 rounded-lg border border-red-300 bg-red-50 text-red-800 px-3 py-2 text-sm">
+                    {errorMessage}
+                </div>
+            )}
             <div className="inline-block min-w-full align-middle">
                 <div className="overflow-hidden shadow ring-1 ring-black ring-opacity-5 dark:ring-gray-700 sm:rounded-lg">
                     <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">

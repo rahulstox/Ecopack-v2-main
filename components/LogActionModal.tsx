@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import {
     Dialog,
     DialogContent,
@@ -23,7 +23,8 @@ interface LogActionModalProps {
 // Define activities and units by category
 const ACTIVITIES_BY_CATEGORY = {
     TRANSPORT: ['Car Drive', 'Bus Ride', 'Train Ride', 'Flight', 'Motorcycle', 'Bike Ride', 'Walk'],
-    FOOD: ['Beef Meal', 'Chicken Meal', 'Pork Meal', 'Fish Meal', 'Eggs', 'Milk', 'Cheese', 'Rice', 'Vegetables', 'Fruits', 'Veg Meal'],
+    // Keep food suggestions clean and user-friendly. Prioritize Veg/Non‑Veg generic entries.
+    FOOD: ['Veg Meal', 'Non-Veg Meal', 'Vegetables', 'Fruits', 'Rice', 'Milk', 'Eggs', 'Cheese'],
     ENERGY: ['Electricity', 'Natural Gas', 'Solar Power', 'Heating', 'Cooling'],
     PACKAGING: ['Plastic Packaging', 'Cardboard', 'Paper', 'Glass Bottle', 'Metal Can', 'Aluminum'],
     WASTE: ['Plastic Waste', 'Paper Waste', 'Glass Waste', 'Metal Waste', 'Organic Waste', 'Electronic Waste'],
@@ -48,6 +49,10 @@ export function LogActionModal({ isOpen, onClose, userId }: LogActionModalProps)
     });
     const [activitySearch, setActivitySearch] = useState('');
     const [aiInput, setAiInput] = useState('');
+    const [showSuggestions, setShowSuggestions] = useState(false);
+    const activityInputRef = useRef<HTMLInputElement | null>(null);
+    const [errorMessage, setErrorMessage] = useState<string | null>(null);
+    const [aiErrorMessage, setAiErrorMessage] = useState<string | null>(null);
     const [aiLoading, setAiLoading] = useState(false);
 
     // Get filtered activities based on search
@@ -55,9 +60,19 @@ export function LogActionModal({ isOpen, onClose, userId }: LogActionModalProps)
         if (!manualForm.category) return [];
         const activities = ACTIVITIES_BY_CATEGORY[manualForm.category as keyof typeof ACTIVITIES_BY_CATEGORY] || [];
         if (!activitySearch) return activities;
-        return activities.filter(activity =>
-            activity.toLowerCase().includes(activitySearch.toLowerCase())
-        );
+
+        const q = activitySearch.toLowerCase().trim();
+        // Map common phrases to our canonical entries for FOOD
+        if (manualForm.category === 'FOOD') {
+            if (/(non\s*-?veg|chicken|mutton|meat|fish)/i.test(q)) {
+                return ['Non-Veg Meal'];
+            }
+            if (/(veg|vegetarian)/i.test(q)) {
+                return ['Veg Meal'];
+            }
+        }
+
+        return activities.filter((activity) => activity.toLowerCase().includes(q));
     };
 
     // Get available units based on category
@@ -76,11 +91,13 @@ export function LogActionModal({ isOpen, onClose, userId }: LogActionModalProps)
             unit: units[0] || '',
         });
         setActivitySearch('');
+        setShowSuggestions(false);
     };
 
     const handleManualSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setLoading(true);
+        setErrorMessage(null);
 
         try {
             const response = await fetch('/api/log-action', {
@@ -102,11 +119,11 @@ export function LogActionModal({ isOpen, onClose, userId }: LogActionModalProps)
                 setManualForm({ category: '', activity: '', amount: '', unit: '' });
                 onClose();
             } else {
-                alert(`Error: ${result.error || 'Failed to log action'}`);
+                setErrorMessage(result.error || 'Failed to log action');
             }
         } catch (error) {
             console.error('Error logging action:', error);
-            alert('An error occurred while logging the action.');
+            setErrorMessage('An error occurred while logging the action.');
         } finally {
             setLoading(false);
         }
@@ -115,6 +132,7 @@ export function LogActionModal({ isOpen, onClose, userId }: LogActionModalProps)
     const handleAISubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setAiLoading(true);
+        setAiErrorMessage(null);
 
         try {
             const response = await fetch('/api/log-action-ai', {
@@ -133,11 +151,11 @@ export function LogActionModal({ isOpen, onClose, userId }: LogActionModalProps)
                 setAiInput('');
                 onClose();
             } else {
-                alert(`Error: ${result.error || 'Failed to process AI request'}`);
+                setAiErrorMessage(result.error || 'Failed to process AI request');
             }
         } catch (error) {
             console.error('Error processing AI input:', error);
-            alert('An error occurred while processing your request.');
+            setAiErrorMessage('An error occurred while processing your request.');
         } finally {
             setAiLoading(false);
         }
@@ -178,6 +196,11 @@ export function LogActionModal({ isOpen, onClose, userId }: LogActionModalProps)
                 {/* Manual Entry Tab */}
                 {activeTab === 'manual' && (
                     <form onSubmit={handleManualSubmit} className="space-y-4 py-4">
+                        {errorMessage && (
+                            <div className="rounded-lg border border-red-300 bg-red-50 text-red-800 px-3 py-2 text-sm">
+                                {errorMessage}
+                            </div>
+                        )}
                         <div>
                             <Label htmlFor="category">Category *</Label>
                             <Select
@@ -206,11 +229,15 @@ export function LogActionModal({ isOpen, onClose, userId }: LogActionModalProps)
                                     onChange={(e) => {
                                         setActivitySearch(e.target.value);
                                         setManualForm({ ...manualForm, activity: e.target.value });
+                                        setShowSuggestions(true);
                                     }}
+                                    onFocus={() => setShowSuggestions(true)}
+                                    onBlur={() => setTimeout(() => setShowSuggestions(false), 150)}
                                     placeholder="Search or type activity..."
                                     required
+                                    ref={activityInputRef}
                                 />
-                                {activitySearch && getFilteredActivities().length > 0 && (
+                                {showSuggestions && activitySearch && getFilteredActivities().length > 0 && (
                                     <div className="absolute z-50 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-40 overflow-y-auto">
                                         {getFilteredActivities().map((activity) => (
                                             <button
@@ -220,6 +247,8 @@ export function LogActionModal({ isOpen, onClose, userId }: LogActionModalProps)
                                                 onClick={() => {
                                                     setManualForm({ ...manualForm, activity });
                                                     setActivitySearch(activity);
+                                                    setShowSuggestions(false);
+                                                    activityInputRef.current?.blur();
                                                 }}
                                             >
                                                 <div className="flex items-center gap-2">
@@ -233,6 +262,25 @@ export function LogActionModal({ isOpen, onClose, userId }: LogActionModalProps)
                                     </div>
                                 )}
                             </div>
+                            {/* Quick picks */}
+                            {manualForm.category && (
+                                <div className="flex flex-wrap gap-2 mt-2">
+                                    {getFilteredActivities().slice(0, 4).map((a) => (
+                                        <button
+                                            type="button"
+                                            key={`qp-${a}`}
+                                            onClick={() => {
+                                                setManualForm({ ...manualForm, activity: a });
+                                                setActivitySearch(a);
+                                                setShowSuggestions(false);
+                                            }}
+                                            className="px-3 py-1.5 rounded-full text-sm border border-green-200 text-green-700 hover:bg-green-50"
+                                        >
+                                            {a}
+                                        </button>
+                                    ))}
+                                </div>
+                            )}
                             {!activitySearch && manualForm.category && (
                                 <p className="text-xs text-gray-500 mt-1">
                                     Start typing to search: {getFilteredActivities().slice(0, 3).join(', ')}...
@@ -246,7 +294,8 @@ export function LogActionModal({ isOpen, onClose, userId }: LogActionModalProps)
                                 <Input
                                     id="amount"
                                     type="number"
-                                    step="0.01"
+                                    step="any"
+                                    min="0"
                                     value={manualForm.amount}
                                     onChange={(e) => setManualForm({ ...manualForm, amount: e.target.value })}
                                     placeholder="e.g., 10"
@@ -300,6 +349,11 @@ export function LogActionModal({ isOpen, onClose, userId }: LogActionModalProps)
                 {/* AI Tab */}
                 {activeTab === 'ai' && (
                     <form onSubmit={handleAISubmit} className="space-y-4 py-4">
+                        {aiErrorMessage && (
+                            <div className="rounded-lg border border-red-300 bg-red-50 text-red-800 px-3 py-2 text-sm">
+                                {aiErrorMessage}
+                            </div>
+                        )}
                         <div>
                             <Label htmlFor="ai-input">Describe your activity</Label>
                             <textarea

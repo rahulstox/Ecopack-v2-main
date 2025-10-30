@@ -798,7 +798,7 @@ function RecommendPageContent() {
                     {/* Product Weight */}
                     <div>
                       <label className={`block text-sm font-medium mb-2 ${labelClass}`}>
-                        Product Weight (g/kg)
+                        Product Weight (g/kg) <span className="text-red-500">*</span>
                       </label>
                       <input
                         type="text"
@@ -814,7 +814,7 @@ function RecommendPageContent() {
                     {/* Product Category */}
                     <div className="relative">
                       <label className={`block text-sm font-medium mb-2 ${labelClass}`}>
-                        Product Category
+                        Product Category <span className="text-red-500">*</span>
                       </label>
                       <input
                         type="text"
@@ -862,7 +862,7 @@ function RecommendPageContent() {
 
                     {/* Dimensions - Length */}
                     <div>
-                      <label className={`block text-sm font-medium mb-2 ${labelClass}`}>Length (cm)</label>
+                      <label className={`block text-sm font-medium mb-2 ${labelClass}`}>Length (cm) <span className="text-red-500">*</span></label>
                       <input
                         type="text"
                         name="dimensions.length"
@@ -876,7 +876,7 @@ function RecommendPageContent() {
 
                     {/* Dimensions - Width */}
                     <div>
-                      <label className={`block text-sm font-medium mb-2 ${labelClass}`}>Width (cm)</label>
+                      <label className={`block text-sm font-medium mb-2 ${labelClass}`}>Width (cm) <span className="text-red-500">*</span></label>
                       <input
                         type="text"
                         name="dimensions.width"
@@ -890,7 +890,7 @@ function RecommendPageContent() {
 
                     {/* Dimensions - Height */}
                     <div>
-                      <label className={`block text-sm font-medium mb-2 ${labelClass}`}>Height (cm)</label>
+                      <label className={`block text-sm font-medium mb-2 ${labelClass}`}>Height (cm) <span className="text-red-500">*</span></label>
                       <input
                         type="text"
                         name="dimensions.height"
@@ -904,13 +904,13 @@ function RecommendPageContent() {
 
                     {/* Fragility Level */}
                     <div>
-                      <label className={`block text-sm font-medium mb-2 ${labelClass}`}>Fragility Level</label>
+                      <label className={`block text-sm font-medium mb-2 ${labelClass}`}>Fragility Level <span className="text-red-500">*</span></label>
                       <select
                         name="fragility_level"
                         value={formData.fragility_level}
                         onChange={handleChange}
                         required
-                        className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent ${inputClass}`}
+                        className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent ${inputClass} uniform-select`}
                       >
                         <option value="">Select level</option>
                         <option value="Low">Low - Durable items (clothing, books)</option>
@@ -922,13 +922,13 @@ function RecommendPageContent() {
 
                     {/* Shipping Distance */}
                     <div>
-                      <label className={`block text-sm font-medium mb-2 ${labelClass}`}>Shipping Distance</label>
+                      <label className={`block text-sm font-medium mb-2 ${labelClass}`}>Shipping Distance <span className="text-red-500">*</span></label>
                       <select
                         name="shipping_distance"
                         value={formData.shipping_distance}
                         onChange={handleChange}
                         required
-                        className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent ${inputClass}`}
+                        className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent ${inputClass} uniform-select`}
                       >
                         <option value="">Select distance</option>
                         <option value="local">Local (within city) - 0-50 km</option>
@@ -942,7 +942,7 @@ function RecommendPageContent() {
 
                     {/* Current Material Used */}
                     <div className="relative">
-                      <label className={`block text-sm font-medium mb-2 ${labelClass}`}>Current Material Used</label>
+                      <label className={`block text-sm font-medium mb-2 ${labelClass}`}>Current Material Used <span className="text-red-500">*</span></label>
                       <input
                         type="text"
                         name="current_material_used"
@@ -983,7 +983,7 @@ function RecommendPageContent() {
 
                     {/* Budget Per Unit */}
                     <div>
-                      <label className={`block text-sm font-medium mb-2 ${labelClass}`}>Budget Per Unit (₹)</label>
+                      <label className={`block text-sm font-medium mb-2 ${labelClass}`}>Budget Per Unit (₹) <span className="text-red-500">*</span></label>
                       <input
                         type="text"
                         name="budget_per_unit"
@@ -997,13 +997,13 @@ function RecommendPageContent() {
 
                     {/* Sustainability Priority */}
                     <div>
-                      <label className={`block text-sm font-medium mb-2 ${labelClass}`}>Sustainability Priority</label>
+                      <label className={`block text-sm font-medium mb-2 ${labelClass}`}>Sustainability Priority <span className="text-red-500">*</span></label>
                       <select
                         name="sustainability_priority"
                         value={formData.sustainability_priority}
                         onChange={handleChange}
                         required
-                        className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent ${inputClass}`}
+                        className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent ${inputClass} uniform-select`}
                       >
                         <option value="">Select priority level</option>
                         <option value="1">1 - Not Important - Cost is priority</option>
@@ -1023,7 +1023,7 @@ function RecommendPageContent() {
                       </label>
                       <select
                         name="budget_range"
-                        className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent ${inputClass}`}
+                        className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent ${inputClass} uniform-select`}
                       >
                         <option value="">Select range (optional)</option>
                         <option value="under-25">Under ₹25</option>
@@ -1043,7 +1043,7 @@ function RecommendPageContent() {
                       </label>
                       <select
                         name="packaging_type"
-                        className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent ${inputClass}`}
+                        className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent ${inputClass} uniform-select`}
                       >
                         <option value="">Select type (optional)</option>
                         <option value="minimal">Minimal - Minimal protection, eco-friendly</option>
@@ -1059,7 +1059,7 @@ function RecommendPageContent() {
                     <label className={`block text-sm font-medium mb-2 ${labelClass}`}>Monthly Shipping Volume</label>
                     <select
                       name="volume_range"
-                      className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent ${inputClass}`}
+                      className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent ${inputClass} uniform-select`}
                     >
                       <option value="">Select volume range (optional)</option>
                       <option value="under-100">Under 100 units</option>

@@ -25,6 +25,7 @@ export default function OnboardingPage() {
         language: 'en',
         timezone: '',
     });
+    const [initialFormData, setInitialFormData] = useState<typeof formData | null>(null);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
@@ -84,7 +85,7 @@ export default function OnboardingPage() {
                 const response = await fetch('/api/profile');
                 const data = await response.json();
                 if (data.success && data.data) {
-                    setFormData({
+                    const populated = {
                         primaryVehicleType: data.data.primaryVehicleType || '',
                         fuelType: data.data.fuelType || '',
                         householdSize: data.data.householdSize?.toString() || '',
@@ -96,7 +97,9 @@ export default function OnboardingPage() {
                         carbonGoal: data.data.carbonGoal?.toString() || '',
                         language: data.data.language || 'en',
                         timezone: data.data.timezone || '',
-                    });
+                    };
+                    setFormData(populated);
+                    setInitialFormData(populated);
                 }
             } catch (error) {
                 console.error('Error fetching profile:', error);
@@ -430,8 +433,8 @@ export default function OnboardingPage() {
                                 <div className="flex flex-col sm:flex-row gap-2 pt-2 border-t-2 border-gray-200 dark:border-gray-700">
                                     <button
                                         type="submit"
-                                        disabled={loading}
-                                        className={`flex-1 bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white py-2.5 sm:py-3 rounded-lg font-bold text-sm sm:text-base transition-all disabled:bg-gray-400 shadow-lg hover:shadow-xl flex items-center justify-center gap-2`}
+                                        disabled={loading || (initialFormData !== null && JSON.stringify(initialFormData) === JSON.stringify(formData))}
+                                        className={`flex-1 bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white py-2.5 sm:py-3 rounded-lg font-bold text-sm sm:text-base transition-all disabled:bg-gray-400 disabled:cursor-not-allowed shadow-lg hover:shadow-xl flex items-center justify-center gap-2`}
                                     >
                                         {loading ? (
                                             <>
@@ -446,7 +449,7 @@ export default function OnboardingPage() {
                                                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                                                 </svg>
-                                                Save All Changes
+                                                Save Changes
                                             </>
                                         )}
                                     </button>

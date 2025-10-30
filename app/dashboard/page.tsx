@@ -17,6 +17,7 @@ export default function DashboardPage() {
     const [profile, setProfile] = useState<any>(null);
     const [isLogModalOpen, setIsLogModalOpen] = useState(false);
     const [loading, setLoading] = useState(true);
+    const [recalcMessage, setRecalcMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
 
     useEffect(() => {
         if (isLoaded && user) {
@@ -58,24 +59,28 @@ export default function DashboardPage() {
     };
 
     const handleRecalculate = async () => {
+        // If no actions yet, guide user to log one
+        if (!actionLogs || actionLogs.length === 0) {
+            setIsLogModalOpen(true);
+            return;
+        }
+
         try {
             setLoading(true);
-            const response = await fetch('/api/recalculate-actions', {
-                method: 'POST',
-            });
+            const response = await fetch('/api/recalculate-actions', { method: 'POST' });
             const result = await response.json();
 
             if (result.success) {
-                alert(`Successfully recalculated ${result.updated} actions!`);
+                setRecalcMessage({ type: 'success', text: `Recalculated ${result.updated} actions successfully.` });
                 fetchDashboardData();
             } else {
-                alert(`Error: ${result.error}`);
+                setRecalcMessage({ type: 'error', text: result.error || 'Failed to recalculate actions.' });
             }
-        } catch (error) {
-            console.error('Error recalculating:', error);
-            alert('Failed to recalculate actions');
+        } catch (e) {
+            setRecalcMessage({ type: 'error', text: 'Failed to recalculate actions.' });
         } finally {
             setLoading(false);
+            setTimeout(() => setRecalcMessage(null), 3000);
         }
     };
 
@@ -109,6 +114,11 @@ export default function DashboardPage() {
                 {/* Main Content */}
                 <div className="flex-1 ml-0 lg:ml-64 relative pt-16 lg:pt-0">
                     <div className="p-4 sm:p-6 lg:p-8 space-y-6 sm:space-y-8">
+                        {recalcMessage && (
+                            <div className={`rounded-lg px-4 py-2 text-sm border ${recalcMessage.type === 'success' ? 'bg-green-50 border-green-300 text-green-800' : 'bg-red-50 border-red-300 text-red-800'}`}>
+                                {recalcMessage.text}
+                            </div>
+                        )}
                         {/* Header */}
                         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                             <div>
