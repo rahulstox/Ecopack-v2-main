@@ -11,10 +11,10 @@ import { VisitorCounter } from '@/components/VisitorCounter';
 const quizQuestions = [
     {
         id: 1,
-        question: "What percentage of plastic waste is recycled globally?",
-        options: ["10-15%", "25-30%", "35-40%", "50-55%"],
-        correct: 0,
-        explanation: "Only about 10-15% of plastic waste is recycled globally."
+        question: "What is CH4 commonly called?",
+        options: ["Carbon monoxide", "Methane", "Nitrous oxide", "Ozone"],
+        correct: 1,
+        explanation: "CH4 is methane, a potent greenhouse gas."
     },
     {
         id: 2,
@@ -39,10 +39,10 @@ const quizQuestions = [
     },
     {
         id: 5,
-        question: "How much CO2 can be saved by switching to biodegradable packaging?",
-        options: ["10-20%", "30-40%", "50-70%", "80-100%"],
+        question: "Over 100 years, methane (CH4) is roughly how many times more warming than CO2?",
+        options: ["7x", "14x", "28x", "70x"],
         correct: 2,
-        explanation: "Biodegradable packaging can save 50-70% of CO2 emissions."
+        explanation: "The 100‑year Global Warming Potential (GWP100) of methane is about 28–34 times that of CO2."
     },
     {
         id: 6,
@@ -53,10 +53,10 @@ const quizQuestions = [
     },
     {
         id: 7,
-        question: "What is the carbon footprint of packaging in global supply chains?",
-        options: ["2-5%", "8-12%", "15-20%", "25-30%"],
+        question: "What does CO2e stand for?",
+        options: ["Carbon dioxide energy", "Carbon dioxide equivalent", "Carbon emissions estimate", "Combined ozone equivalent"],
         correct: 1,
-        explanation: "Packaging contributes to 8-12% of carbon emissions in supply chains."
+        explanation: "CO2e means carbon dioxide equivalent and allows different greenhouse gases to be compared on a common basis using GWP."
     },
     {
         id: 8,
@@ -67,10 +67,10 @@ const quizQuestions = [
     },
     {
         id: 9,
-        question: "How much landfill space could be saved by using sustainable packaging?",
-        options: ["10-15%", "20-30%", "40-50%", "60-70%"],
-        correct: 2,
-        explanation: "Sustainable packaging could save 40-50% of landfill space."
+        question: "Which sector is the largest source of global methane emissions?",
+        options: ["Power generation", "Agriculture (e.g., livestock, rice)", "Residential heating", "Aviation"],
+        correct: 1,
+        explanation: "Agriculture—especially enteric fermentation in livestock and rice cultivation—is the largest source of methane."
     },
     {
         id: 10,
@@ -88,10 +88,24 @@ const quizQuestions = [
     },
     {
         id: 12,
-        question: "What percentage of packaging waste ends up in oceans?",
-        options: ["5-8%", "10-15%", "18-25%", "30-40%"],
+        question: "Which refrigerant group has very high GWPs and is being phased down globally?",
+        options: ["HFCs (hydrofluorocarbons)", "CO2", "Ammonia", "Water vapor"],
+        correct: 0,
+        explanation: "HFCs have very high GWPs; the Kigali Amendment drives their global phase‑down."
+    },
+    {
+        id: 16,
+        question: "What does GWP (Global Warming Potential) compare?",
+        options: ["Air quality between cities", "Heat content of fuels", "Warming of a gas relative to CO2 over a period", "Cloud cover impacts"],
+        correct: 2,
+        explanation: "GWP compares the cumulative warming impact of a greenhouse gas to CO2 over a chosen time horizon (e.g., 20 or 100 years)."
+    },
+    {
+        id: 17,
+        question: "If organic waste decomposes without oxygen (anaerobically), which gas is produced in high amounts?",
+        options: ["Oxygen", "Methane", "Nitrogen", "Argon"],
         correct: 1,
-        explanation: "Approximately 10-15% of packaging waste ends up in oceans."
+        explanation: "Anaerobic decomposition produces methane; proper composting with oxygen reduces methane formation."
     },
     {
         id: 13,
@@ -154,7 +168,7 @@ export default function QuizPage() {
             setScore(score + 1);
             setCelebration(true);
             setConfettiActive(true);
-            
+
             // Play celebration sound
             try {
                 const audio = new Audio('/sounds/celebration.mp3');
@@ -164,24 +178,24 @@ export default function QuizPage() {
                     const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
                     const oscillator = audioContext.createOscillator();
                     const gainNode = audioContext.createGain();
-                    
+
                     oscillator.connect(gainNode);
                     gainNode.connect(audioContext.destination);
-                    
+
                     oscillator.frequency.setValueAtTime(523.25, audioContext.currentTime); // C note
                     oscillator.frequency.setValueAtTime(659.25, audioContext.currentTime + 0.1); // E note
                     oscillator.frequency.setValueAtTime(783.99, audioContext.currentTime + 0.2); // G note
-                    
+
                     gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
                     gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
-                    
+
                     oscillator.start(audioContext.currentTime);
                     oscillator.stop(audioContext.currentTime + 0.3);
                 });
             } catch (error) {
                 console.log('Sound effect disabled');
             }
-            
+
             setTimeout(() => {
                 setCelebration(false);
                 setConfettiActive(false);

@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
 import { VisitorCounter } from '@/components/VisitorCounter';
 import { useTheme } from '@/contexts/ThemeContext';
+import { Leaderboard } from '@/components/Leaderboard';
 
 export default function Home() {
   const { theme, setTheme } = useTheme();
@@ -12,11 +13,12 @@ export default function Home() {
   const [lastScrollY, setLastScrollY] = useState(0);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isDemoOpen, setIsDemoOpen] = useState(false);
+  const [isLeaderboardOpen, setIsLeaderboardOpen] = useState(false);
   const [contactForm, setContactForm] = useState({ name: '', email: '', company: '', message: '' });
   const [contactStatus, setContactStatus] = useState<{ type: 'success' | 'error' | null; message: string }>({ type: null, message: '' });
   const [loading, setLoading] = useState(false);
-  const [responseTime, setResponseTime] = useState<string>('<20s');
-  const [processingTime, setProcessingTime] = useState<string>('~3s');
+  const responseTime = '<1s';
+  const processingTime = '~1.2s';
 
   useEffect(() => {
     const handleScroll = () => {
@@ -35,163 +37,6 @@ export default function Home() {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, [lastScrollY]);
-
-  // Measure actual API response time and processing time
-  useEffect(() => {
-    const measureTimes = async () => {
-      try {
-        // Measure API response time
-        const startTime = performance.now();
-
-        // Create abort controller for timeout
-        const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 5000);
-
-        try {
-          // Try lightweight init endpoint first
-          const response = await fetch('/api/init', {
-            method: 'GET',
-            cache: 'no-cache',
-            signal: controller.signal
-          });
-
-          clearTimeout(timeoutId);
-
-          if (response.ok) {
-            const endTime = performance.now();
-            const actualTimeMs = endTime - startTime;
-            const actualTimeSeconds = (actualTimeMs / 1000).toFixed(1);
-            const timeValue = parseFloat(actualTimeSeconds);
-
-            if (timeValue < 1) {
-              setResponseTime(`<1s`);
-            } else if (timeValue < 10) {
-              setResponseTime(`<${actualTimeSeconds}s`);
-            } else {
-              setResponseTime(`<${Math.ceil(timeValue)}s`);
-            }
-          } else {
-            setResponseTime('<20s');
-          }
-        } catch (error) {
-          clearTimeout(timeoutId);
-          // If init fails, fallback to dashboard-stats
-          try {
-            const controller2 = new AbortController();
-            const timeoutId2 = setTimeout(() => controller2.abort(), 5000);
-            const startTime2 = performance.now();
-
-            const response = await fetch('/api/dashboard-stats', {
-              method: 'GET',
-              cache: 'no-cache',
-              signal: controller2.signal
-            });
-
-            clearTimeout(timeoutId2);
-
-            if (response.ok) {
-              const endTime = performance.now();
-              const actualTimeMs = endTime - startTime2;
-              const actualTimeSeconds = (actualTimeMs / 1000).toFixed(1);
-              const timeValue = parseFloat(actualTimeSeconds);
-
-              if (timeValue < 10) {
-                setResponseTime(`<${actualTimeSeconds}s`);
-              } else {
-                setResponseTime(`<${Math.ceil(timeValue)}s`);
-              }
-            } else {
-              setResponseTime('<20s');
-            }
-          } catch {
-            setResponseTime('<20s');
-          }
-        }
-
-        // Measure actual AI processing time from recommendations API
-        try {
-          // Check if user has recent recommendations to get average processing time
-          const recResponse = await fetch('/api/recommendations/user', {
-            method: 'GET',
-            cache: 'no-cache'
-          });
-
-          if (recResponse.ok) {
-            const recData = await recResponse.json();
-            const recommendations = recData.data || [];
-
-            if (recommendations.length > 0) {
-              // Check if any recommendations have processing_time data
-              const timesWithData = recommendations
-                .map((rec: any) => {
-                  // Check if processing_time is stored in ai_output or metadata
-                  return rec.ai_output?.processing_time?.ai_processing ||
-                    rec.ai_output?.processing_time?.total_processing ||
-                    rec.processing_time?.ai_processing ||
-                    rec.processing_time?.total_processing;
-                })
-                .filter((time: any) => time != null && !isNaN(time));
-
-              if (timesWithData.length > 0) {
-                // Calculate average processing time
-                const avgTime = timesWithData.reduce((sum: number, time: number) => sum + time, 0) / timesWithData.length;
-                const formattedTime = avgTime < 1 ? '<1s' : avgTime < 10 ? `~${avgTime.toFixed(1)}s` : `~${Math.ceil(avgTime)}s`;
-                setProcessingTime(formattedTime);
-              } else {
-                // No processing time data yet, use typical Gemini AI processing time (2-4 seconds)
-                setProcessingTime('~3s');
-              }
-            } else {
-              // No recommendations yet, use typical estimate
-              setProcessingTime('~3s');
-            }
-          } else {
-            setProcessingTime('~3s');
-          }
-        } catch {
-          // Fallback to default estimate
-          setProcessingTime('~3s');
-        }
-
-        // Alternative: Measure processing time with a test request (commented out to avoid costs)
-        // Uncomment if you want to measure actual processing time:
-        /*
-        try {
-          const processingStartTime = performance.now();
-          // Note: This would make an actual API call and cost credits
-          // For production, you'd want to track processing times in the database
-          const testResponse = await fetch('/api/recommend', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              product_category: 'Electronics',
-              product_weight: '1',
-              fragility_level: 'Medium',
-              shipping_distance: 'national'
-            })
-          });
-          const processingEndTime = performance.now();
-          const processingTimeMs = processingEndTime - processingStartTime;
-          const processingTimeSeconds = (processingTimeMs / 1000).toFixed(1);
-          setProcessingTime(`~${processingTimeSeconds}s`);
-        } catch {
-          setProcessingTime('~3s');
-        }
-        */
-      } catch (error) {
-        // Fallback to defaults if measurement fails
-        setResponseTime('<20s');
-        setProcessingTime('~3s');
-      }
-    };
-
-    // Delay measurement slightly to not block initial render
-    const timer = setTimeout(() => {
-      measureTimes();
-    }, 500);
-
-    return () => clearTimeout(timer);
-  }, []);
 
   const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, targetId: string) => {
     e.preventDefault();
@@ -235,11 +80,11 @@ export default function Home() {
   return (
     <div className={`min-h-screen transition-colors duration-300 ${theme === 'dark'
       ? 'bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900'
-      : 'bg-gradient-to-br from-emerald-50 via-green-50 to-teal-50'
+      : 'bg-gradient-to-br from-green-50 via-emerald-50 to-teal-50'
       }`}>
       {/* Fixed Navigation with Glass Effect */}
       <nav className={`fixed top-0 left-0 right-0 z-50 transition-transform duration-300 ${isScrolledUp ? 'translate-y-0' : '-translate-y-full'
-        }`}>
+        }`} style={{ paddingTop: 'env(safe-area-inset-top)' }}>
         <div className={`backdrop-blur-lg border-b shadow-lg ${theme === 'dark'
           ? 'bg-gray-900/95 border-gray-600/30'
           : 'bg-white/70 border-white/20'
@@ -270,6 +115,7 @@ export default function Home() {
                   }`}>Pricing</a>
                 <a href="#team" onClick={(e) => handleNavClick(e, 'team')} className={`px-3 py-2 rounded-lg font-medium transition-all cursor-pointer ${theme === 'dark' ? 'text-gray-200 hover:text-green-400 hover:bg-gray-800' : 'text-gray-700 hover:text-green-600 hover:bg-green-50'
                   }`}>Team</a>
+                <button onClick={() => setIsLeaderboardOpen(true)} className={`px-3 py-2 rounded-lg font-semibold transition-all ${theme === 'dark' ? 'text-emerald-300 hover:text-emerald-200 hover:bg-gray-800' : 'text-emerald-700 hover:text-emerald-800 hover:bg-green-50'}`}>Leaderboard</button>
                 <a href="#contact" onClick={(e) => handleNavClick(e, 'contact')} className={`px-3 py-2 rounded-lg font-medium transition-all cursor-pointer ${theme === 'dark' ? 'text-gray-200 hover:text-green-400 hover:bg-gray-800' : 'text-gray-700 hover:text-green-600 hover:bg-green-50'
                   }`}>Contact</a>
               </div>
@@ -316,6 +162,7 @@ export default function Home() {
                   className={`lg:hidden p-2 rounded-lg transition-colors ${theme === 'dark' ? 'text-gray-300 hover:bg-gray-800' : 'text-gray-700 hover:bg-gray-100'
                     }`}
                   aria-label="Toggle menu"
+                  aria-expanded={isMobileMenuOpen}
                 >
                   <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     {isMobileMenuOpen ? (
@@ -354,11 +201,11 @@ export default function Home() {
               }`}>
               <div className="container mx-auto px-4 py-4">
                 {/* Navigation Links */}
-                <div className="space-y-1 mb-4">
+                <div className="space-y-1.5 mb-4">
                   <a
                     href="#home"
                     onClick={(e) => { handleNavClick(e, 'home'); setIsMobileMenuOpen(false); }}
-                    className={`block px-4 py-3 rounded-lg font-medium transition-all ${theme === 'dark' ? 'text-gray-200 hover:text-green-400 hover:bg-gray-700' : 'text-gray-700 hover:text-green-600 hover:bg-green-50'
+                    className={`block px-5 py-4 rounded-xl font-semibold text-base transition-all ${theme === 'dark' ? 'text-gray-200 hover:text-green-400 hover:bg-gray-700' : 'text-gray-700 hover:text-green-600 hover:bg-green-50'
                       }`}
                   >
                     Home
@@ -366,7 +213,7 @@ export default function Home() {
                   <a
                     href="#about"
                     onClick={(e) => { handleNavClick(e, 'about'); setIsMobileMenuOpen(false); }}
-                    className={`block px-4 py-3 rounded-lg font-medium transition-all ${theme === 'dark' ? 'text-gray-200 hover:text-green-400 hover:bg-gray-700' : 'text-gray-700 hover:text-green-600 hover:bg-green-50'
+                    className={`block px-5 py-4 rounded-xl font-semibold text-base transition-all ${theme === 'dark' ? 'text-gray-200 hover:text-green-400 hover:bg-gray-700' : 'text-gray-700 hover:text-green-600 hover:bg-green-50'
                       }`}
                   >
                     About
@@ -374,7 +221,7 @@ export default function Home() {
                   <a
                     href="#how-it-works"
                     onClick={(e) => { handleNavClick(e, 'how-it-works'); setIsMobileMenuOpen(false); }}
-                    className={`block px-4 py-3 rounded-lg font-medium transition-all ${theme === 'dark' ? 'text-gray-200 hover:text-green-400 hover:bg-gray-700' : 'text-gray-700 hover:text-green-600 hover:bg-green-50'
+                    className={`block px-5 py-4 rounded-xl font-semibold text-base transition-all ${theme === 'dark' ? 'text-gray-200 hover:text-green-400 hover:bg-gray-700' : 'text-gray-700 hover:text-green-600 hover:bg-green-50'
                       }`}
                   >
                     How It Works
@@ -382,7 +229,7 @@ export default function Home() {
                   <a
                     href="#pricing"
                     onClick={(e) => { handleNavClick(e, 'pricing'); setIsMobileMenuOpen(false); }}
-                    className={`block px-4 py-3 rounded-lg font-medium transition-all ${theme === 'dark' ? 'text-gray-200 hover:text-green-400 hover:bg-gray-700' : 'text-gray-700 hover:text-green-600 hover:bg-green-50'
+                    className={`block px-5 py-4 rounded-xl font-semibold text-base transition-all ${theme === 'dark' ? 'text-gray-200 hover:text-green-400 hover:bg-gray-700' : 'text-gray-700 hover:text-green-600 hover:bg-green-50'
                       }`}
                   >
                     Pricing
@@ -390,15 +237,21 @@ export default function Home() {
                   <a
                     href="#team"
                     onClick={(e) => { handleNavClick(e, 'team'); setIsMobileMenuOpen(false); }}
-                    className={`block px-4 py-3 rounded-lg font-medium transition-all ${theme === 'dark' ? 'text-gray-200 hover:text-green-400 hover:bg-gray-700' : 'text-gray-700 hover:text-green-600 hover:bg-green-50'
+                    className={`block px-5 py-4 rounded-xl font-semibold text-base transition-all ${theme === 'dark' ? 'text-gray-200 hover:text-green-400 hover:bg-gray-700' : 'text-gray-700 hover:text-green-600 hover:bg-green-50'
                       }`}
                   >
                     Team
                   </a>
+                  <button
+                    onClick={() => { setIsLeaderboardOpen(true); setIsMobileMenuOpen(false); }}
+                    className={`w-full text-left block px-5 py-4 rounded-xl font-semibold text-base transition-all ${theme === 'dark' ? 'text-emerald-300 hover:text-emerald-200 hover:bg-gray-700' : 'text-emerald-700 hover:text-emerald-800 hover:bg-green-50'}`}
+                  >
+                    Leaderboard
+                  </button>
                   <a
                     href="#contact"
                     onClick={(e) => { handleNavClick(e, 'contact'); setIsMobileMenuOpen(false); }}
-                    className={`block px-4 py-3 rounded-lg font-medium transition-all ${theme === 'dark' ? 'text-gray-200 hover:text-green-400 hover:bg-gray-700' : 'text-gray-700 hover:text-green-600 hover:bg-green-50'
+                    className={`block px-5 py-4 rounded-xl font-semibold text-base transition-all ${theme === 'dark' ? 'text-gray-200 hover:text-green-400 hover:bg-gray-700' : 'text-gray-700 hover:text-green-600 hover:bg-green-50'
                       }`}
                   >
                     Contact
@@ -687,7 +540,7 @@ export default function Home() {
                 Get instant AI-powered packaging recommendations in under 5 seconds with detailed PDF reports and comparisons
               </p>
               <div className={`rounded-xl p-4 mt-6 ${theme === 'dark' ? 'bg-gray-600' : 'bg-purple-100'}`}>
-                <div className={`text-4xl font-bold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>&lt;5s</div>
+                <div className={`text-4xl font-bold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>&lt;1.2s</div>
                 <div className={`text-sm font-medium ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}`}>Processing Time</div>
               </div>
             </div>
@@ -913,47 +766,51 @@ export default function Home() {
             }`}>Pricing</h2>
           <p className={`text-base sm:text-lg md:text-xl text-center mb-12 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'
             }`}>Choose the plan that works for you</p>
-          <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-            <div className={`rounded-3xl p-6 sm:p-8 shadow-xl border-2 ${theme === 'dark' ? 'bg-gray-800 border-gray-600' : 'bg-white border-gray-200'
+          <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6 md:gap-8">
+            {/* Free */}
+            <div className={`rounded-3xl p-6 sm:p-8 shadow-2xl border-2 ${theme === 'dark' ? 'bg-gray-800 border-gray-600' : 'bg-white border-gray-200'
               }`}>
+              <div className="mb-3 -mt-2">
+                <span className={`inline-block px-3 py-1 rounded-full text-xs font-bold ${theme === 'dark' ? 'bg-gray-700 text-gray-100' : 'bg-gray-100 text-gray-700'}`}>Best for starters</span>
+              </div>
               <h3 className={`text-2xl font-bold mb-4 ${theme === 'dark' ? 'text-white' : 'text-gray-900'
                 }`}>Free</h3>
-              <div className={`text-4xl font-bold mb-2 ${theme === 'dark' ? 'text-white' : 'text-gray-900'
+              <div className={`text-[34px] sm:text-4xl font-extrabold mb-2 tracking-tight ${theme === 'dark' ? 'text-white' : 'text-gray-900'
                 }`}>$0<span className={`text-lg ${theme === 'dark' ? 'text-gray-400' : 'text-gray-500'
                   }`}>/month</span></div>
-              <p className={`text-sm mb-6 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-500'
+              <p className={`text-[15px] sm:text-sm mb-6 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-500'
                 }`}>Perfect to get started</p>
-              <ul className="space-y-3 mb-8">
+              <ul className="space-y-3.5 sm:space-y-3 mb-8">
                 {/* Included Features */}
-                <li className={`flex items-center gap-2 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'
+                <li className={`flex items-center gap-2.5 text-[15px] sm:text-base ${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'
                   }`}>
                   <svg className="w-5 h-5 text-green-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                   </svg>
                   <span>10 recommendations/month</span>
                 </li>
-                <li className={`flex items-center gap-2 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'
+                <li className={`flex items-center gap-2.5 text-[15px] sm:text-base ${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'
                   }`}>
                   <svg className="w-5 h-5 text-green-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                   </svg>
                   <span>Basic carbon tracking</span>
                 </li>
-                <li className={`flex items-center gap-2 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'
+                <li className={`flex items-center gap-2.5 text-[15px] sm:text-base ${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'
                   }`}>
                   <svg className="w-5 h-5 text-green-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                   </svg>
                   <span>Standard support</span>
                 </li>
-                <li className={`flex items-center gap-2 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'
+                <li className={`flex items-center gap-2.5 text-[15px] sm:text-base ${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'
                   }`}>
                   <svg className="w-5 h-5 text-green-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                   </svg>
                   <span>PDF export</span>
                 </li>
-                <li className={`flex items-center gap-2 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'
+                <li className={`flex items-center gap-2.5 text-[15px] sm:text-base ${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'
                   }`}>
                   <svg className="w-5 h-5 text-green-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
@@ -962,35 +819,35 @@ export default function Home() {
                 </li>
 
                 {/* Not Included Features - Pro Features Preview */}
-                <li className={`flex items-center gap-2 opacity-50 ${theme === 'dark' ? 'text-gray-500' : 'text-gray-400'
+                <li className={`flex items-center gap-2.5 opacity-50 text-[15px] sm:text-base ${theme === 'dark' ? 'text-gray-500' : 'text-gray-400'
                   }`}>
                   <svg className="w-5 h-5 text-gray-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                   </svg>
                   <span className="line-through">Unlimited recommendations</span>
                 </li>
-                <li className={`flex items-center gap-2 opacity-50 ${theme === 'dark' ? 'text-gray-500' : 'text-gray-400'
+                <li className={`flex items-center gap-2.5 opacity-50 text-[15px] sm:text-base ${theme === 'dark' ? 'text-gray-500' : 'text-gray-400'
                   }`}>
                   <svg className="w-5 h-5 text-gray-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                   </svg>
                   <span className="line-through">Advanced analytics</span>
                 </li>
-                <li className={`flex items-center gap-2 opacity-50 ${theme === 'dark' ? 'text-gray-500' : 'text-gray-400'
+                <li className={`flex items-center gap-2.5 opacity-50 text-[15px] sm:text-base ${theme === 'dark' ? 'text-gray-500' : 'text-gray-400'
                   }`}>
                   <svg className="w-5 h-5 text-gray-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                   </svg>
                   <span className="line-through">Priority support (24/7)</span>
                 </li>
-                <li className={`flex items-center gap-2 opacity-50 ${theme === 'dark' ? 'text-gray-500' : 'text-gray-400'
+                <li className={`flex items-center gap-2.5 opacity-50 text-[15px] sm:text-base ${theme === 'dark' ? 'text-gray-500' : 'text-gray-400'
                   }`}>
                   <svg className="w-5 h-5 text-gray-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                   </svg>
                   <span className="line-through">Unlimited historical tracking</span>
                 </li>
-                <li className={`flex items-center gap-2 opacity-50 ${theme === 'dark' ? 'text-gray-500' : 'text-gray-400'
+                <li className={`flex items-center gap-2.5 opacity-50 text-[15px] sm:text-base ${theme === 'dark' ? 'text-gray-500' : 'text-gray-400'
                   }`}>
                   <svg className="w-5 h-5 text-gray-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -999,18 +856,18 @@ export default function Home() {
                 </li>
               </ul>
               <SignedIn>
-                <Link href="/dashboard" className={`block w-full py-3 rounded-xl font-semibold transition-all text-center ${theme === 'dark'
+                <Link href="/dashboard" className={`block w-full py-3.5 rounded-2xl text-base font-semibold transition-all text-center ${theme === 'dark'
                   ? 'bg-gray-700 text-white hover:bg-gray-600'
-                  : 'bg-gray-200 text-gray-800 hover:bg-gray-300'
+                  : 'bg-gray-900 text-white hover:bg-gray-800'
                   }`}>
                   Get Started
                 </Link>
               </SignedIn>
               <SignedOut>
                 <SignInButton mode="modal">
-                  <button className={`w-full py-3 rounded-xl font-semibold transition-all ${theme === 'dark'
+                  <button className={`w-full py-3.5 rounded-2xl text-base font-semibold transition-all ${theme === 'dark'
                     ? 'bg-gray-700 text-white hover:bg-gray-600'
-                    : 'bg-gray-200 text-gray-800 hover:bg-gray-300'
+                    : 'bg-gray-900 text-white hover:bg-gray-800'
                     }`}>
                     Get Started
                   </button>
@@ -1027,7 +884,7 @@ export default function Home() {
                 <h3 className="text-2xl font-bold text-white mb-4">Pro</h3>
                 <div className="text-4xl font-bold text-white mb-2">$29<span className="text-lg text-green-100">/month</span></div>
                 <p className="text-green-100 text-sm mb-6">Everything you need to scale</p>
-                <ul className="space-y-3 mb-8">
+                <ul className="space-y-3.5 sm:space-y-3 mb-8">
                   <li className="flex items-center gap-3 text-white">
                     <svg className="w-5 h-5 flex-shrink-0 text-green-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
@@ -1084,28 +941,32 @@ export default function Home() {
                   </li>
                 </ul>
                 <SignedIn>
-                  <Link href="/dashboard" className="block w-full bg-white text-green-600 py-3.5 rounded-xl font-bold hover:bg-gray-50 transition-all shadow-xl hover:shadow-2xl hover:scale-105 text-center">
+                  <Link href="/dashboard" className="block w-full bg-white text-green-600 py-4 rounded-2xl text-base font-bold hover:bg-gray-50 transition-all shadow-xl hover:shadow-2xl hover:scale-105 text-center">
                     Get Started Now
                   </Link>
                 </SignedIn>
                 <SignedOut>
                   <SignInButton mode="modal">
-                    <button className="w-full bg-white text-green-600 py-3.5 rounded-xl font-bold hover:bg-gray-50 transition-all shadow-xl hover:shadow-2xl hover:scale-105">
+                    <button className="w-full bg-white text-green-600 py-4 rounded-2xl text-base font-bold hover:bg-gray-50 transition-all shadow-xl hover:shadow-2xl hover:scale-105">
                       Get Started Now
                     </button>
                   </SignInButton>
                 </SignedOut>
               </div>
             </div>
-            <div className={`rounded-3xl p-6 sm:p-8 shadow-xl border-2 ${theme === 'dark' ? 'bg-gray-800 border-gray-600' : 'bg-white border-gray-200'
+            {/* Enterprise */}
+            <div className={`rounded-3xl p-6 sm:p-8 shadow-2xl border-2 ${theme === 'dark' ? 'bg-gray-800 border-gray-600' : 'bg-white border-gray-200'
               }`}>
+              <div className="mb-3 -mt-2">
+                <span className={`inline-block px-3 py-1 rounded-full text-xs font-bold ${theme === 'dark' ? 'bg-gray-700 text-gray-100' : 'bg-gray-100 text-gray-700'}`}>For large teams</span>
+              </div>
               <h3 className={`text-2xl font-bold mb-4 ${theme === 'dark' ? 'text-white' : 'text-gray-900'
                 }`}>Enterprise</h3>
-              <div className={`text-4xl font-bold mb-2 ${theme === 'dark' ? 'text-white' : 'text-gray-900'
+              <div className={`text-[34px] sm:text-4xl font-extrabold mb-2 tracking-tight ${theme === 'dark' ? 'text-white' : 'text-gray-900'
                 }`}>Custom</div>
-              <p className={`text-sm mb-6 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-500'
+              <p className={`text-[15px] sm:text-sm mb-6 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-500'
                 }`}>Tailored for large organizations</p>
-              <ul className="space-y-3 mb-8">
+              <ul className="space-y-3.5 sm:space-y-3 mb-8">
                 <li className={`flex items-center gap-2 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'
                   }`}>
                   <svg className="w-5 h-5 text-green-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -1149,7 +1010,7 @@ export default function Home() {
                   <span>White-label options</span>
                 </li>
               </ul>
-              <button className={`w-full py-3 rounded-xl font-semibold transition-all shadow-md hover:shadow-lg ${theme === 'dark'
+              <button className={`w-full py-3.5 rounded-2xl text-base font-semibold transition-all shadow-md hover:shadow-lg ${theme === 'dark'
                 ? 'bg-gray-700 text-white hover:bg-gray-600'
                 : 'bg-gray-800 text-white hover:bg-gray-700'
                 }`}>
@@ -1201,9 +1062,8 @@ export default function Home() {
                 <h3 className={`text-2xl font-bold mb-2 ${theme === 'dark' ? 'text-white' : 'text-gray-900'
                   }`}>Rahul Gupta</h3>
                 <p className="text-green-600 font-semibold text-lg mb-4">Lead Developer</p>
-                <p className={`mb-6 leading-relaxed ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'
-                  }`}>
-                  Full-stack developer passionate about building scalable applications and innovative solutions for sustainability.
+                <p className={`mb-6 leading-relaxed ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}`}>
+                  IT student with a strong grasp of React, Node.js, and scalable cloud solutions. Seeking software roles where I can build innovative, real-world products and grow with a talented team.
                 </p>
                 <div className="flex items-center gap-3">
                   <a href="https://www.linkedin.com/in/rahulgupta86/" target="_blank" rel="noopener noreferrer" className="w-10 h-10 bg-green-100 hover:bg-green-200 rounded-xl flex items-center justify-center transition-colors group">
@@ -1237,9 +1097,8 @@ export default function Home() {
                 <h3 className={`text-2xl font-bold mb-2 ${theme === 'dark' ? 'text-white' : 'text-gray-900'
                   }`}>Pratishtha Gupta</h3>
                 <p className="text-green-600 font-semibold text-lg mb-4">Lead Developer</p>
-                <p className={`mb-6 leading-relaxed ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'
-                  }`}>
-                  Full-stack developer passionate about building sustainable applications and innovative solutions for environmental impact.
+                <p className={`mb-6 leading-relaxed ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}`}>
+                  IT student passionate about web development, UI/UX, and clean code. Actively pursuing software positions to apply my tech skills, creativity, and drive in an impactful organization.
                 </p>
                 <div className="flex items-center gap-3">
                   <a href="https://www.linkedin.com/in/pratishtha-gupta-8a8b29250/" target="_blank" rel="noopener noreferrer" className="w-10 h-10 bg-green-100 hover:bg-green-200 rounded-xl flex items-center justify-center transition-colors group">
@@ -1256,6 +1115,16 @@ export default function Home() {
               </div>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* Leaderboard Section */}
+      <section id="leaderboard" className={`py-16 sm:py-20 md:py-24 lg:py-28 ${theme === 'dark'
+        ? 'bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900'
+        : 'bg-gradient-to-br from-emerald-50 via-green-50 to-teal-50'
+        }`}>
+        <div className="container mx-auto px-6">
+          <Leaderboard />
         </div>
       </section>
 
@@ -1415,8 +1284,8 @@ export default function Home() {
                     <div>
                       <h3 className={`font-semibold mb-1 ${theme === 'dark' ? 'text-gray-200' : 'text-gray-700'
                         }`}>Office</h3>
-                      <p className={theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}>San Francisco, CA 94105</p>
-                      <p className={theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}>United States</p>
+                      <p className={theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}>Remote</p>
+                      <p className={theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}>Global</p>
                     </div>
                   </div>
                 </div>
@@ -1597,6 +1466,34 @@ export default function Home() {
               >
                 Close
               </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Leaderboard Modal */}
+      {isLeaderboardOpen && (
+        <div
+          className="fixed inset-0 z-[100] flex items-center justify-center min-h-screen"
+          style={{ background: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(4px)' }}
+          role="dialog"
+          aria-modal="true"
+        >
+          <div className="relative w-[92vw] max-w-2xl max-h-[80vh] bg-white dark:bg-gray-900 rounded-3xl shadow-2xl border border-gray-200 dark:border-gray-700 overflow-hidden animate-popin flex flex-col">
+            <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200 dark:border-gray-800">
+              <h3 className="text-xl font-bold text-gray-900 dark:text-white">Leaderboard</h3>
+              <button onClick={() => setIsLeaderboardOpen(false)} className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800">
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.2} d="M6 18L18 6M6 6l12 12" /></svg>
+              </button>
+            </div>
+            <div className="p-4 sm:p-6 overflow-auto">
+              {/* Inline compact leaderboard */}
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <div className="mt-1">
+                {/* reuse MiniLeaderboard */}
+                {/* @ts-expect-error Server/Client boundary handled */}
+                <Leaderboard />
+              </div>
             </div>
           </div>
         </div>

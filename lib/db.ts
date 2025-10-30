@@ -58,6 +58,18 @@ async function initializeDatabaseTables() {
     `;
     console.log('Checked/created "UserProfile" table.');
 
+    // Ensure username column exists and is unique
+    try {
+      await sql`ALTER TABLE "UserProfile" ADD COLUMN IF NOT EXISTS "username" VARCHAR(100)`;
+    } catch (e) {
+      // ignore
+    }
+    try {
+      await sql`CREATE UNIQUE INDEX IF NOT EXISTS idx_userprofile_username_unique ON "UserProfile"(lower("username")) WHERE "username" IS NOT NULL`;
+    } catch (e) {
+      // ignore
+    }
+
     // Table for logging user actions (carbon footprint)
     await sql`
       CREATE TABLE IF NOT EXISTS ActionLog (

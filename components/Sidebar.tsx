@@ -137,7 +137,7 @@ export function Sidebar({ totalCo2eSaved = 0 }: SidebarProps) {
                 </div>
 
                 {/* Bottom Section - CO2e Saved */}
-                <div className="mt-auto px-4 sm:px-6 pb-4 sm:pb-6 flex-shrink-0">
+                <div className="mt-auto px-4 sm:px-6 pb-4 sm:pb-6 flex-shrink-0" style={{ paddingBottom: 'calc(env(safe-area-inset-bottom) + 1rem)' }}>
                     <div className="bg-gradient-to-br from-white/20 to-white/10 backdrop-blur-xl rounded-xl sm:rounded-2xl p-4 sm:p-5 shadow-2xl border border-white/20 mb-3 sm:mb-4">
                         <div className="flex items-center gap-2 sm:gap-2.5 mb-2 sm:mb-3">
                             <div className="w-8 h-8 sm:w-10 sm:h-10 bg-white/25 rounded-xl flex items-center justify-center backdrop-blur-sm">
